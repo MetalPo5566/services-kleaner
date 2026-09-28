@@ -1,0 +1,45 @@
+---
+import { SITE } from '../data/site'
+
+// The owner's logo file. It is the full lockup: the wordmark with the current
+// tagline and its ornaments underneath, so nothing is typeset on top of it.
+// Source artwork lives at assets/kleaner-logo.png and the two web versions are
+// built by scripts/gen-logo.mjs (npm run logo).
+const INTRINSIC_WIDTH = 480
+const INTRINSIC_HEIGHT = 135
+
+interface Props {
+  variant?: 'default' | 'onDark'
+  class?: string
+  /** Renders the lockup inside a link back to the main site. */
+  href?: string | null
+  /** The header logo is above the fold and should not be lazy loaded. */
+  eager?: boolean
+}
+
+const {
+  variant = 'default',
+  class: className = '',
+  href = SITE.mainSite,
+  eager = false,
+} = Astro.props as Props
+
+// The white version is masked from the same artwork, so the shape is identical.
+const src = variant === 'onDark' ? '/images/kleaner-logo-white.png' : '/images/kleaner-logo.png'
+
+const Wrapper = href ? 'a' : 'div'
+const wrapperProps = href ? { href } : {}
+---
+
+<Wrapper {...wrapperProps} class={`inline-block ${className}`}>
+  <img
+    src={src}
+    width={INTRINSIC_WIDTH}
+    height={INTRINSIC_HEIGHT}
+    alt={`${SITE.name}. ${SITE.tagline}.`}
+    class="h-10 w-auto md:h-12"
+    loading={eager ? 'eager' : 'lazy'}
+    fetchpriority={eager ? 'high' : undefined}
+    decoding="async"
+  />
+</Wrapper>

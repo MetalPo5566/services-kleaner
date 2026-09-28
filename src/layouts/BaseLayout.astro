@@ -1,0 +1,273 @@
+---
+import '../styles/global.css'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import StickyCta from '../components/StickyCta.astro'
+import WhatsAppFloat from '../components/WhatsAppFloat.astro'
+import { SITE } from '../data/site'
+
+interface Props {
+  title: string
+  description: string
+  path: string
+  ogImage: string
+  schemas?: unknown[]
+  whatsappHref?: string
+  service?: string
+  showFloatingCtas?: boolean
+  /** Document language, for example en-MY or zh-Hans-MY. */
+  htmlLang?: string
+  ogLocale?: string
+  /** hreflang pairs for the EN and ZH versions of this page. */
+  alternates?: { hrefLang: string; href: string }[]
+  /** The LCP image. Exactly one per page, never more. */
+  preloadImage?: string
+  stickyBookHref?: string
+  stickyBookLabel?: string
+  langSwitch?: { label: string; href: string; hrefLang: string }
+  /**
+   * The mobile sticky bar. Pages whose only floating control is WhatsApp turn
+   * it off, which also drops the bottom padding the bar reserves on body.
+   */
+  stickyBar?: boolean
+}
+
+const {
+  title,
+  description,
+  path,
+  ogImage,
+  schemas = [],
+  whatsappHref = '',
+  service = '',
+  showFloatingCtas = true,
+  htmlLang = 'en-MY',
+  ogLocale = 'en_MY',
+  alternates = [],
+  preloadImage = '',
+  stickyBookHref = '',
+  stickyBookLabel = '',
+  langSwitch,
+  stickyBar = true,
+} = Astro.props as Props
+
+const showStickyBar = showFloatingCtas && Boolean(whatsappHref) && stickyBar
+
+const canonical = `${SITE.url}${path}`
+const ogImageUrl = `${SITE.url}${ogImage}`
+const gtmId = import.meta.env.PUBLIC_GTM_ID
+---
+
+<!doctype html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {alternates.map((entry) => <link rel="alternate" hreflang={entry.hrefLang} href={entry.href} />)}
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#FFFFFF" />
+    <meta name="color-scheme" content="light" />
+
+    {
+      /* The hero image is the LCP element, so it is the one image that is
+         preloaded. Nothing else on the page competes with it for bandwidth. */
+      preloadImage && <link rel="preload" href={preloadImage} as="image" fetchpriority="high" />
+    }
+
+    <link
+      rel="preload"
+      href="/fonts/lato-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/lato-latin-900-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${SITE.name}. ${SITE.tagline}.`} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="geo.region" content="MY-14" />
+
+    {
+      schemas.map((schema) => (
+        <script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />
+      ))
+    }
+
+    {
+      gtmId && (
+        <script
+          is:inline
+          set:html={`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`}
+        />
+      )
+    }
+
+    <script is:inline>
+      ;(function () {
+        // The header earns a shadow once the page has moved under it, so it
+        // reads as a layer rather than a painted strip. This is a shadow, not
+        // movement, so it runs whatever the motion preference.
+        var shadowOnScroll = function () {
+          var header = document.querySelector('[data-header]')
+          if (!header) return
+          var apply = function () {
+            header.classList.toggle('is-scrolled', window.scrollY > 8)
+          }
+          apply()
+          window.addEventListener('scroll', apply, { passive: true })
+        }
+
+        // Fade up on scroll. Elements are only hidden once we know the observer
+        // can run, so with JavaScript off nothing disappears. Under reduced
+        // motion the CSS drops the travel and keeps the fade.
+        var reveal = function () {
+          var targets = document.querySelectorAll('[data-reveal]')
+
+          // Siblings in a grid or list come into view together, which reads as
+          // one slab dropping in. Give each its position in the group as a
+          // delay so the row resolves in sequence. Capped so the last item in
+          // a long list never feels late.
+          var seen = new Map()
+          targets.forEach(function (target) {
+            var parent = target.parentElement
+            var index = seen.get(parent) || 0
+            seen.set(parent, index + 1)
+            if (index > 0) {
+              target.style.setProperty('--reveal-delay', Math.min(index, 6) * 60 + 'ms')
+            }
+          })
+
+          var observer = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (entry) {
+                if (!entry.isIntersecting) return
+                entry.target.classList.add('is-visible')
+                observer.unobserve(entry.target)
+              })
+            },
+            { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
+          )
+          targets.forEach(function (target) {
+            observer.observe(target)
+          })
+        }
+
+        var start = function () {
+          shadowOnScroll()
+          if (!('IntersectionObserver' in window)) return
+          document.documentElement.classList.add('reveal-ready')
+          reveal()
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', start)
+        } else {
+          start()
+        }
+
+        // If anything goes wrong, show everything rather than leave a blank page.
+        window.setTimeout(function () {
+          document.documentElement.classList.remove('reveal-ready')
+        }, 4000)
+      })()
+    </script>
+  </head>
+
+  <body class={showStickyBar ? 'has-sticky-cta' : undefined}>
+    {
+      gtmId && (
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+            height="0"
+            width="0"
+            style="display:none;visibility:hidden"
+            title="Google Tag Manager"
+          />
+        </noscript>
+      )
+    }
+
+    <Header currentPath={path} langSwitch={langSwitch} />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer />
+
+    {
+      showFloatingCtas && whatsappHref && (
+        <>
+          {showStickyBar && (
+            <StickyCta
+              whatsappHref={whatsappHref}
+              service={service}
+              bookHref={stickyBookHref}
+              bookLabel={stickyBookLabel}
+            />
+          )}
+          <WhatsAppFloat
+            whatsappHref={whatsappHref}
+            service={service}
+            onMobile={!showStickyBar}
+          />
+        </>
+      )
+    }
+
+    <script>
+      // Book Now and WhatsApp clicks are pushed to the dataLayer. The array is
+      // created here too, so the pushes are harmless when GTM is not loaded.
+      declare global {
+        interface Window {
+          dataLayer: Record<string, unknown>[]
+        }
+      }
+
+      window.dataLayer = window.dataLayer || []
+
+      document.addEventListener('click', (event) => {
+        const target = event.target as Element | null
+        const link = target?.closest?.('[data-cta]') as HTMLElement | null
+        if (!link) return
+
+        const kind = link.getAttribute('data-cta')
+        if (kind !== 'book' && kind !== 'whatsapp') return
+
+        window.dataLayer.push({
+          event: kind === 'book' ? 'cta_book' : 'cta_whatsapp',
+          page: window.location.pathname,
+          service: link.getAttribute('data-service') || '',
+          cta_text: (link.textContent || '').trim().slice(0, 60),
+        })
+      })
+    </script>
+  </body>
+</html>

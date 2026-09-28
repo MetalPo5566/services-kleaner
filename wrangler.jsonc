@@ -1,0 +1,18 @@
+// Cloudflare Workers static assets config.
+//
+// Only used if the site is deployed to Workers. Cloudflare Pages ignores this
+// file and reads public/_redirects and public/_headers instead, and Vercel
+// ignores both and reads vercel.json. All three can coexist.
+//
+// Without this file Cloudflare would try to auto-detect the framework and may
+// set the site up as a server rendered Astro app. It is a static build, so the
+// directory is stated outright.
+{
+  "name": "kleaner-services",
+  "compatibility_date": "2026-09-20",
+  "assets": {
+    "directory": "./dist/",
+    // One page, served at the root.
+    "html_handling": "auto-trailing-slash"
+  }
+}

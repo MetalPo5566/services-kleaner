@@ -1,0 +1,33 @@
+---
+import Icon from './Icon.astro'
+
+// Desktop counterpart to the mobile sticky bar.
+interface Props {
+  whatsappHref: string
+  service: string
+  /**
+   * Show it on phones too. Pages that also render the mobile sticky bar leave
+   * this off, or the two controls stack on top of each other.
+   */
+  onMobile?: boolean
+}
+const { whatsappHref, service, onMobile = false } = Astro.props as Props
+
+// On a phone it sits a thumb's width off the corner and clears the iOS home
+// indicator. On a desktop both cases land in the same place.
+const visibility = onMobile
+  ? 'flex right-5 bottom-[calc(1.25rem+env(safe-area-inset-bottom,0px))] md:right-7 md:bottom-7'
+  : 'hidden right-7 bottom-7 md:flex'
+---
+
+<a
+  href={whatsappHref}
+  class={`group fixed z-40 h-16 w-16 items-center justify-center rounded-full bg-wa text-navy shadow-[0_8px_28px_-6px_rgb(0_120_50/0.5)] transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] hover:scale-105 active:scale-95 motion-reduce:hover:scale-100 motion-reduce:active:scale-100 ${visibility}`}
+  data-cta="whatsapp"
+  data-service={service}
+  target="_blank"
+  rel="noopener"
+  aria-label="Chat with Kleaner on WhatsApp"
+>
+  <Icon name="whatsapp" size={32} />
+</a>

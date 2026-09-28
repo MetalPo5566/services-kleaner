@@ -1,0 +1,300 @@
+<title>Kleaner Upholstery Preview</title>
+<style>
+  :root {
+    --chrome: #0c121c;
+    --surface: #17212f;
+    --surface-2: #1f2c3e;
+    --line: #2a3a52;
+    --text: #e6edf6;
+    --muted: #91a4bc;
+    --accent: #0088f8;
+    --accent-ink: #ffffff;
+    --stage: #55657c;
+    --radius: 10px;
+    --ui: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+      sans-serif;
+  }
+
+  /* Device preview chrome commits to one dark look in either host theme, the
+     way any device toolbar does, so the white site inside reads correctly. */
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--chrome);
+    color: var(--text);
+    font-family: var(--ui);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+  }
+
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    padding: 12px 16px;
+    padding-top: calc(12px + env(safe-area-inset-top, 0px));
+  }
+
+  .brandline {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .brandline strong {
+    font-size: 14px;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+  }
+
+  .brandline span {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .group {
+    display: flex;
+    gap: 2px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--chrome);
+    padding: 3px;
+  }
+
+  .group button {
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 12px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .group button:hover {
+    color: var(--text);
+  }
+
+  .group button[aria-pressed="true"] {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .group button:focus-visible,
+  .openlink:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .openlink {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 12px;
+    text-decoration: none;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .openlink:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .stage {
+    display: flex;
+    overflow: hidden;
+    flex: 1;
+    justify-content: center;
+    background: var(--stage);
+    padding: 16px;
+  }
+
+  .holder {
+    transform-origin: top center;
+  }
+
+  iframe {
+    display: block;
+    border: 0;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0 10px 40px rgb(0 0 0 / 0.35);
+  }
+
+  .note {
+    border-top: 1px solid var(--line);
+    background: var(--surface-2);
+    color: var(--muted);
+    font-size: 12.5px;
+    line-height: 1.5;
+    padding: 10px 16px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .note b {
+    color: var(--text);
+    font-weight: 650;
+  }
+
+  .swatch {
+    display: inline-block;
+    border-radius: 3px;
+    background: #ffd88a;
+    height: 9px;
+    vertical-align: baseline;
+    width: 9px;
+  }
+
+  @media (max-width: 620px) {
+    .bar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .controls {
+      justify-content: space-between;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition-duration: 0.001ms !important;
+    }
+  }
+</style>
+
+<div class="app">
+  <header class="bar">
+    <span class="brandline">
+      <strong>Kleaner services hub</strong>
+      <span>Pre-launch preview of services.kleaner.my</span>
+    </span>
+
+    <div class="controls">
+      
+      <div class="group" id="widths" role="group" aria-label="Viewport width">
+        <button type="button" id="w-390" data-width="390" aria-pressed="false">390</button>
+        <button type="button" id="w-768" data-width="768" aria-pressed="false">768</button>
+        <button type="button" id="w-1440" data-width="1440" aria-pressed="true">1440</button>
+        <button type="button" id="w-fit" data-width="fit" aria-pressed="false">Fit</button>
+      </div>
+
+      <a class="openlink" id="openfull" href="index.html" target="_blank" rel="noopener">
+        Open full tab
+      </a>
+    </div>
+  </header>
+
+  <div class="stage" id="stage">
+    <div class="holder" id="holder">
+      <iframe
+        id="frame"
+        src="index.html"
+        title="Kleaner services hub preview"
+        loading="eager"
+      ></iframe>
+    </div>
+  </div>
+
+  <p class="note">
+    This is the built site, not the live one. <b>Nothing here is published to kleaner.my yet.</b>
+    The amber <span class="swatch"></span> boxes inside four FAQ answers on each service page are
+    the eight open copy questions listed in <b>content/OWNER-CONFIRM.md</b>, and are meant to be
+    answered and removed before launch. Photos are brand gradient placeholders awaiting real job
+    photos. Book Now and WhatsApp buttons point at the real booking form and chat line.
+  </p>
+</div>
+
+<script>
+  ;(function () {
+    var stage = document.getElementById('stage')
+    var holder = document.getElementById('holder')
+    var frame = document.getElementById('frame')
+    var openFull = document.getElementById('openfull')
+    var pageGroup = document.getElementById('pages')
+    var widthGroup = document.getElementById('widths')
+
+    var currentPage = 'index.html'
+    var currentWidth = 1440
+
+    function paint() {
+      var available = stage.clientWidth - 32
+      var height = stage.clientHeight - 32
+      var width = currentWidth === 'fit' ? available : currentWidth
+      var scale = Math.min(1, available / width)
+
+      frame.style.width = width + 'px'
+      // Undo the scale on the height so the frame still fills the stage.
+      frame.style.height = height / scale + 'px'
+      holder.style.transform = scale === 1 ? 'none' : 'scale(' + scale + ')'
+    }
+
+    function select(group, match) {
+      var buttons = group.querySelectorAll('button')
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].setAttribute('aria-pressed', String(buttons[i] === match))
+      }
+    }
+
+    pageGroup.addEventListener('click', function (event) {
+      var button = event.target.closest('button')
+      if (!button) return
+      currentPage = button.getAttribute('data-page')
+      frame.src = currentPage
+      openFull.href = currentPage
+      select(pageGroup, button)
+    })
+
+    widthGroup.addEventListener('click', function (event) {
+      var button = event.target.closest('button')
+      if (!button) return
+      var value = button.getAttribute('data-width')
+      currentWidth = value === 'fit' ? 'fit' : Number(value)
+      select(widthGroup, button)
+      paint()
+    })
+
+    if (window.ResizeObserver) {
+      new ResizeObserver(paint).observe(stage)
+    }
+    window.addEventListener('resize', paint)
+
+    // Narrow screens start on the phone width, which is the useful one there.
+    if (stage.clientWidth < 900) {
+      currentWidth = 390
+      select(widthGroup, document.getElementById('w-390'))
+    }
+
+    paint()
+  })()
+</script>

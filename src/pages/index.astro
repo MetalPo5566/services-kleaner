@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Section from '../components/Section.astro'
+import Button from '../components/Button.astro'
+import Icon from '../components/Icon.astro'
+import ConfirmNote from '../components/ConfirmNote.astro'
+import ServiceGrid from '../components/ServiceGrid.astro'
+import { SERVICES } from '../data/services'
+import { SERVICES_EN as copy } from '../data/copy/services.en'
+import { SITE, ABSOLUTE_PAGES, whatsappLink } from '../data/site'
+import { localBusinessSchema, itemListSchema } from '../lib/schema'
+
+// The all services hub. One job: the visitor picks a service and books it.
+//
+// No raster image on this page at all. The cards carry inline SVG icons from
+// the shared set, so there is nothing to lazy load, nothing to size, and no
+// layout shift by construction.
+const SERVICE = 'services-hub'
+
+const schemas = [
+  localBusinessSchema(`${SITE.url}${copy.meta.ogImage}`),
+  itemListSchema({
+    name: 'Kleaner cleaning services',
+    url: ABSOLUTE_PAGES.services,
+    items: SERVICES.map((service) => ({
+      name: service.name,
+      bookingUrl: service.bookingUrl,
+      promise: service.promise,
+    })),
+  }),
+]
+
+const bookingUrlFor = (slug: string) =>
+  SERVICES.find((service) => service.slug === slug)?.bookingUrl ?? SITE.bookingUrl
+---
+
+<BaseLayout
+  title={copy.meta.title}
+  description={copy.meta.description}
+  path={copy.path}
+  ogImage={copy.meta.ogImage}
+  schemas={schemas}
+  whatsappHref={whatsappLink(copy.hero.waMessage)}
+  service={SERVICE}
+  htmlLang={copy.htmlLang}
+  ogLocale={copy.ogLocale}
+  stickyBar={false}
+>
+  {/* 1. Hero. Flat brand tint, no gradient. */}
+  <section class="border-b border-brand-line bg-brand-tint">
+    <div class="wrap py-12 text-center md:py-20">
+      <div class="mx-auto max-w-3xl" data-reveal>
+        <h1 class="text-[32px] font-black leading-[1.1] md:text-[52px]">{copy.hero.h1}</h1>
+        <p class="mx-auto mt-5 max-w-xl text-[17px] leading-relaxed md:text-[20px]">
+          {copy.hero.sub}
+        </p>
+        <div class="mt-8 flex justify-center">
+          <Button href="#services" icon="arrow" external={false}>{copy.hero.cta}</Button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* 2. Trust strip. */}
+  <section class="border-b border-brand-line bg-white py-8 md:py-10">
+    <div class="wrap">
+      <ul class="grid grid-cols-2 gap-x-5 gap-y-5 md:grid-cols-4">
+        {
+          copy.trust.items.map((item) => (
+            <li class="flex items-start gap-3" data-reveal>
+              <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-circle text-brand">
+                <Icon name={item.icon} size={21} />
+              </span>
+              <span class="text-[14px] font-bold leading-snug text-navy md:text-[15px]">
+                {item.text}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+      <ConfirmNote class="mt-6">{copy.trust.confirm}</ConfirmNote>
+    </div>
+  </section>
+
+  {/* 3. The grid. */}
+  <Section id="services" eyebrow={copy.grid.eyebrow} title={copy.grid.title}>
+    <ServiceGrid copy={copy} />
+  </Section>
+
+  {/* 4. Not sure which one. */}
+  <Section
+    eyebrow={copy.chooser.eyebrow}
+    title={copy.chooser.title}
+    lead={copy.chooser.lead}
+    tint
+  >
+    <ul class="grid gap-4 md:grid-cols-3 md:gap-6">
+      {
+        copy.chooser.questions.map((entry) => (
+          <li data-reveal>
+            <a
+              href={bookingUrlFor(entry.slug)}
+              class="lift flex h-full flex-col rounded-card border border-brand-line bg-white p-6 shadow-soft"
+              data-cta="book"
+              data-service={entry.slug}
+              rel="noopener"
+            >
+              <p class="text-[18px] font-black text-navy md:text-[20px]">{entry.question}</p>
+              <p class="mt-3 grow text-[16px] leading-relaxed">{entry.answer}</p>
+              <span class="mt-5 inline-flex items-center gap-2 text-[17px] font-bold text-brand-ink">
+                {copy.grid.book}
+                <Icon name="arrow" size={19} />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mt-8 text-center" data-reveal>
+      <p class="text-[16px] leading-relaxed md:text-[17px]">{copy.chooser.whatsAppLead}</p>
+      <div class="mt-5 flex justify-center">
+        <Button
+          href={whatsappLink(copy.chooser.waMessage)}
+          variant="whatsapp"
+          icon="whatsapp"
+          cta="whatsapp"
+          service={SERVICE}
+        >
+          {copy.chooser.whatsApp}
+        </Button>
+      </div>
+    </div>
+  </Section>
+
+  {/* 5. Guarantee. */}
+  <Section eyebrow={copy.guarantee.eyebrow} title={copy.guarantee.title}>
+    <div
+      class="mx-auto flex max-w-3xl flex-col items-center rounded-card border border-brand-line bg-white p-7 text-center shadow-soft md:p-10"
+      data-reveal
+    >
+      <span class="flex h-14 w-14 items-center justify-center rounded-full bg-brand-circle text-brand">
+        <Icon name="guarantee" size={28} />
+      </span>
+      <p class="mt-5 text-[17px] leading-relaxed md:text-[19px]">{copy.guarantee.text}</p>
+    </div>
+  </Section>
+
+  {/* 6. Voucher. */}
+  <section class="bg-white pb-14 md:pb-20">
+    <div class="wrap">
+      <div
+        class="mx-auto max-w-3xl rounded-card border-2 border-dashed border-brand bg-brand-tint p-7 text-center md:p-9"
+        data-reveal
+      >
+        <p class="text-[22px] font-black text-navy md:text-[28px]">{copy.voucher.headline}</p>
+        <p class="mt-4">
+          <span
+            class="inline-block rounded-xl bg-white px-5 py-3 text-[20px] font-black tracking-[0.12em] text-brand-ink md:text-[24px]"
+          >
+            {copy.voucher.code}
+          </span>
+        </p>
+        <p class="mt-4 text-[15px]">{copy.voucher.terms}</p>
+        <div class="mt-6 flex justify-center">
+          <Button href={SITE.bookingUrl} icon="calendar" cta="book" service="voucher">
+            {copy.voucher.cta}
+          </Button>
+        </div>
+      </div>
+      <ConfirmNote class="mx-auto mt-4 max-w-3xl">{copy.voucher.confirm}</ConfirmNote>
+    </div>
+  </section>
+</BaseLayout>

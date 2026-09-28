@@ -1,0 +1,169 @@
+{
+  "results": [
+    {
+      "name": "no layout shift on load",
+      "pass": true,
+      "detail": "cls=0.0000"
+    },
+    {
+      "name": "dropdown opens on click",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "dropdown sets aria-expanded",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "dropdown closes on Escape",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "dropdown opens from the keyboard",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "dropdown routes each service to its own site",
+      "pass": true,
+      "detail": "12 links"
+    },
+    {
+      "name": "mobile menu opens on tap",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "services expand inline on tap",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "mobile menu closes on tap",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every service is on the page as a card",
+      "pass": true,
+      "detail": "6 cards"
+    },
+    {
+      "name": "every card has a slug and an href",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every card is tagged as a booking CTA",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every card links to a known Kleaner host",
+      "pass": true,
+      "detail": "https://kleaner.my/booknow/ | https://kleaner.my/booknow/upholstery-cleaning | https://kleaner.my/booknow/ | https://kleaner.my/booknow/ | https://movers.kleaner.my | https://kleaner.my/booknow/"
+    },
+    {
+      "name": "no card nests an interactive element inside the link",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every card names its service in an H2",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "cards open in the same tab",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "grid is 3 columns at 1280",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sofa card quotes from RM88",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "a card click reports its own slug",
+      "pass": true,
+      "detail": "{\"event\":\"cta_book\",\"page\":\"/\",\"service\":\"formaldehyde-removal\",\"cta_text\":\"New    Formaldehyde Removal & Air Sterilisation  Formaldehyd\"}"
+    },
+    {
+      "name": "the event reports the page",
+      "pass": true,
+      "detail": "\"/\""
+    },
+    {
+      "name": "grid is 2 columns at 390",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "WhatsApp button is visible on a phone",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "WhatsApp button sits bottom right",
+      "pass": true,
+      "detail": "{\"right\":20,\"bottom\":20}"
+    },
+    {
+      "name": "no dead space where a sticky bar would be",
+      "pass": true,
+      "detail": "0px"
+    },
+    {
+      "name": "no sticky bar anchor on the page",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the voucher CTA reaches the booking form",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "pushes cta_whatsapp with page and service",
+      "pass": true,
+      "detail": "{\"event\":\"cta_whatsapp\",\"page\":\"/\",\"service\":\"services-hub\",\"cta_text\":\"Ask on WhatsApp\"}"
+    },
+    {
+      "name": "reduced motion leaves nothing hidden",
+      "pass": true,
+      "detail": "0 hidden"
+    },
+    {
+      "name": "reduced motion drops the travel",
+      "pass": true,
+      "detail": "0 transformed"
+    },
+    {
+      "name": "every card is still reachable under reduced motion",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "every card is there without JavaScript",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "the first card is still a link",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "nothing is hidden without JavaScript",
+      "pass": true,
+      "detail": "0 hidden"
+    }
+  ]
+}

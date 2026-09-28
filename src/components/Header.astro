@@ -1,0 +1,282 @@
+---
+import Logo from './Logo.astro'
+import Icon from './Icon.astro'
+import { HEADER_NAV, SITE } from '../data/site'
+
+// Replicates the live kleaner.my header. Every link is absolute so these pages
+// plug straight into the main site.
+interface Props {
+  currentPath?: string
+  /** Switches between the English and Chinese versions of this page. */
+  langSwitch?: { label: string; href: string; hrefLang: string }
+}
+const { currentPath = '', langSwitch } = Astro.props as Props
+
+const isCurrent = (href: string) => href.startsWith(SITE.url) && href.endsWith(currentPath) && currentPath !== ''
+---
+
+<a
+  href="#main"
+  class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-brand-dark focus:px-5 focus:py-3 focus:font-bold focus:text-white"
+>
+  Skip to content
+</a>
+
+<header
+  class="sticky top-0 z-50 border-b border-brand-line bg-white transition-shadow duration-300 [&.is-scrolled]:shadow-[0_1px_0_rgb(213_233_251),0_8px_24px_-16px_rgb(17_38_60/0.28)]"
+  data-header
+>
+  <div class="wrap flex h-[72px] items-center justify-between gap-5">
+    <Logo class="shrink-0" eager />
+
+    <nav class="hidden items-center gap-1 xl:flex" aria-label="Main">
+      {
+        HEADER_NAV.map((item) =>
+          item.children ? (
+            <div class="relative" data-dropdown>
+              <button
+                type="button"
+                class="flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-2.5 text-[15px] font-bold text-navy transition-colors hover:bg-brand-tint"
+                aria-expanded="false"
+                aria-controls="services-menu"
+                data-dropdown-trigger
+              >
+                {item.label}
+                <Icon name="chevron" size={16} class="transition-transform duration-200" data-chevron />
+              </button>
+              <div
+                id="services-menu"
+                class="absolute left-1/2 top-full z-50 hidden w-[34rem] -translate-x-1/2 pt-3"
+                data-dropdown-panel
+              >
+                <ul class="grid grid-cols-2 gap-1 rounded-3xl border border-brand-line bg-white p-3 shadow-[0_2px_4px_rgb(17_38_60/0.05),0_18px_40px_-18px_rgb(17_38_60/0.22)]">
+                  {item.children.map((child) => (
+                    <li>
+                      <a
+                        href={child.href}
+                        class="block rounded-2xl px-4 py-3 text-[15px] font-bold text-navy transition-colors hover:bg-brand-tint hover:text-brand-ink"
+                        aria-current={isCurrent(child.href) ? 'page' : undefined}
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ) : (
+            <a
+              href={item.href}
+              class="whitespace-nowrap rounded-full px-3 py-2.5 text-[15px] font-bold text-navy transition-colors hover:bg-brand-tint"
+            >
+              {item.label}
+            </a>
+          )
+        )
+      }
+    </nav>
+
+    <div class="flex items-center gap-2">
+      {
+        langSwitch && (
+          <a
+            href={langSwitch.href}
+            hreflang={langSwitch.hrefLang}
+            lang={langSwitch.hrefLang}
+            class="press hidden items-center whitespace-nowrap rounded-full px-3.5 py-2.5 text-[15px] font-bold text-navy ring-2 ring-brand-line transition-colors hover:bg-brand-tint sm:inline-flex"
+          >
+            {langSwitch.label}
+          </a>
+        )
+      }
+      <a
+        href={`tel:${SITE.phone}`}
+        class="press hidden items-center gap-2 whitespace-nowrap rounded-full bg-brand-dark px-5 py-3 text-[15px] font-bold text-white transition-colors hover:bg-[#005FB4] sm:inline-flex"
+      >
+        <Icon name="phone" size={18} />
+        <span class="hidden md:inline">Call Us:</span>
+        <span>{SITE.phoneDisplay}</span>
+      </a>
+
+      <button
+        type="button"
+        class="press inline-flex h-12 w-12 items-center justify-center rounded-full text-navy transition-colors hover:bg-brand-tint xl:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open menu"
+        data-menu-trigger
+      >
+        <Icon name="menu" size={26} data-menu-open />
+        <Icon name="close" size={26} class="hidden" data-menu-close />
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="mobile-menu"
+    class="hidden max-h-[calc(100dvh-72px)] overflow-y-auto overscroll-contain border-t border-brand-line bg-white xl:hidden"
+    data-menu-panel
+  >
+    <nav class="wrap py-4" aria-label="Mobile">
+      <ul class="flex flex-col gap-1">
+        {
+          HEADER_NAV.map((item) =>
+            item.children ? (
+              <li>
+                <button
+                  type="button"
+                  class="flex w-full items-center justify-between rounded-2xl px-4 py-3.5 text-left text-[17px] font-bold text-navy transition-colors hover:bg-brand-tint"
+                  aria-expanded="false"
+                  aria-controls="mobile-services"
+                  data-sub-trigger
+                >
+                  {item.label}
+                  <Icon name="chevron" size={20} class="transition-transform duration-200" data-sub-chevron />
+                </button>
+                <ul id="mobile-services" class="hidden pb-2 pl-3" data-sub-panel>
+                  {item.children.map((child) => (
+                    <li>
+                      <a
+                        href={child.href}
+                        class="block rounded-2xl px-4 py-3 text-[16px] font-bold text-ink transition-colors hover:bg-brand-tint hover:text-brand-ink"
+                        aria-current={isCurrent(child.href) ? 'page' : undefined}
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ) : (
+              <li>
+                <a
+                  href={item.href}
+                  class="block rounded-2xl px-4 py-3.5 text-[17px] font-bold text-navy transition-colors hover:bg-brand-tint"
+                >
+                  {item.label}
+                </a>
+              </li>
+            )
+          )
+        }
+        {
+          langSwitch && (
+            <li class="pt-2 sm:hidden">
+              <a
+                href={langSwitch.href}
+                hreflang={langSwitch.hrefLang}
+                lang={langSwitch.hrefLang}
+                class="flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-[17px] font-bold text-navy ring-2 ring-brand-line"
+              >
+                {langSwitch.label}
+              </a>
+            </li>
+          )
+        }
+        <li class="pt-2 sm:hidden">
+          <a
+            href={`tel:${SITE.phone}`}
+            class="flex items-center justify-center gap-2 rounded-full bg-brand-dark px-5 py-3.5 text-[17px] font-bold text-white"
+          >
+            <Icon name="phone" size={20} />
+            Call Us: {SITE.phoneDisplay}
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Desktop dropdown: click and keyboard driven so it works on touch devices,
+  // where a hover only menu needs two taps. Hover is layered on top for mice.
+  const header = document.querySelector('[data-header]') as HTMLElement | null
+  if (header) {
+    const dropdown = header.querySelector('[data-dropdown]') as HTMLElement | null
+    const trigger = header.querySelector('[data-dropdown-trigger]') as HTMLButtonElement | null
+    const panel = header.querySelector('[data-dropdown-panel]') as HTMLElement | null
+    const chevron = trigger?.querySelector('[data-chevron]') as SVGElement | null
+
+    const setDropdown = (open: boolean) => {
+      if (!trigger || !panel) return
+      panel.classList.toggle('hidden', !open)
+      trigger.setAttribute('aria-expanded', String(open))
+      chevron?.classList.toggle('rotate-180', open)
+    }
+
+    const hoverCapable = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+
+    if (trigger && panel && dropdown) {
+      trigger.addEventListener('click', (event) => {
+        // detail 0 means the click came from the keyboard, where toggling is
+        // what people expect. A pointer click on a hover device only opens,
+        // because hover has usually opened it already and closing on click
+        // would make the menu flicker shut.
+        const fromKeyboard = (event as MouseEvent).detail === 0
+        if (hoverCapable && !fromKeyboard) {
+          setDropdown(true)
+          return
+        }
+        setDropdown(trigger.getAttribute('aria-expanded') !== 'true')
+      })
+
+      // Mice get hover, touch devices do not, which keeps the first tap useful.
+      if (hoverCapable) {
+        let closeTimer: number | undefined
+        const openNow = () => {
+          window.clearTimeout(closeTimer)
+          setDropdown(true)
+        }
+        const closeSoon = () => {
+          closeTimer = window.setTimeout(() => setDropdown(false), 140)
+        }
+        dropdown.addEventListener('mouseenter', openNow)
+        dropdown.addEventListener('mouseleave', closeSoon)
+      }
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') return
+        if (trigger.getAttribute('aria-expanded') === 'true') {
+          setDropdown(false)
+          trigger.focus()
+        }
+      })
+
+      document.addEventListener('click', (event) => {
+        if (!dropdown.contains(event.target as Node)) setDropdown(false)
+      })
+
+      // Tabbing out of the menu closes it.
+      dropdown.addEventListener('focusout', (event) => {
+        if (!dropdown.contains(event.relatedTarget as Node)) setDropdown(false)
+      })
+    }
+
+    // Mobile panel.
+    const menuTrigger = header.querySelector('[data-menu-trigger]') as HTMLButtonElement | null
+    const menuPanel = header.querySelector('[data-menu-panel]') as HTMLElement | null
+    const iconOpen = header.querySelector('[data-menu-open]') as SVGElement | null
+    const iconClose = header.querySelector('[data-menu-close]') as SVGElement | null
+
+    menuTrigger?.addEventListener('click', () => {
+      const open = menuTrigger.getAttribute('aria-expanded') !== 'true'
+      menuPanel?.classList.toggle('hidden', !open)
+      menuTrigger.setAttribute('aria-expanded', String(open))
+      menuTrigger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu')
+      iconOpen?.classList.toggle('hidden', open)
+      iconClose?.classList.toggle('hidden', !open)
+    })
+
+    // Services group inside the mobile panel expands in place.
+    const subTrigger = header.querySelector('[data-sub-trigger]') as HTMLButtonElement | null
+    const subPanel = header.querySelector('[data-sub-panel]') as HTMLElement | null
+    const subChevron = header.querySelector('[data-sub-chevron]') as SVGElement | null
+
+    subTrigger?.addEventListener('click', () => {
+      const open = subTrigger.getAttribute('aria-expanded') !== 'true'
+      subPanel?.classList.toggle('hidden', !open)
+      subTrigger.setAttribute('aria-expanded', String(open))
+      subChevron?.classList.toggle('rotate-180', open)
+    })
+  }
+</script>

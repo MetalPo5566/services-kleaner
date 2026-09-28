@@ -1,0 +1,5 @@
+# Cloudflare Pages. Vercel ignores this file and reads vercel.json instead.
+https://www.services.kleaner.my/*  https://services.kleaner.my/:splat  301
+/index.html                        /                                    301
+/services                          /                                    301
+/cleaning-services                 /                                    301

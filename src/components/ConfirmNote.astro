@@ -1,0 +1,24 @@
+---
+// One visible, deliberately loud note for anything that is not a verified fact.
+// scripts/gen-owner-confirm.mjs collects every one of these into
+// content/OWNER-CONFIRM.md, and scripts/verify.mjs checks that none of them
+// ever reaches the structured data.
+interface Props {
+  /** Optional label for the thing being confirmed, shown before the ask. */
+  subject?: string
+  /** Tighter type and padding, for a note that sits inside a card. */
+  compact?: boolean
+  class?: string
+}
+const { subject, compact = false, class: className = '' } = Astro.props as Props
+
+const size = compact ? 'px-3 py-2 text-[13px]' : 'px-4 py-3 text-[15px]'
+---
+
+<p
+  class={`rounded-2xl border border-[#F0C36D] bg-[#FFF8E8] leading-relaxed text-[#6B4A00] ${size} ${className}`}
+  data-confirm
+>
+  <strong class="font-black">[OWNER TO CONFIRM]</strong>{subject && <> {subject}:</>}
+  <slot />
+</p>

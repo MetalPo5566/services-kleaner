@@ -1,0 +1,49 @@
+---
+import Icon from './Icon.astro'
+import { SITE } from '../data/site'
+
+// Mobile only bar, always in one thumb reach. The matching bottom padding on
+// body (see global.css) keeps it clear of the last line of the footer, and the
+// safe area inset keeps it above the iOS Safari home indicator.
+interface Props {
+  whatsappHref: string
+  service: string
+  /** Defaults to the booking form. This site points it at the quote builder. */
+  bookHref?: string
+  bookLabel?: string
+}
+const {
+  whatsappHref,
+  service,
+  bookHref = SITE.bookingUrl,
+  bookLabel = 'Book Now',
+} = Astro.props as Props
+---
+
+<div
+  class="fixed inset-x-0 bottom-0 z-40 border-t border-brand-line bg-white/95 px-3 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
+>
+  <div class="flex items-center gap-2.5 py-2.5">
+    <a
+      href={bookHref}
+      class="press flex flex-1 items-center justify-center gap-2 rounded-full bg-brand-dark px-4 py-3.5 text-[17px] font-bold text-white"
+      data-cta="book"
+      data-service={service}
+      rel="noopener"
+    >
+      <Icon name="calendar" size={20} />
+      {bookLabel}
+    </a>
+    <a
+      href={whatsappHref}
+      class="press flex flex-1 items-center justify-center gap-2 rounded-full bg-wa px-4 py-3.5 text-[17px] font-bold text-navy"
+      data-cta="whatsapp"
+      data-service={service}
+      target="_blank"
+      rel="noopener"
+    >
+      <Icon name="whatsapp" size={20} />
+      WhatsApp
+    </a>
+  </div>
+</div>

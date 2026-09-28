@@ -1,0 +1,58 @@
+---
+import Logo from './Logo.astro'
+import Icon from './Icon.astro'
+import { FOOTER_NAV, SITE } from '../data/site'
+
+const year = 2026
+---
+
+<footer class="bg-navy text-white">
+  <div class="wrap py-14 md:py-16">
+    <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.1fr_repeat(3,1fr)] lg:gap-8">
+      <div>
+        <Logo variant="onDark" />
+        <p class="mt-5 max-w-xs text-[15px] leading-relaxed text-white/75">
+          Home and office cleaning across {SITE.areaServed}. Vetted, trained and background checked
+          providers.
+        </p>
+        <a
+          href={`tel:${SITE.phone}`}
+          class="mt-6 inline-flex items-center gap-2.5 rounded-full bg-white px-5 py-3 text-[16px] font-bold text-navy transition-colors hover:bg-brand-tint"
+        >
+          <Icon name="phone" size={19} />
+          Give Us A Call {SITE.phoneDisplay}
+        </a>
+        <p class="mt-4 text-[14px] text-white/70">{SITE.hours}</p>
+      </div>
+
+      {
+        FOOTER_NAV.map((group) => (
+          <nav aria-label={group.title}>
+            <h2 class="text-[13px] font-bold uppercase tracking-[0.14em] text-[#8FCBFF]">
+              {group.title}
+            </h2>
+            <ul class="mt-4 flex flex-col gap-2.5">
+              {group.links.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    class="text-[15px] text-white/80 underline-offset-4 transition-colors hover:text-white hover:underline"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+
+    <div
+      class="mt-12 flex flex-col gap-3 border-t border-white/15 pt-7 text-[14px] text-white/70 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>Copyright {year} &copy; Kleaner.my</p>
+      <p>{SITE.tagline}</p>
+    </div>
+  </div>
+</footer>

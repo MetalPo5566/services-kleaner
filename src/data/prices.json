@@ -1,0 +1,66 @@
+{
+  "currency": "MYR",
+  "prefix": "RM",
+  "pulledOn": "2026-09-20",
+  "source": "Owner supplied rates for post-renovation cleaning, plus the kleaner.my online booking form for the upholstery add-ons",
+  "note": "Prices match our online booking form.",
+  "groups": {
+    "postreno": {
+      "label": "Post-renovation cleaning",
+      "unit": "per sqft of built-up area",
+      "icon": "home",
+      "items": [{ "name": "Built-up area", "price": 1.2 }]
+    },
+    "treatment": {
+      "label": "Air treatment",
+      "unit": "per job",
+      "icon": "wind",
+      "items": [
+        { "name": "Formaldehyde Filter", "price": 280 },
+        { "name": "Air & Surface Sterilisation", "price": 300 }
+      ]
+    },
+    "sofa": {
+      "label": "Sofa",
+      "unit": "per sofa",
+      "icon": "sofa",
+      "items": [
+        { "name": "1 Seater", "price": 88 },
+        { "name": "2 Seater", "price": 138 },
+        { "name": "3 Seater", "price": 168 },
+        { "name": "L-Shaped", "price": 198 }
+      ]
+    },
+    "mattress": {
+      "label": "Mattress",
+      "unit": "per mattress",
+      "icon": "mattress",
+      "items": [
+        { "name": "Single", "price": 108 },
+        { "name": "Queen", "price": 148 },
+        { "name": "King", "price": 168 },
+        { "name": "Super King", "price": 188 }
+      ]
+    },
+    "carpet": {
+      "label": "Carpet",
+      "unit": "per carpet",
+      "icon": "carpet",
+      "items": [
+        { "name": "120 x 180 cm", "price": 80 },
+        { "name": "160 x 210 cm", "price": 110 },
+        { "name": "180 x 260 cm", "price": 130 },
+        { "name": "200 x 300 cm", "price": 160 }
+      ]
+    },
+    "curtain": {
+      "label": "Curtain",
+      "unit": "per piece",
+      "icon": "curtain",
+      "items": [
+        { "name": "Curtain", "price": 68 },
+        { "name": "Sheer", "price": 30 }
+      ]
+    }
+  }
+}

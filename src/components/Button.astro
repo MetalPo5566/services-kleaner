@@ -1,0 +1,53 @@
+---
+import Icon from './Icon.astro'
+import type { IconName } from './Icon.astro'
+
+// Pill buttons, 700 weight, 18px, generous padding.
+// primary  = brand blue filled, white text (brand-dark carries AA contrast)
+// whatsapp = exact brand green filled with navy text (white on that green is
+//            only 2.1:1, navy is 7.2:1, so the brand colour stays as published)
+interface Props {
+  href: string
+  variant?: 'primary' | 'whatsapp' | 'ghost' | 'onNavy'
+  icon?: IconName | null
+  class?: string
+  /** Sends a dataLayer event: 'book' or 'whatsapp'. */
+  cta?: 'book' | 'whatsapp' | null
+  service?: string
+  wide?: boolean
+  external?: boolean
+}
+
+const {
+  href,
+  variant = 'primary',
+  icon = null,
+  class: className = '',
+  cta = null,
+  service = '',
+  wide = false,
+  external = true,
+} = Astro.props as Props
+
+const base =
+  'press inline-flex items-center justify-center gap-2.5 rounded-full font-bold text-[18px] leading-none px-7 py-4 transition-colors duration-200 select-none cursor-pointer'
+
+const variants: Record<string, string> = {
+  primary: 'bg-brand-dark text-white hover:bg-[#005FB4] active:bg-[#005099]',
+  whatsapp: 'bg-wa text-navy hover:bg-[#00b94d] active:bg-[#00a745]',
+  ghost: 'bg-white text-navy ring-2 ring-brand-line hover:bg-brand-tint',
+  onNavy: 'bg-white text-navy hover:bg-brand-tint',
+}
+---
+
+<a
+  href={href}
+  class={`${base} ${variants[variant]} ${wide ? 'w-full sm:w-auto' : ''} ${className}`}
+  data-cta={cta}
+  data-service={service || undefined}
+  rel={external ? 'noopener' : undefined}
+  target={external && cta === 'whatsapp' ? '_blank' : undefined}
+>
+  {icon && <Icon name={icon} size={22} class="shrink-0" />}
+  <slot />
+</a>

@@ -1,0 +1,39 @@
+---
+interface Props {
+  id?: string
+  eyebrow?: string
+  title?: string
+  lead?: string
+  tint?: boolean
+  class?: string
+  align?: 'left' | 'center'
+}
+const {
+  id,
+  eyebrow,
+  title,
+  lead,
+  tint = false,
+  class: className = '',
+  align = 'center',
+} = Astro.props as Props
+---
+
+<section id={id} class={`${tint ? 'bg-brand-tint' : 'bg-white'} py-14 md:py-20 ${className}`}>
+  <div class="wrap">
+    {
+      (eyebrow || title || lead) && (
+        <div class={`max-w-3xl ${align === 'center' ? 'mx-auto text-center' : ''}`} data-reveal>
+          {eyebrow && (
+            <p class="text-[13px] font-bold uppercase tracking-[0.16em] text-brand-ink">{eyebrow}</p>
+          )}
+          {title && <h2 class="mt-3 text-[28px] font-black md:text-[40px]">{title}</h2>}
+          {lead && <p class="mt-4 text-[17px] leading-relaxed md:text-[19px]">{lead}</p>}
+        </div>
+      )
+    }
+    <div class={eyebrow || title || lead ? 'mt-10 md:mt-14' : ''}>
+      <slot />
+    </div>
+  </div>
+</section>
