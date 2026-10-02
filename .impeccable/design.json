@@ -1,149 +1,491 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-02T23:30:00+08:00",
+  "generatedAt": "2026-10-02T12:00:00Z",
   "title": "Design System: Kleaner Services",
   "extensions": {
     "colorMeta": {
-      "tile": { "role": "primary", "displayName": "Enamel Kleaner Blue", "canonical": "#0088f8", "tonalRamp": ["#000b1e", "#04274b", "#044581", "#0e66b9", "#0389f9", "#71b2fc", "#b3d4fc", "#e4f0ff"] },
-      "brand-dark": { "role": "primary", "displayName": "Deep Counter Blue", "canonical": "#0071d1", "tonalRamp": ["#000b1d", "#02264c", "#0b457f", "#0366bc", "#2c8aec", "#74b2f9", "#b2d4fd", "#e4f0fe"] },
-      "brand-ink": { "role": "primary", "displayName": "Link Blue", "canonical": "#006abf" },
-      "brand-tint": { "role": "neutral", "displayName": "Chrome Tint", "canonical": "#eaf5ff" },
-      "brand-line": { "role": "neutral", "displayName": "Chrome Hairline", "canonical": "#d5e9fb" },
-      "sun": { "role": "secondary", "displayName": "Lit Sun Yellow", "canonical": "#fac93f", "tonalRamp": ["#100a00", "#312502", "#55420b", "#7e6204", "#a78419", "#d3a826", "#fbca41", "#feedc3"] },
-      "sun-dark": { "role": "secondary", "displayName": "Pressed Sun", "canonical": "#edb91f", "tonalRamp": ["#110a00", "#322401", "#564208", "#7e6214", "#a98312", "#d6a71d", "#fec93a", "#feedc6"] },
-      "navy": { "role": "neutral", "displayName": "Board Navy", "canonical": "#0b2747", "tonalRamp": ["#000b1f", "#0b2747", "#2a4669", "#4a688d", "#6c8cb2", "#90b1d9", "#b3d4fe", "#e4f0fe"] },
-      "ink": { "role": "neutral", "displayName": "Slate Ink", "canonical": "#3e5470", "tonalRamp": ["#000b1f", "#132740", "#314662", "#516885", "#738baa", "#97b0d0", "#bad3f4", "#e4f0fe"] },
-      "paper": { "role": "neutral", "displayName": "Counter Paper", "canonical": "#f4f7fa", "tonalRamp": ["#090b0d", "#242729", "#434548", "#646669", "#87898c", "#abaeb1", "#ced1d4", "#eceff2"] },
-      "white": { "role": "neutral", "displayName": "White Ground", "canonical": "#ffffff" },
-      "wa": { "role": "tertiary", "displayName": "WhatsApp Green", "canonical": "#00cd56", "tonalRamp": ["#001002", "#042f11", "#055420", "#117b34", "#04a544", "#10d059", "#52f57d", "#c8ffcf"] }
+      "brand": {
+        "role": "primary",
+        "displayName": "Kleaner Blue",
+        "canonical": "#0088f8",
+        "tonalRamp": [
+          "#000a25",
+          "#00244b",
+          "#074076",
+          "#115ea9",
+          "#0b7de2",
+          "#53a1f9",
+          "#9ac8fe",
+          "#e4f0ff"
+        ]
+      },
+      "brand-dark": {
+        "role": "primary",
+        "displayName": "Button Blue",
+        "canonical": "#0071d1",
+        "tonalRamp": [
+          "#000a24",
+          "#002449",
+          "#034079",
+          "#085dac",
+          "#1b7edf",
+          "#4fa1fd",
+          "#9cc8fc",
+          "#e4f0fe"
+        ]
+      },
+      "brand-hover": {
+        "role": "primary",
+        "displayName": "Pressed Blue",
+        "canonical": "#005fb4",
+        "tonalRamp": [
+          "#000926",
+          "#00234c",
+          "#073f78",
+          "#115dab",
+          "#2f7ed6",
+          "#53a1fb",
+          "#9dc8fb",
+          "#e4f0fe"
+        ]
+      },
+      "brand-ink": {
+        "role": "primary",
+        "displayName": "Link Blue",
+        "canonical": "#006abf",
+        "tonalRamp": [
+          "#000a24",
+          "#002449",
+          "#004078",
+          "#005eab",
+          "#267fd6",
+          "#4ca2fb",
+          "#9bc8fb",
+          "#e4f0fe"
+        ]
+      },
+      "page": {
+        "role": "neutral",
+        "displayName": "Cool Paper",
+        "canonical": "#f7f9fc",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#232426",
+          "#3e4042",
+          "#5c5e60",
+          "#7c7d80",
+          "#9d9ea1",
+          "#c2c4c7",
+          "#edeff1"
+        ]
+      },
+      "raised": {
+        "role": "neutral",
+        "displayName": "Raised White",
+        "canonical": "#fdfeff",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#232425",
+          "#3f4041",
+          "#5d5e5e",
+          "#7c7d7e",
+          "#9d9e9f",
+          "#c3c4c5",
+          "#edeeef"
+        ]
+      },
+      "tint": {
+        "role": "neutral",
+        "displayName": "Mist Tint",
+        "canonical": "#eef3f9",
+        "tonalRamp": [
+          "#080b0f",
+          "#212429",
+          "#3c4045",
+          "#5a5e63",
+          "#797e83",
+          "#9a9fa4",
+          "#c0c5ca",
+          "#eaeff5"
+        ]
+      },
+      "pill": {
+        "role": "neutral",
+        "displayName": "Pill Mist",
+        "canonical": "#e6edf5",
+        "tonalRamp": [
+          "#070c11",
+          "#1f252a",
+          "#3b4047",
+          "#585e65",
+          "#787e85",
+          "#999fa7",
+          "#bec5cd",
+          "#e8eff7"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#dbe4ee",
+        "tonalRamp": [
+          "#060c12",
+          "#1e252c",
+          "#394148",
+          "#575e67",
+          "#767e87",
+          "#979fa9",
+          "#bcc5cf",
+          "#e6f0fa"
+        ]
+      },
+      "navy": {
+        "role": "neutral",
+        "displayName": "Harbour Navy",
+        "canonical": "#0b2747",
+        "tonalRamp": [
+          "#000927",
+          "#082444",
+          "#254163",
+          "#425f84",
+          "#6180a6",
+          "#81a1c9",
+          "#a6c7f0",
+          "#e4f0fe"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Slate Ink",
+        "canonical": "#46586f",
+        "tonalRamp": [
+          "#010b1d",
+          "#152539",
+          "#304157",
+          "#4d5f76",
+          "#6c7f97",
+          "#8ca0ba",
+          "#b1c6e1",
+          "#e5f0fe"
+        ]
+      },
+      "panel-text": {
+        "role": "neutral",
+        "displayName": "Panel Text",
+        "canonical": "#e3efff"
+      },
+      "footer-heading": {
+        "role": "neutral",
+        "displayName": "Footer Sky",
+        "canonical": "#8fcbff"
+      },
+      "brand-ink-dark": {
+        "role": "primary",
+        "displayName": "Link Blue (dark scheme)",
+        "canonical": "#4fb0ff",
+        "tonalRamp": [
+          "#000c20",
+          "#002643",
+          "#00436f",
+          "#00629f",
+          "#1483ce",
+          "#43a5f3",
+          "#94cafb",
+          "#e1f1ff"
+        ]
+      },
+      "page-dark": {
+        "role": "neutral",
+        "displayName": "Harbour Night (page, dark scheme)",
+        "canonical": "#0a131f"
+      },
+      "raised-dark": {
+        "role": "neutral",
+        "displayName": "Raised Night (dark scheme)",
+        "canonical": "#101c2b"
+      },
+      "tint-dark": {
+        "role": "neutral",
+        "displayName": "Mist Night (dark scheme)",
+        "canonical": "#142336"
+      },
+      "pill-dark": {
+        "role": "neutral",
+        "displayName": "Pill Night (dark scheme)",
+        "canonical": "#1a2c42"
+      },
+      "line-dark": {
+        "role": "neutral",
+        "displayName": "Hairline Night (dark scheme)",
+        "canonical": "#22364e"
+      },
+      "navy-dark": {
+        "role": "neutral",
+        "displayName": "Heading Ink (dark scheme)",
+        "canonical": "#e8f0f9"
+      },
+      "ink-dark": {
+        "role": "neutral",
+        "displayName": "Slate Ink (dark scheme)",
+        "canonical": "#a8b7ca"
+      }
     },
     "typographyMeta": {
-      "display": { "displayName": "Board Headline", "purpose": "Page headline only, Anton uppercase, full width on phones." },
-      "headline": { "displayName": "Section Sign", "purpose": "Section titles in Anton uppercase; larger on the guarantee band and voucher." },
-      "title": { "displayName": "Ticket Title", "purpose": "Ticket questions, order slip service name, BOOK NOW pills." },
-      "subhead": { "displayName": "Counter Subline", "purpose": "Oswald 700 line under the headline, sentence case." },
-      "label": { "displayName": "Tag and Chit", "purpose": "Oswald price tags, NEW tag, order bar text, text actions, COPY CODE." },
-      "body": { "displayName": "Counter Voice", "purpose": "Lato sentences: explanations, ticket answers, guarantee copy." }
+      "display": {
+        "displayName": "Hero Headline",
+        "purpose": "Hero headline only, phones and tablets, two lines, left aligned."
+      },
+      "display-wide": {
+        "displayName": "Hero Headline Wide",
+        "purpose": "Hero headline from 1024px in the split hero."
+      },
+      "figure": {
+        "displayName": "Proof Figure",
+        "purpose": "The 100,000+ hours number in Link Blue; 80px from 768px."
+      },
+      "headline": {
+        "displayName": "Group Title",
+        "purpose": "Group titles and the close band title; 40px from 768px."
+      },
+      "title": {
+        "displayName": "Service Name",
+        "purpose": "Service names inside tiles; 17px in small bento tiles on phones."
+      },
+      "body": {
+        "displayName": "Reading Text",
+        "purpose": "Hero subtext, proof and close copy; 19px from 768px."
+      },
+      "body-card": {
+        "displayName": "Service Line",
+        "purpose": "The one plain line under each service name."
+      },
+      "label": {
+        "displayName": "Control Label",
+        "purpose": "Buttons (16px), group pills and header links (15px)."
+      },
+      "label-small": {
+        "displayName": "Launcher Label",
+        "purpose": "Group launcher names; 18px from 768px."
+      }
     },
     "shadows": [
-      { "name": "counter-edge", "value": "0 -10px 24px -18px rgb(11 39 71 / 0.6)", "purpose": "Top edge of the fixed order bar." },
-      { "name": "slip-lift", "value": "0 -18px 40px -24px rgb(11 39 71 / 0.55)", "purpose": "Order slip rising out of the bar." },
-      { "name": "header-scrolled", "value": "0 1px 0 rgb(213 233 251), 0 8px 24px -16px rgb(17 38 60 / 0.28)", "purpose": "Shared header once the page scrolls under it." }
+      {
+        "name": "shadow-soft",
+        "value": "0 1px 2px rgb(11 39 71 / 0.04), 0 10px 28px -16px rgb(11 39 71 / 0.18)",
+        "purpose": "Sticky header once scrolled, and the desktop services dropdown. Only shadow in the system."
+      },
+      {
+        "name": "shadow-soft-dark",
+        "value": "0 1px 2px rgb(0 0 0 / 0.3), 0 10px 28px -16px rgb(0 0 0 / 0.6)",
+        "purpose": "The same lift under the dark scheme."
+      }
     ],
     "motion": [
-      { "name": "ease-out", "value": "cubic-bezier(0.23, 1, 0.32, 1)", "purpose": "Default easing for every transition and animation." },
-      { "name": "ease-in-out", "value": "cubic-bezier(0.77, 0, 0.175, 1)", "purpose": "Available for on-screen moves that start and end at rest." },
-      { "name": "tile-power-on", "value": "620ms ease-out; filter brightness(0.72) saturate(0.6) to none; delay i * 55ms + 80ms", "purpose": "Board switching on in reading order; content visible from frame one." },
-      { "name": "press", "value": "transform scale(0.97) 120ms ease-out", "purpose": "Press feedback on every tappable." },
-      { "name": "paint-change", "value": "160-180ms ease-out on background-color and color", "purpose": "Tile select, hover, pill state." },
-      { "name": "order-swap", "value": "240ms ease-out; translateY(5px) and opacity 0.2 to rest", "purpose": "Order bar text when a new tile is picked." },
-      { "name": "slip-slide", "value": "transform 280ms ease-out, opacity 220ms ease-out from translateY(24px)", "purpose": "Order slip open and close." },
-      { "name": "reduced-motion", "value": "animations off, movement off, colour and opacity transitions at 150ms", "purpose": "prefers-reduced-motion: fewer and gentler, not none." }
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "purpose": "Every transition: reveal, press, colour changes, accordion."
+      },
+      {
+        "name": "ease-in-out",
+        "value": "cubic-bezier(0.77, 0, 0.175, 1)",
+        "purpose": "Defined in the theme for on-screen movement; not used on the services page."
+      },
+      {
+        "name": "reveal",
+        "value": "opacity and translateY(18px) over 520ms ease-out, 60ms sibling stagger capped at 6",
+        "purpose": "Fade up of tiles, proof and close band on entering the viewport. Skipped entirely under reduced motion."
+      },
+      {
+        "name": "press",
+        "value": "scale(0.97) over 120ms ease-out",
+        "purpose": "Tap feedback on buttons, launchers and header controls. Removed under reduced motion."
+      },
+      {
+        "name": "color-transition",
+        "value": "160ms ease-out",
+        "purpose": "Background, colour and border changes on buttons, pills and launchers."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "colour and opacity only, 150ms",
+        "purpose": "Under prefers-reduced-motion nothing travels and smooth scroll is off."
+      }
     ],
     "breakpoints": [
-      { "name": "md", "value": "768px" },
-      { "name": "lg", "value": "1024px" },
-      { "name": "xl", "value": "1280px" }
+      {
+        "name": "sm",
+        "value": "640px",
+        "note": "Header call pill appears."
+      },
+      {
+        "name": "md",
+        "value": "768px",
+        "note": "Wide gutter, tablet layouts for every group, larger type steps."
+      },
+      {
+        "name": "lg",
+        "value": "1024px",
+        "note": "Split hero, copy left, photo right."
+      },
+      {
+        "name": "xl",
+        "value": "1280px",
+        "note": "Full kleaner.my header navigation replaces the menu button."
+      }
+    ],
+    "backdrop": [
+      {
+        "name": "pill-strip",
+        "value": "color-mix(in srgb, var(--color-page) 92%, transparent) with backdrop-filter: blur(10px)",
+        "purpose": "Sticky group pill strip separating from content without a shadow."
+      }
+    ],
+    "focus": [
+      {
+        "name": "focus-ring",
+        "value": "outline: 3px solid var(--color-brand-dark); outline-offset: 2px",
+        "purpose": "Every focusable element."
+      }
     ]
   },
   "components": [
     {
-      "name": "Board Tile",
-      "kind": "card",
-      "refersTo": "tile",
-      "description": "Enamel blue sign tile with inset rule, numeral, price tag, 64-box pictogram and name; lights sun yellow when selected.",
-      "html": "<div class=\"ds-board\"><a href=\"#\" class=\"ds-tile\"><span class=\"ds-tile-face\"><span class=\"ds-tile-num\">01</span><span class=\"ds-tile-tag\">INSTANT<br>PRICE</span><svg class=\"ds-tile-pic\" viewBox=\"0 7 64 50\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m7 31 25-21 25 21\"/><path d=\"M13.5 26v28h37V26\"/><path d=\"M44 19v-7h5.5v12\"/><path d=\"M26 33h12v12H26Z\"/><path d=\"M32 33v12M26 39h12\"/></svg><span class=\"ds-tile-name\">General Cleaning</span></span></a><a href=\"#\" class=\"ds-tile\" aria-current=\"true\"><span class=\"ds-tile-face\"><span class=\"ds-tile-num\">02</span><span class=\"ds-tile-tag\">FROM<br>RM88</span><svg class=\"ds-tile-pic\" viewBox=\"0 7 64 50\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M14 31v-7.5A6.5 6.5 0 0 1 20.5 17h23a6.5 6.5 0 0 1 6.5 6.5V31\"/><path d=\"M32 17.5v13.5\"/><path d=\"M7 36.5a5.5 5.5 0 0 1 11 0V41h28v-4.5a5.5 5.5 0 0 1 11 0V50H7Z\"/><path d=\"M11.5 50v5M52.5 50v5\"/></svg><span class=\"ds-tile-name\">Sofa &amp; Mattress</span></span></a></div>",
-      "css": ".ds-board { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; max-width: 420px; } .ds-board > a { container-type: inline-size; } .ds-tile { display: flex; min-height: 75cqi; padding: 6px; border-radius: 7px; background: var(--color-tile, #0088f8); color: #fff; text-decoration: none; transition: background-color 180ms cubic-bezier(0.23,1,0.32,1), color 180ms cubic-bezier(0.23,1,0.32,1), transform 120ms cubic-bezier(0.23,1,0.32,1); } .ds-tile:hover { background: #0079e0; } .ds-tile:active { transform: scale(0.97); } .ds-tile:focus-visible { outline: 3px solid var(--color-brand-dark, #0071d1); outline-offset: 3px; } .ds-tile[aria-current='true'] { background: var(--color-sun, #fac93f); color: var(--color-navy, #0b2747); } .ds-tile[aria-current='true']:hover { background: var(--color-sun-dark, #edb91f); } .ds-tile-face { flex: 1; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr auto; grid-template-areas: 'num tag' 'num pic' 'name name'; column-gap: 2cqi; padding: 4cqi 3cqi 4.5cqi 5cqi; border: 2px solid currentColor; border-radius: 4px; } .ds-tile[aria-current='true'] .ds-tile-face { border-color: #fff; } .ds-tile-num { grid-area: num; font-family: Anton, 'Arial Narrow', Impact, sans-serif; font-size: 31cqi; line-height: 1; letter-spacing: -0.01em; } .ds-tile-tag { grid-area: tag; justify-self: end; align-self: start; margin: -3.5cqi -1.5cqi 0 0; padding: 3px 5px 2px; border-radius: 5px; background: #fff; color: var(--color-brand-dark, #0071d1); font-family: Oswald, 'Arial Narrow', Arial, sans-serif; font-weight: 600; font-size: max(10px, 5.6cqi); line-height: 1.05; text-align: center; letter-spacing: 0.01em; } .ds-tile[aria-current='true'] .ds-tile-tag { color: var(--color-navy, #0b2747); } .ds-tile-pic { grid-area: pic; justify-self: center; align-self: end; width: 34cqi; max-width: 100%; margin-top: -2cqi; } .ds-tile-name { grid-area: name; margin-top: 1.5cqi; font-family: Anton, 'Arial Narrow', Impact, sans-serif; font-size: 15.2cqi; line-height: 0.98; letter-spacing: -0.02em; text-transform: uppercase; }"
-    },
-    {
-      "name": "Order Bar",
-      "kind": "nav",
-      "refersTo": "order-bar",
-      "description": "Navy counter fixed to the bottom: picked service with slip chevron on the left, sun BOOK NOW pill on the right.",
-      "html": "<div class=\"ds-order-bar\"><button type=\"button\" class=\"ds-order-label\">Sofa &amp; Mattress selected <span class=\"ds-order-more\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m6 15 6-6 6 6\"/></svg></span></button><a href=\"#\" class=\"ds-btn-book\">Book now</a></div>",
-      "css": ".ds-order-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 58px; padding: 0 16px; background: var(--color-navy, #0b2747); color: #fff; box-shadow: 0 -10px 24px -18px rgb(11 39 71 / 0.6); } .ds-order-label { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; padding: 6px 0; color: #fff; font-family: Oswald, 'Arial Narrow', Arial, sans-serif; font-size: 17.5px; font-weight: 700; line-height: 1.1; cursor: pointer; } .ds-order-label:focus-visible, .ds-btn-book:focus-visible { outline: 3px solid var(--color-sun, #fac93f); outline-offset: 2px; } .ds-order-more { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 999px; background: rgb(255 255 255 / 0.14); color: var(--color-sun, #fac93f); } .ds-btn-book { display: inline-flex; align-items: center; height: 37px; padding: 0 26px; border-radius: 999px; background: var(--color-sun, #fac93f); color: var(--color-navy, #0b2747); font-family: Anton, 'Arial Narrow', Impact, sans-serif; font-size: 19px; line-height: 1; letter-spacing: 0.01em; text-transform: uppercase; text-decoration: none; transition: background-color 160ms cubic-bezier(0.23,1,0.32,1), transform 120ms cubic-bezier(0.23,1,0.32,1); } .ds-btn-book:hover { background: var(--color-sun-dark, #edb91f); } .ds-btn-book:active { transform: scale(0.97); }"
-    },
-    {
-      "name": "Book Pill",
-      "kind": "button",
-      "refersTo": "button-book",
-      "description": "Sun yellow Anton pill; the booking action wherever it appears.",
-      "html": "<a href=\"#\" class=\"ds-btn-book-lg\">Book and use the code <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></a>",
-      "css": ".ds-btn-book-lg { display: inline-flex; align-items: center; gap: 10px; height: 50px; padding: 0 24px; border-radius: 999px; background: var(--color-sun, #fac93f); color: var(--color-navy, #0b2747); font-family: Anton, 'Arial Narrow', Impact, sans-serif; font-size: 21px; text-transform: uppercase; text-decoration: none; transition: background-color 160ms cubic-bezier(0.23,1,0.32,1), transform 120ms cubic-bezier(0.23,1,0.32,1); } .ds-btn-book-lg:hover { background: var(--color-sun-dark, #edb91f); } .ds-btn-book-lg:active { transform: scale(0.97); } .ds-btn-book-lg:focus-visible { outline: 3px solid var(--color-brand-dark, #0071d1); outline-offset: 2px; }"
-    },
-    {
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Shared-chrome filled pill in brand-dark with white Lato 700.",
-      "html": "<a href=\"#\" class=\"ds-btn-primary\">Book now</a>",
-      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 28px; border-radius: 999px; background: var(--color-brand-dark, #0071d1); color: #fff; font-family: Lato, Arial, sans-serif; font-weight: 700; font-size: 18px; line-height: 1; text-decoration: none; transition: background-color 200ms, transform 120ms cubic-bezier(0.23,1,0.32,1); } .ds-btn-primary:hover { background: #005fb4; } .ds-btn-primary:active { background: #005099; transform: scale(0.97); } .ds-btn-primary:focus-visible { outline: 3px solid var(--color-brand-dark, #0071d1); outline-offset: 2px; }"
+      "description": "Filled pill for every Book now, Get a quote and the closing WhatsApp us.",
+      "html": "<a class=\"ds-btn ds-btn-fill\" href=\"#\">Book now</a>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 3rem; padding: 0 1.5rem; border-radius: 999px; border: 0; font-family: 'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, sans-serif; font-size: 16px; font-weight: 700; line-height: 1; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 160ms cubic-bezier(0.23, 1, 0.32, 1), color 160ms cubic-bezier(0.23, 1, 0.32, 1), transform 120ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-btn:active { transform: scale(0.97); } .ds-btn:focus-visible { outline: 3px solid var(--color-brand-dark, #0071d1); outline-offset: 2px; } .ds-btn-fill { background: var(--color-brand-dark, #0071d1); color: #fdfeff; } .ds-btn-fill:hover { background: var(--color-brand-hover, #005fb4); }"
     },
     {
-      "name": "WhatsApp Button",
+      "name": "Outline Button",
       "kind": "button",
-      "refersTo": "button-whatsapp",
-      "description": "Brand green pill with navy text; the backup channel for the unsure.",
-      "html": "<a href=\"#\" class=\"ds-btn-wa\">Ask on WhatsApp</a>",
-      "css": ".ds-btn-wa { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 28px; border-radius: 999px; background: var(--color-wa, #00cd56); color: var(--color-navy, #0b2747); font-family: Lato, Arial, sans-serif; font-weight: 700; font-size: 18px; line-height: 1; text-decoration: none; transition: background-color 200ms, transform 120ms cubic-bezier(0.23,1,0.32,1); } .ds-btn-wa:hover { background: #00b94d; } .ds-btn-wa:active { background: #00a745; transform: scale(0.97); } .ds-btn-wa:focus-visible { outline: 3px solid var(--color-brand-dark, #0071d1); outline-offset: 2px; }"
+      "refersTo": "button-line",
+      "description": "Secondary hero action, 2px blue ring with Link Blue label.",
+      "html": "<a class=\"ds-btn ds-btn-line\" href=\"#\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" width=\"20\" height=\"20\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M187.58,144.84l-32-16a8,8,0,0,0-8,.5l-14.69,9.8a40.55,40.55,0,0,1-16-16l9.8-14.69a8,8,0,0,0,.5-8l-16-32A8,8,0,0,0,104,64a40,40,0,0,0-40,40,88.1,88.1,0,0,0,88,88,40,40,0,0,0,40-40A8,8,0,0,0,187.58,144.84ZM152,176a72.08,72.08,0,0,1-72-72A24,24,0,0,1,99.29,80.46l11.48,23L101,118a8,8,0,0,0-.73,7.51,56.47,56.47,0,0,0,30.15,30.15A8,8,0,0,0,138,155l14.61-9.74,23,11.48A24,24,0,0,1,152,176ZM128,24A104,104,0,0,0,36.18,176.88L24.83,210.93a16,16,0,0,0,20.24,20.24l34.05-11.35A104,104,0,1,0,128,24Zm0,192a87.87,87.87,0,0,1-44.06-11.81,8,8,0,0,0-6.54-.67L40,216,52.47,178.6a8,8,0,0,0-.66-6.54A88,88,0,1,1,128,216Z\"/></svg>WhatsApp us</a>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 3rem; padding: 0 1.5rem; border-radius: 999px; border: 0; font-family: 'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, sans-serif; font-size: 16px; font-weight: 700; line-height: 1; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 160ms cubic-bezier(0.23, 1, 0.32, 1), color 160ms cubic-bezier(0.23, 1, 0.32, 1), transform 120ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-btn:active { transform: scale(0.97); } .ds-btn:focus-visible { outline: 3px solid var(--color-brand-dark, #0071d1); outline-offset: 2px; } .ds-btn-line { background: transparent; border: 2px solid var(--color-brand-dark, #0071d1); color: var(--color-brand-ink, #006abf); } .ds-btn-line:hover { background: var(--color-tint, #eef3f9); }"
     },
     {
-      "name": "Voucher Pill",
+      "name": "On Blue Button",
+      "kind": "button",
+      "refersTo": "button-on-blue",
+      "description": "White pill used only on the blue moving panel.",
+      "html": "<div style=\"background:#0071d1;padding:24px;border-radius:24px\"><a class=\"ds-btn ds-btn-on-blue\" href=\"#\">Get a quote</a></div>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; min-height: 3rem; padding: 0 1.5rem; border-radius: 999px; border: 0; font-family: 'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, sans-serif; font-size: 16px; font-weight: 700; line-height: 1; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 160ms cubic-bezier(0.23, 1, 0.32, 1), color 160ms cubic-bezier(0.23, 1, 0.32, 1), transform 120ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-btn:active { transform: scale(0.97); } .ds-btn:focus-visible { outline: 3px solid var(--color-brand-dark, #0071d1); outline-offset: 2px; } .ds-btn-on-blue { background: #fdfeff; color: #0071d1; } .ds-btn-on-blue:hover { background: #e3efff; }"
+    },
+    {
+      "name": "Group Pill Strip",
       "kind": "chip",
-      "refersTo": "voucher-pill",
-      "description": "Brand-dark Oswald pill with offer and code; tap copies the code and it turns navy.",
-      "html": "<button type=\"button\" class=\"ds-voucher-pill\"><span>RM20 off first booking</span><span class=\"ds-voucher-rule\"></span><span>KLEANERHOME</span></button>",
-      "css": ".ds-voucher-pill { display: inline-flex; align-items: center; gap: 12px; height: 40px; padding: 0 20px; border: 0; border-radius: 999px; background: var(--color-brand-dark, #0071d1); color: #fff; font-family: Oswald, 'Arial Narrow', Arial, sans-serif; font-size: 16px; font-weight: 600; letter-spacing: 0.015em; text-transform: uppercase; cursor: pointer; transition: background-color 160ms, transform 120ms cubic-bezier(0.23,1,0.32,1); } .ds-voucher-pill:hover { background: #005fb4; } .ds-voucher-pill:active { background: var(--color-navy, #0b2747); transform: scale(0.97); } .ds-voucher-pill:focus-visible { outline: 3px solid var(--color-brand-dark, #0071d1); outline-offset: 2px; } .ds-voucher-rule { width: 1px; height: 16px; background: rgb(255 255 255 / 0.7); }"
+      "refersTo": "group-pill",
+      "description": "Sticky category strip; the group in view is lit in Button Blue.",
+      "html": "<ul class=\"ds-pills\"><li><a class=\"ds-pill\" href=\"#\">Home cleaning</a></li><li><a class=\"ds-pill\" aria-current=\"true\" href=\"#\">After renovation</a></li><li><a class=\"ds-pill\" href=\"#\">Specialist care</a></li><li><a class=\"ds-pill\" href=\"#\">Moving</a></li></ul>",
+      "css": ".ds-pills { display: flex; gap: 0.5rem; margin: 0; padding: 0.6rem 0; list-style: none; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; background: color-mix(in srgb, var(--color-page, #f7f9fc) 92%, transparent); backdrop-filter: blur(10px); } .ds-pills > li { flex-shrink: 0; scroll-snap-align: start; } .ds-pill { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1.1rem; border-radius: 999px; background: var(--color-pill, #e6edf5); color: var(--color-navy, #0b2747); font-family: 'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, sans-serif; font-size: 15px; font-weight: 700; white-space: nowrap; text-decoration: none; transition: background-color 160ms cubic-bezier(0.23, 1, 0.32, 1), color 160ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-pill[aria-current='true'] { background: var(--color-brand-dark, #0071d1); color: #fdfeff; } .ds-pill:focus-visible { outline: 3px solid var(--color-brand-dark, #0071d1); outline-offset: 2px; }"
     },
     {
-      "name": "Set Ticket",
-      "kind": "custom",
-      "refersTo": "set-ticket",
-      "description": "Printed order ticket: navy stub with set letter, dashed perforation, question, answer and text action.",
-      "html": "<a href=\"#\" class=\"ds-ticket\"><span class=\"ds-ticket-stub\"><span class=\"ds-ticket-set\">Set</span><span class=\"ds-ticket-letter\">A</span></span><span class=\"ds-ticket-body\"><span class=\"ds-ticket-q\">Just finished a renovation?</span><span class=\"ds-ticket-a\">Post-Renovation Cleaning. Add formaldehyde removal in the same booking.</span><span class=\"ds-ticket-act\">Book now</span></span></a>",
-      "css": ".ds-ticket { display: flex; max-width: 380px; overflow: hidden; border: 2px solid var(--color-navy, #0b2747); border-radius: 8px; background: #fff; text-decoration: none; transition: background-color 180ms cubic-bezier(0.23,1,0.32,1), transform 120ms cubic-bezier(0.23,1,0.32,1); } .ds-ticket:hover { background: #fffbea; } .ds-ticket:active { transform: scale(0.97); } .ds-ticket:focus-visible { outline: 3px solid var(--color-brand-dark, #0071d1); outline-offset: 2px; } .ds-ticket-stub { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; width: 76px; flex-shrink: 0; border-right: 2px dashed var(--color-navy, #0b2747); background: var(--color-navy, #0b2747); color: var(--color-sun, #fac93f); transition: background-color 180ms, color 180ms; } .ds-ticket:hover .ds-ticket-stub { background: var(--color-sun, #fac93f); color: var(--color-navy, #0b2747); } .ds-ticket-set { font-family: Oswald, 'Arial Narrow', Arial, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; } .ds-ticket-letter { font-family: Anton, 'Arial Narrow', Impact, sans-serif; font-size: 44px; line-height: 1; } .ds-ticket-body { display: block; padding: 14px 16px; } .ds-ticket-q { display: block; font-family: Anton, 'Arial Narrow', Impact, sans-serif; font-size: 22px; line-height: 1.05; text-transform: uppercase; color: var(--color-navy, #0b2747); } .ds-ticket-a { display: block; margin-top: 6px; font-family: Lato, Arial, sans-serif; font-size: 15px; line-height: 1.375; color: var(--color-ink, #3e5470); } .ds-ticket-act { display: inline-block; margin-top: 10px; font-family: Oswald, 'Arial Narrow', Arial, sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-brand-dark, #0071d1); }"
+      "name": "Group Launcher Tile",
+      "kind": "nav",
+      "refersTo": "launcher-tile",
+      "description": "Super-app shortcut: round group photo, Phosphor icon, group name; four across at every width.",
+      "html": "<a class=\"ds-launcher\" href=\"#\"><span class=\"ds-launcher-photo\"></span><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 256 256\" width=\"28\" height=\"28\" fill=\"currentColor\" class=\"ds-launcher-icon\" aria-hidden=\"true\"><path d=\"M240,208H224V136l2.34,2.34A8,8,0,0,0,237.66,127L139.31,28.68a16,16,0,0,0-22.62,0L18.34,127a8,8,0,0,0,11.32,11.31L32,136v72H16a8,8,0,0,0,0,16H240a8,8,0,0,0,0-16ZM48,120l80-80,80,80v88H160V152a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8v56H48Zm96,88H112V160h32Z\"/></svg><span class=\"ds-launcher-label\">Home cleaning</span></a>",
+      "css": ".ds-launcher { display: flex; width: 96px; flex-direction: column; align-items: center; padding: 0.75rem 0.25rem 0.85rem; border-radius: 24px; background: var(--color-tint, #eef3f9); text-align: center; text-decoration: none; transition: background-color 160ms cubic-bezier(0.23, 1, 0.32, 1), transform 120ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-launcher:hover { background: var(--color-pill, #e6edf5); } .ds-launcher:active { transform: scale(0.97); } .ds-launcher:focus-visible { outline: 3px solid var(--color-brand-dark, #0071d1); outline-offset: 2px; } .ds-launcher-photo { display: block; width: 64px; height: 64px; border-radius: 999px; background: #a8b7ca; } .ds-launcher-icon { margin-top: 0.5rem; color: var(--color-brand-ink, #006abf); } .ds-launcher-label { margin-top: 0.35rem; color: var(--color-navy, #0b2747); font-family: 'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, sans-serif; font-size: 13px; font-weight: 700; line-height: 1.2; }"
     },
     {
-      "name": "Voucher Tile",
+      "name": "Home Cleaning Photo Card",
       "kind": "card",
-      "refersTo": "voucher-tile",
-      "description": "Brand-dark plate with a white inset rule, Anton headline and copyable code chip.",
-      "html": "<div class=\"ds-voucher\"><div class=\"ds-voucher-face\"><p class=\"ds-voucher-h\">RM20 off your first booking</p><button type=\"button\" class=\"ds-voucher-code\">KLEANERHOME <span class=\"ds-voucher-copy\">Copy code</span></button></div></div>",
-      "css": ".ds-voucher { max-width: 420px; padding: 8px; border-radius: 10px; background: var(--color-brand-dark, #0071d1); } .ds-voucher-face { padding: 22px 18px; border: 2px solid #fff; border-radius: 6px; } .ds-voucher-h { margin: 0; font-family: Anton, 'Arial Narrow', Impact, sans-serif; font-size: 38px; line-height: 0.98; text-transform: uppercase; color: #fff; } .ds-voucher-code { display: inline-flex; align-items: center; gap: 14px; margin-top: 20px; padding: 10px 10px 10px 16px; border: 0; border-radius: 8px; background: #fff; color: var(--color-navy, #0b2747); font-family: Anton, 'Arial Narrow', Impact, sans-serif; font-size: 26px; line-height: 1; letter-spacing: 0.06em; cursor: pointer; transition: background-color 160ms, transform 120ms cubic-bezier(0.23,1,0.32,1); } .ds-voucher-code:active { background: var(--color-sun, #fac93f); transform: scale(0.97); } .ds-voucher-code:focus-visible { outline: 3px solid #fff; outline-offset: 2px; } .ds-voucher-copy { padding: 7px 10px 6px; border-radius: 6px; background: var(--color-paper, #f4f7fa); color: var(--color-brand-dark, #0071d1); font-family: Oswald, 'Arial Narrow', Arial, sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }"
+      "refersTo": "photo-card",
+      "description": "Raised photo card in the swipe row: photo, name, one line, full width Book now.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-card-photo\" role=\"img\" aria-label=\"Photo placeholder\"></div><div class=\"ds-card-body\"><h3 class=\"ds-card-name\">Standard cleaning</h3><p class=\"ds-card-line\">Regular upkeep for your home, by our trained team.</p><a class=\"ds-card-cta\" href=\"#\">Book now</a></div></article>",
+      "css": ".ds-card { display: flex; width: 300px; flex-direction: column; overflow: hidden; border: 1px solid var(--color-line, #dbe4ee); border-radius: 24px; background: var(--color-raised, #fdfeff); font-family: 'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, sans-serif; } .ds-card-photo { aspect-ratio: 3 / 2; background: #a8b7ca; } .ds-card-body { display: flex; flex-direction: column; padding: 1.25rem; } .ds-card-name { margin: 0; color: var(--color-navy, #0b2747); font-size: 20px; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; } .ds-card-line { margin: 0.4rem 0 1.1rem; color: var(--color-ink, #46586f); font-size: 15.5px; line-height: 1.5; } .ds-card-cta { display: flex; align-items: center; justify-content: center; min-height: 3rem; border-radius: 999px; background: var(--color-brand-dark, #0071d1); color: #fdfeff; font-size: 16px; font-weight: 700; text-decoration: none; transition: background-color 160ms cubic-bezier(0.23, 1, 0.32, 1), transform 120ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-card-cta:hover { background: var(--color-brand-hover, #005fb4); } .ds-card-cta:active { transform: scale(0.97); } .ds-card-cta:focus-visible { outline: 3px solid #0071d1; outline-offset: 2px; }"
+    },
+    {
+      "name": "After Renovation Wide Row",
+      "kind": "card",
+      "refersTo": "wide-row",
+      "description": "Tinted row: photo column, words, then the action at the end.",
+      "html": "<article class=\"ds-row\"><div class=\"ds-row-photo\"></div><div class=\"ds-row-body\"><h3 class=\"ds-row-name\">Post renovation cleaning</h3><p class=\"ds-row-line\">Dust, paint and debris cleared after the contractors leave.</p></div><a class=\"ds-row-cta\" href=\"#\">Book now</a></article>",
+      "css": ".ds-row { display: grid; grid-template-columns: 160px 1fr auto; align-items: center; column-gap: 2rem; overflow: hidden; border-radius: 24px; background: var(--color-tint, #eef3f9); font-family: 'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, sans-serif; } .ds-row-photo { min-height: 10.5rem; height: 100%; background: #a8b7ca; } .ds-row-body { padding: 1.5rem 0; } .ds-row-name { margin: 0; color: var(--color-navy, #0b2747); font-size: 20px; font-weight: 700; line-height: 1.2; } .ds-row-line { margin: 0.4rem 0 0; color: var(--color-ink, #46586f); font-size: 15.5px; line-height: 1.5; } .ds-row-cta { display: inline-flex; align-items: center; min-height: 3rem; margin-right: 2rem; padding: 0 1.5rem; border-radius: 999px; background: var(--color-brand-dark, #0071d1); color: #fdfeff; font-size: 16px; font-weight: 700; white-space: nowrap; text-decoration: none; transition: background-color 160ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-row-cta:hover { background: var(--color-brand-hover, #005fb4); } .ds-row-cta:focus-visible { outline: 3px solid #0071d1; outline-offset: 2px; }"
+    },
+    {
+      "name": "Moving Photo and Blue Panel",
+      "kind": "custom",
+      "refersTo": "blue-panel",
+      "description": "Banner of photo plus a Button Blue panel with the white on blue action.",
+      "html": "<article class=\"ds-mover\"><div class=\"ds-mover-photo\"></div><div class=\"ds-mover-panel\"><h3>Mover</h3><p>Packing, loading and moving across Klang Valley.</p><a href=\"#\">Get a quote</a></div></article>",
+      "css": ".ds-mover { display: grid; grid-template-columns: 1.45fr 1fr; overflow: hidden; border-radius: 24px; background: #0071d1; font-family: 'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, sans-serif; } .ds-mover-photo { min-height: 14rem; background: #a8b7ca; } .ds-mover-panel { display: flex; flex-direction: column; justify-content: center; padding: 1.5rem; } .ds-mover-panel h3 { margin: 0; color: #fdfeff; font-size: 24px; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; } .ds-mover-panel p { margin: 0.5rem 0 0; color: #e3efff; font-size: 16px; line-height: 1.6; } .ds-mover-panel a { align-self: flex-start; display: inline-flex; align-items: center; min-height: 3rem; margin-top: 1.5rem; padding: 0 1.5rem; border-radius: 999px; background: #fdfeff; color: #0071d1; font-size: 16px; font-weight: 700; text-decoration: none; transition: background-color 160ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-mover-panel a:hover { background: #e3efff; } .ds-mover-panel a:focus-visible { outline: 3px solid #fdfeff; outline-offset: 2px; }"
     }
   ],
   "narrative": {
-    "northStar": "The Kopitiam Counter Board",
-    "overview": "The page is the numbered tile wall above a kopitiam counter. Every service is an enamel sign tile, painted in Kleaner blue, lettered in a heavy condensed sign face, with a white price tag clipped to its corner and a line drawing beside its numeral. You point at one, it lights up sun yellow, and the navy counter at the bottom of the screen names your order and takes it. Everything else on the page (set tickets, the guarantee band, the voucher) is printed from the same shop: the same three paints, the same two lettering faces, the same inset rule.\n\nDensity is high and legible from arm's length. Type is large, uppercase and condensed; surfaces are flat paint, not paper cards. Depth exists only where something genuinely sits on top of the board: the order bar, the order slip, the sticky header once the page scrolls under it. The confirmed refusal is the category default of soft white cards, stock cleaner photos and sparkle icons; the shipped page carries no raster imagery apart from the logo.",
+    "northStar": "The Super-App Service Menu",
+    "overview": "The page borrows the home screen grammar Klang Valley visitors already use every day in Grab and Touch 'n Go: services grouped by need, shown as big thumb-reach photo tiles, each one a direct tap into booking. A row of round photo launchers names the four groups, a sticky strip of pills follows the scroll and lights the group in view, and each group below is laid out in its own arrangement so the page reads as a menu of distinct places rather than a column of equal cards.\n\nThe material is soft and friendly but disciplined. One blue does every job, from the filled button to the lit pill to the moving panel. Surfaces are cool off-white in light and deep blue-black in dark, stepped by tone rather than by shadow. Corners come from one system: 24px on every tile and photo, full pills on every control. Real photography of the Kleaner team fills every tile and is never written on. Type is a single family, Reddit Sans, carried from heavy 800 headlines down to 400 body. Motion is limited to a fade up on scroll and a small press on tap.\n\nThis world replaces the earlier counter board system (condensed display faces, yellow, order bar). None of that vocabulary carries forward.",
     "keyCharacteristics": [
-      "Flat enamel blue tiles with a 2px white inset rule, giant condensed numerals, line pictograms.",
-      "Three paints: Kleaner blue, sun yellow for \"lit / act\", navy for ink and the counter.",
-      "Anton for anything lettered on the board, Oswald for tags and the order bar, Lato for sentences.",
-      "Tile internals sized in container units, so a tile is the same drawing at every width.",
-      "Selection is the signature interaction: tile lights, order bar updates name and link."
+      "One accent: Kleaner blue, in four steps, and nothing else that competes with it.",
+      "Tonal surfaces (page, raised, tint, pill, line) that invert cleanly for the dark scheme.",
+      "One radius system: 24px tiles and photos, full pills for controls, circles for launcher photos.",
+      "Reddit Sans only, weights 400, 500, 700 and 800.",
+      "Phosphor regular icons, one weight, drawn in currentColor.",
+      "Real photography in every tile, never text on top of a photo.",
+      "Each service group in its own layout family."
     ],
     "rules": [
-      { "name": "The Three Paints Rule", "body": "Board surfaces are painted in blue, sun or navy and nothing else. No gradients, no glows, no tints standing in for a tile.", "section": "colors" },
-      { "name": "The Lit Means Yellow Rule", "body": "Yellow is reserved for the selected thing and the booking action. If a yellow element is not selected or not a call to book, it is wrong.", "section": "colors" },
-      { "name": "The Lettered Board Rule", "body": "Anything that is \"on the board\" (headlines, tile names, numerals, set letters, book pills) is Anton uppercase. Sentences are never Anton.", "section": "typography" },
-      { "name": "The Sign Scale Rule", "body": "Tile numerals and names are sized in container query units (cqi) from the tile's own width, so every tile is the same composition at every breakpoint.", "section": "typography" },
-      { "name": "The Flat Board Rule", "body": "Nothing painted on the board casts a shadow. Elevation is for overlays only: the order bar, the order slip, the scrolled header, dropdowns.", "section": "elevation" }
+      {
+        "name": "The One Blue Rule",
+        "body": "The page has one accent and it is Kleaner blue. Every call to action, the lit pill and the moving panel use Button Blue (#0071d1); no second hue is introduced for emphasis, status or decoration, and WhatsApp actions on this page are blue like every other action.",
+        "section": "colors"
+      },
+      {
+        "name": "The Swap The Token Rule",
+        "body": "Surfaces and ink are painted only through the page, raised, tint, pill, line, navy, ink and brand-ink tokens, because those are the ones the dark scheme redefines. A literal colour on a surface will not follow the system setting.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Family Rule",
+        "body": "Reddit Sans is the only face. Hierarchy comes from weight (800, 700, 400) and size, never from a second family, italics, or uppercase tracking.",
+        "section": "typography"
+      },
+      {
+        "name": "The No Kicker Rule",
+        "body": "No eyebrow labels, section numbers or small caps over headings. A group is introduced by its title alone.",
+        "section": "typography"
+      },
+      {
+        "name": "The Own Layout Family Rule",
+        "body": "Each group is arranged differently: home cleaning is a swipeable snap row of photo cards on phones (each card 80 per cent wide so the next one shows) and a 1.35:1:1 grid from 768px; after renovation is a stack of wide rows (photo, words, action); specialist care is a bento of three (one tall tile, two small ones beside it); moving is one banner of photo plus blue panel. A new group gets a new arrangement, not a copy of an existing one.",
+        "section": "layout"
+      },
+      {
+        "name": "The Thumb Reach Rule",
+        "body": "Every tile ends in its own action, at least 48px tall, and on phones the action spans the card or sits directly under the words.",
+        "section": "layout"
+      },
+      {
+        "name": "The Tone Not Shadow Rule",
+        "body": "Tiles are told apart from the ground by tint or hairline, never by a drop shadow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Two Corners Rule",
+        "body": "A shape is either a 24px tile or a full pill. No square corners, no in between radii on page content.",
+        "section": "shapes"
+      }
     ],
     "dos": [
-      "Do paint board surfaces flat in tile blue, sun or navy, with a 2px white inset rule on plates that read as tiles.",
-      "Do light the chosen thing in sun yellow with navy ink, and keep yellow for selection and booking.",
-      "Do letter board elements in Anton uppercase, tags and chits in Oswald, sentences in Lato.",
-      "Do size tile internals in cqi so every tile keeps one composition across widths.",
-      "Do draw new pictograms on the 64-unit box with a 3.4 round-capped stroke in currentColor.",
-      "Do keep every tile and ticket a real link that books without script.",
-      "Do use brand-dark, not tile blue, under any normal-size white text."
+      "Do use Button Blue (#0071d1) for every filled action and the lit pill, with Raised White (#fdfeff) text.",
+      "Do paint surfaces and text through the swapping tokens (page, raised, tint, pill, line, navy, ink, brand-ink) so the dark scheme follows.",
+      "Do give every service tile a real photograph, clipped by the tile's 24px corners.",
+      "Do keep every control a full pill at least 44px tall, buttons 48px.",
+      "Do give a new group its own layout family and its own anchor id.",
+      "Do keep motion to the scroll reveal and the 0.97 press, and honour reduced motion.",
+      "Do use Phosphor regular icons only, at one weight."
     ],
     "donts": [
-      "Don't put shadows on tiles, tickets, the voucher tile or bands; elevation is for overlays only.",
-      "Don't use gradients or glows on board surfaces.",
-      "Don't return to soft white rounded service cards, stock cleaner photography or sparkle icons.",
-      "Don't set body copy or small text in white on tile blue, or white on WhatsApp green.",
-      "Don't set sentences in Anton."
+      "Don't set any text, badge or button on top of a photograph.",
+      "Don't introduce a second accent hue, a second typeface, or a gradient.",
+      "Don't put white text on Kleaner Blue (#0088f8); it fails contrast. Use Button Blue.",
+      "Don't add drop shadows to tiles or buttons; separate them by tone or hairline.",
+      "Don't use eyebrow labels, section numbers or uppercase kickers over headings.",
+      "Don't add proof beyond 100,000+ hours and reclean or full refund, and show no prices.",
+      "Don't use em dashes or en dashes in copy."
     ]
   }
 }

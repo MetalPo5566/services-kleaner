@@ -85,10 +85,8 @@
   --font-sans: 'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, -apple-system,
     'Segoe UI', Roboto, Arial, sans-serif;
 
-  /* One radius system: 24px tiles and photos, 16px small photos, full pills
-     for every control. */
+  /* One radius system: 24px tiles and photos, full pills for every control. */
   --radius-tile: 1.5rem;
-  --radius-thumb: 1rem;
 
   --shadow-soft: 0 1px 2px rgb(11 39 71 / 0.04), 0 10px 28px -16px rgb(11 39 71 / 0.18);
 
@@ -298,20 +296,6 @@
     }
   }
 
-  .lift {
-    transition:
-      transform 240ms var(--ease-out),
-      box-shadow 240ms var(--ease-out);
-  }
-
-  /* Gated on a real pointer: a tap on a touch screen fires a false hover and
-     leaves the card stuck in its lifted state. */
-  @media (hover: hover) and (pointer: fine) {
-    .lift:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-lift);
-    }
-  }
 
   /* Press feedback. 120ms is long enough to register and short enough to feel
      like the interface answered instantly. */
@@ -345,7 +329,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .lift:hover,
     .press:active {
       transform: none;
     }
