@@ -1,168 +1,179 @@
+import type { ImageMetadata } from 'astro'
 import type { IconName } from '../components/Icon.astro'
-import type { PictogramName } from '../components/Pictogram.astro'
-import {
-  SITE,
-  rm,
-  fromPrice,
-  RATE_PER_SQFT,
-  FORMALDEHYDE_PRICE,
-  STERILISATION_PRICE,
-} from './site'
+
+import standardPhoto from '../../assets/plates/home-card-1-photo.png'
+import deepPhoto from '../../assets/plates/home-card-2-photo.png'
+import moveInOutPhoto from '../../assets/plates/home-card-3-photo.png'
+import postRenoPhoto from '../../assets/plates/reno-row-1-photo.png'
+import formaldehydePhoto from '../../assets/plates/reno-row-2-photo.png'
+import aircondPhoto from '../../assets/photos/aircond.png'
+import sofaPhoto from '../../assets/photos/sofa-mattress.png'
+import curtainPhoto from '../../assets/photos/curtain-carpet.png'
+import moverPhoto from '../../assets/photos/mover.png'
+import homeGroupPhoto from '../../assets/plates/launch-1-photo.png'
+import renoGroupPhoto from '../../assets/plates/launch-2-photo.png'
+import specialistGroupPhoto from '../../assets/plates/launch-3-photo.png'
+import movingGroupPhoto from '../../assets/plates/launch-4-photo.png'
 
 /**
- * Every Kleaner service, once. The grid renders from this array and nothing
- * else, so adding a service is a new entry here and no change to any markup.
+ * Every Kleaner service, once, with the exact booking link the owner gave on
+ * 2 October 2026. The page, the structured data and scripts/verify.mjs all
+ * read from here, so a link changes in one place.
  *
- * Every figure comes from prices.json through the helpers in site.ts. Nothing
- * is typed in as a literal, so the cards and the booking form cannot drift.
- *
- * The owner confirmed every claim on these cards on 2 October 2026, so none
- * carries a note. A new unverified claim gets a `confirm` string again, which
- * renders a visible note and scripts/gen-owner-confirm.mjs collects it.
+ * Each `line` says what the service is in plain words: no prices, no claims
+ * about results, nothing about the steps inside the booking form.
  */
 
-/** The booking flow's front door. Used wherever a direct route is not known. */
-const BOOKING_FALLBACK = SITE.bookingUrl
-
-/**
- * The route the upholstery site has always used. It is this repository's own
- * established target rather than a guess, but it could not be resolved from
- * this machine, so it carries a note like the rest.
- */
-const UPHOLSTERY_BOOKING = 'https://kleaner.my/booknow/upholstery-cleaning'
+export type CtaLabel = 'Book now' | 'Get a quote'
 
 export type Service = {
+  /** The anchor id. Ads and WhatsApp messages deep-link to #<slug>. */
   slug: string
+  /** Older anchors that still have to land on this service. */
+  aliases?: readonly string[]
   name: string
-  /** The tile's own name, short enough for two lines of board lettering. */
-  short: string
-  /** The price tag on the tile. Read from prices.json like every figure. */
-  tag: string
-  /** One line, literal, no hype. Sits directly under the name. */
-  promise: string
-  bullets: readonly string[]
-  /** Rendered as given. "Get instant price" wherever we have no number. */
-  price: string
-  badge?: string
+  line: string
   bookingUrl: string
-  icon: IconName
-  /** The tile's drawing, from the board's own pictogram set. */
-  pictogram: PictogramName
-  /** True when bookingUrl is the generic flow rather than a direct route. */
-  isFallbackUrl: boolean
-  confirm?: string
+  cta: CtaLabel
+  photo: ImageMetadata
+  /** Describes the photo for screen readers. */
+  alt: string
 }
 
-export const QUOTE_PRICE = 'Get instant price'
-const TAG_INSTANT = 'Instant price'
+export type ServiceGroup = {
+  slug: string
+  name: string
+  icon: IconName
+  photo: ImageMetadata
+  services: readonly Service[]
+}
 
-export const SERVICES: readonly Service[] = [
+const BOOK_HOME = 'https://kleaner.my/booknow'
+const BOOK_POST_RENO = 'https://kleaner.my/booknow/post-renovation'
+const BOOK_AIRCOND = 'https://kleaner.my/booknow/aircond-servicing'
+const BOOK_UPHOLSTERY = 'https://kleaner.my/booknow/upholstery-cleaning'
+const BOOK_MOVERS = 'https://kleaner.my/booknow/movers'
+
+export const GROUPS: readonly ServiceGroup[] = [
   {
-    slug: 'general-cleaning',
-    name: 'General Cleaning (Hourly Maid)',
-    short: 'General Cleaning',
-    tag: TAG_INSTANT,
-    promise: 'Trained cleaners by the hour, minimum 4 hours, up to 4 cleaners.',
-    bullets: [
-      'Bring your own supplies or use ours',
-      'Weekly, biweekly, monthly or one-off',
-      'Same team on repeat bookings where possible',
-    ],
-    price: QUOTE_PRICE,
-    badge: 'Most booked',
-    bookingUrl: BOOKING_FALLBACK,
-    icon: 'vacuum',
-    pictogram: 'vacuum',
-    isFallbackUrl: true,
-  },
-  {
-    slug: 'sofa-mattress',
-    name: 'Sofa & Mattress Deep Cleaning',
-    short: 'Sofa & Mattress',
-    tag: `from ${rm(fromPrice('sofa'))}`,
-    promise:
-      'Extraction cleaning for sofas, from 1 seater to L-shape, and mattresses from single to super king.',
-    bullets: [
-      'Lifts dust mites, stains and odours',
-      'Left to dry after the clean',
-      'Priced per piece, not per hour',
-    ],
-    price: `from ${rm(fromPrice('sofa'))}`,
-    bookingUrl: UPHOLSTERY_BOOKING,
-    icon: 'sofa',
-    pictogram: 'sofa',
-    isFallbackUrl: false,
-  },
-  {
-    slug: 'post-renovation',
-    name: 'Post-Renovation Cleaning',
-    short: 'Post-Reno',
-    tag: `${rm(RATE_PER_SQFT)}/sqft`,
-    promise:
-      'Full clean of a newly renovated home, office, shoplot or restaurant, priced on built-up area.',
-    bullets: [
-      `${rm(RATE_PER_SQFT)} per sqft of built-up area`,
-      'Every floor type, including tile, marble, timber and vinyl',
-      'One-off, scheduled around your handover date',
-    ],
-    price: `${rm(RATE_PER_SQFT)} per sqft`,
-    bookingUrl: BOOKING_FALLBACK,
+    slug: 'home-cleaning',
+    name: 'Home cleaning',
     icon: 'home',
-    pictogram: 'house',
-    isFallbackUrl: true,
+    photo: homeGroupPhoto,
+    services: [
+      {
+        slug: 'standard-cleaning',
+        aliases: ['general-cleaning'],
+        name: 'Standard Cleaning',
+        line: 'Regular cleaning for your home, from floors to kitchen and bathrooms.',
+        bookingUrl: BOOK_HOME,
+        cta: 'Book now',
+        photo: standardPhoto,
+        alt: 'A Kleaner cleaner vacuuming beside a grey sofa in a bright condo living room',
+      },
+      {
+        slug: 'deep-cleaning',
+        name: 'Deep Cleaning',
+        line: 'A more thorough clean for a home that needs more than a regular visit.',
+        bookingUrl: BOOK_HOME,
+        cta: 'Book now',
+        photo: deepPhoto,
+        alt: 'A Kleaner cleaner in gloves wiping down a marble kitchen counter',
+      },
+      {
+        slug: 'move-in-move-out',
+        name: 'Move In / Move Out Cleaning',
+        line: 'Cleaning an empty home before you move in or after you move out.',
+        bookingUrl: BOOK_HOME,
+        cta: 'Book now',
+        photo: moveInOutPhoto,
+        alt: 'A Kleaner cleaner wiping a carton among moving boxes in an empty condo',
+      },
+    ],
   },
   {
-    slug: 'formaldehyde-removal',
-    name: 'Formaldehyde Removal & Air Sterilisation',
-    short: 'Formaldehyde',
-    tag: `from ${rm(FORMALDEHYDE_PRICE)}`,
-    promise:
-      'Formaldehyde filtering plus air and surface sterilisation for a newly renovated space.',
-    bullets: [
-      `Formaldehyde Filter ${rm(FORMALDEHYDE_PRICE)} per job`,
-      `Air & Surface Sterilisation ${rm(STERILISATION_PRICE)} per job`,
-      'Can be added to a post-renovation clean',
+    slug: 'after-renovation',
+    name: 'After renovation',
+    icon: 'renovation',
+    photo: renoGroupPhoto,
+    services: [
+      {
+        slug: 'post-renovation',
+        name: 'Post Renovation Cleaning',
+        line: 'Clearing the dust and debris left behind after renovation work.',
+        bookingUrl: BOOK_POST_RENO,
+        cta: 'Book now',
+        photo: postRenoPhoto,
+        alt: 'A Kleaner cleaner wiping dust off a window frame in a renovated condo',
+      },
+      {
+        slug: 'formaldehyde-removal',
+        name: 'Formaldehyde Removal',
+        line: 'Formaldehyde treatment for newly renovated or newly furnished rooms.',
+        bookingUrl: BOOK_POST_RENO,
+        cta: 'Book now',
+        photo: formaldehydePhoto,
+        alt: 'A Kleaner technician holding an air meter beside an air purifier',
+      },
     ],
-    price: `from ${rm(FORMALDEHYDE_PRICE)}`,
-    badge: 'New',
-    bookingUrl: BOOKING_FALLBACK,
-    icon: 'wind',
-    pictogram: 'air',
-    isFallbackUrl: true,
   },
   {
-    slug: 'movers',
-    name: 'Movers',
-    short: 'Movers',
-    tag: 'Get quote',
-    promise: 'Home and office moving, with cleaning booked in the same job.',
-    bullets: [
-      'Ballpark price before you commit',
-      'Confirmed quote before you pay',
-      'Across the Klang Valley',
+    slug: 'specialist-care',
+    name: 'Specialist care',
+    icon: 'snowflake',
+    photo: specialistGroupPhoto,
+    services: [
+      {
+        slug: 'aircond-maintenance',
+        name: 'Aircond Maintenance',
+        line: 'Servicing and cleaning for the aircond units in your home.',
+        bookingUrl: BOOK_AIRCOND,
+        cta: 'Book now',
+        photo: aircondPhoto,
+        alt: 'A Kleaner technician cleaning a wall-mounted aircond unit',
+      },
+      {
+        slug: 'sofa-mattress',
+        name: 'Sofa & Mattress Cleaning',
+        line: 'Cleaning for sofas and mattresses, done in your home.',
+        bookingUrl: BOOK_UPHOLSTERY,
+        cta: 'Book now',
+        photo: sofaPhoto,
+        alt: 'A Kleaner cleaner using an upholstery cleaner on a grey sofa',
+      },
+      {
+        slug: 'curtain-carpet',
+        name: 'Curtain & Carpet Cleaning',
+        line: 'Cleaning for curtains, sheers and carpets.',
+        bookingUrl: BOOK_UPHOLSTERY,
+        cta: 'Book now',
+        photo: curtainPhoto,
+        alt: 'A Kleaner cleaner steam cleaning long curtains by a window',
+      },
     ],
-    price: QUOTE_PRICE,
-    bookingUrl: SITE.moversSite,
+  },
+  {
+    slug: 'moving',
+    name: 'Moving',
     icon: 'truck',
-    pictogram: 'van',
-    isFallbackUrl: false,
-  },
-  {
-    slug: 'kleaner-club',
-    name: 'Kleaner Club',
-    short: 'Kleaner Club',
-    tag: 'Member rate',
-    promise: 'Recurring cleaning at member rates, with priority slots.',
-    bullets: [
-      'Member rate held for the length of the plan',
-      'Priority scheduling',
-      'Satisfaction guarantee on every visit',
+    photo: movingGroupPhoto,
+    services: [
+      {
+        slug: 'movers',
+        aliases: ['mover'],
+        name: 'Mover',
+        line: 'Home and office moves across the Klang Valley.',
+        bookingUrl: BOOK_MOVERS,
+        cta: 'Get a quote',
+        photo: moverPhoto,
+        alt: 'Two Kleaner movers carrying a wrapped sofa from a lorry into a terrace house',
+      },
     ],
-    price: QUOTE_PRICE,
-    badge: 'Best value',
-    bookingUrl: BOOKING_FALLBACK,
-    icon: 'starLine',
-    pictogram: 'star',
-    isFallbackUrl: true,
   },
 ] as const
+
+/** All nine services in page order. */
+export const SERVICES: readonly Service[] = GROUPS.flatMap((group) => group.services)
+
+/** The front door of the booking flow, used by the hero's Book now. */
+export const BOOKING_URL = BOOK_HOME

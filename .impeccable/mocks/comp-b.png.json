@@ -3,6 +3,7 @@
   "tool": "higgsfield gpt_image_2_5 (flare, high, 2k, 9:16, ref logo media 6591c71b-bf1f-4723-ae89-edfa438a526d)",
   "higgsfield_job_id": "96970b1b-09fe-49c4-896f-765e1828594e",
   "note": "Full prompt held in the Higgsfield job record; local file is a 758x1340 capture of the 1520x2688 original.",
-  "approved": true,
-  "approved_by": "user, structured question 2 Oct 2026"
+  "approved": false,
+  "approved_by": "user, structured question 2 Oct 2026",
+  "superseded_by": "services-comp-b.png (2 Oct 2026 redesign)"
 }

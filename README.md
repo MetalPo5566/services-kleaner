@@ -13,27 +13,33 @@ Forked from the shell in
 from [Claude-Upholstery](https://github.com/MetalPo5566/Claude-Upholstery).
 Same tokens, same motion vocabulary, same check suite.
 
-**Read [GO-LIVE.md](./GO-LIVE.md) before deploying.** The six booking links are
+**Read [GO-LIVE.md](./GO-LIVE.md) before deploying.** The nine booking links are
 the thing to look at first.
 
 ## The page
 
-Built as a kopitiam counter board: numbered tiles you point at, an order bar
-that books what you picked. The visual system is recorded in
-[DESIGN.md](./DESIGN.md); product facts in [PRODUCT.md](./PRODUCT.md).
+Laid out like a super-app service menu (the Grab or Touch 'n Go home screen):
+a photo-led hero, a launcher of the four groups, a sticky strip of group pills
+that follows the scroll, then each group in its own arrangement. The visual
+system is recorded in [DESIGN.md](./DESIGN.md); product facts in
+[PRODUCT.md](./PRODUCT.md). No prices anywhere: each booking flow shows its own.
 
 | Section | What it does |
 | --- | --- |
-| Board | "Order your clean.", the RM20 code pill (tap copies it), six numbered tiles with price tags |
-| Order bar | Fixed to the bottom. Names the picked tile; Book now opens that service's booking flow; the chevron opens the order slip (full name, price, what is included) |
-| Sets | Three tickets for the unsure, each straight to a booking flow, plus WhatsApp |
-| Guarantee | Reclean or full refund, and the house facts |
-| Voucher | RM20 off the first booking, code and terms |
+| Hero | "Your home, our honour.", Book now (kleaner.my/booknow) and WhatsApp us |
+| Launcher | Four photo tiles, one per group, each jumping to its group |
+| Pill strip | Sticks under the header and lights the group in view |
+| Home cleaning | Standard, Deep, Move In / Move Out as a swipeable row (three columns on wide screens) |
+| After renovation | Post Renovation and Formaldehyde Removal as wide rows |
+| Specialist care | Sofa & Mattress, Aircond, Curtain & Carpet as a bento of three |
+| Moving | Mover as a photo and blue panel, "Get a quote" |
+| Proof | 100,000+ cleaning hours and reclean or full refund, nothing else |
+| Close | WhatsApp us, for the unsure |
 
-First tap on a tile selects it, the second tap (or Book now) books. Without
-JavaScript every tile is a plain link to its booking flow. `#<slug>` in the URL
-preselects a tile, so ads can land on one, for example
-`services.kleaner.my/#post-renovation`.
+Every service has its own anchor, so ads and WhatsApp can deep-link, for
+example `services.kleaner.my/#formaldehyde-removal`. The previous page's
+anchors (`#general-cleaning`, `#sofa-mattress`, `#post-renovation`,
+`#formaldehyde-removal`, `#movers`) still land on the matching service.
 
 ## Stack
 
@@ -41,10 +47,10 @@ Astro 7, static output, Tailwind CSS 4. No client framework and no third party
 runtime dependency: the only external script is Google Tag Manager, and only
 when a container ID is configured. 
 
-**No raster image on the page apart from the logo.** The tile drawings are
-inline SVG from `src/components/Pictogram.astro` and the small icons from
-`src/components/Icon.astro`. Anton, Oswald and Lato are self hosted from
-`public/fonts`.
+**Photos** are generated plates in `assets/plates` and `assets/photos`, each
+with its generation prompt embedded in the file; Astro serves them as AVIF and
+WebP at the sizes each slot needs. Icons are Phosphor (regular) through
+`src/components/Icon.astro`. Reddit Sans is self hosted from `public/fonts`.
 
 ## Commands
 
@@ -100,14 +106,13 @@ reads "Get instant price" rather than a guess.
 
 Two things about the cards are deliberate:
 
-- **The whole card is the anchor**, so the tap target is the card and not the
-  button inside it. That means the Book now control is a styled `span`, not a
-  `button`: an interactive element nested in an anchor is invalid and breaks
-  keyboard order. `npm run qa` asserts no card nests one.
-- **Cards whose booking URL is the front of the flow say so**, in a line under
-  the price. Four of the six are in that state. See GO-LIVE.md.
+- **Each service has one real button**, `Book now` (or `Get a quote` for the
+  Mover), linking straight to its booking flow. Cards are not links
+  themselves, so nothing interactive is nested.
+- **The pill strip works without JavaScript**: every pill is a plain anchor;
+  the script only lights the group in view.
 
-Each card carries `data-cta="book"` and `data-service="<slug>"`, so the shell's
+Each booking button carries `data-cta="book"` and `data-service="<slug>"`, so the shell's
 existing delegated handler reports a `cta_book` event per card with its slug and
 no new JavaScript.
 

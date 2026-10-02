@@ -22,6 +22,9 @@ interface Props {
   alternates?: { hrefLang: string; href: string }[]
   /** The LCP image. Exactly one per page, never more. */
   preloadImage?: string
+  /** Responsive candidates for the LCP image, matching its srcset and sizes. */
+  preloadImageSrcset?: string
+  preloadImageSizes?: string
   stickyBookHref?: string
   stickyBookLabel?: string
   langSwitch?: { label: string; href: string; hrefLang: string }
@@ -45,6 +48,8 @@ const {
   ogLocale = 'en_MY',
   alternates = [],
   preloadImage = '',
+  preloadImageSrcset = '',
+  preloadImageSizes = '',
   stickyBookHref = '',
   stickyBookLabel = '',
   langSwitch,
@@ -70,25 +75,35 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#FFFFFF" />
-    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F7F9FC" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0A131F" />
+    <meta name="color-scheme" content="light dark" />
 
     {
       /* The hero image is the LCP element, so it is the one image that is
          preloaded. Nothing else on the page competes with it for bandwidth. */
-      preloadImage && <link rel="preload" href={preloadImage} as="image" fetchpriority="high" />
+      preloadImage && (
+        <link
+          rel="preload"
+          href={preloadImage}
+          as="image"
+          fetchpriority="high"
+          imagesrcset={preloadImageSrcset || undefined}
+          imagesizes={preloadImageSizes || undefined}
+        />
+      )
     }
 
     <link
       rel="preload"
-      href="/fonts/lato-latin-400-normal.woff2"
+      href="/fonts/reddit-sans-latin-800-normal.woff2"
       as="font"
       type="font/woff2"
       crossorigin
     />
     <link
       rel="preload"
-      href="/fonts/anton-latin-400-normal.woff2"
+      href="/fonts/reddit-sans-latin-400-normal.woff2"
       as="font"
       type="font/woff2"
       crossorigin
@@ -134,13 +149,17 @@ const gtmId = import.meta.env.PUBLIC_GTM_ID
         // reads as a layer rather than a painted strip. This is a shadow, not
         // movement, so it runs whatever the motion preference.
         var shadowOnScroll = function () {
+          // An 8px sentinel at the top of the page: once it leaves the
+          // viewport the page has scrolled under the header. No scroll listener.
           var header = document.querySelector('[data-header]')
-          if (!header) return
-          var apply = function () {
-            header.classList.toggle('is-scrolled', window.scrollY > 8)
-          }
-          apply()
-          window.addEventListener('scroll', apply, { passive: true })
+          if (!header || !('IntersectionObserver' in window)) return
+          var sentinel = document.createElement('div')
+          sentinel.setAttribute('aria-hidden', 'true')
+          sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:8px;pointer-events:none'
+          document.body.prepend(sentinel)
+          new IntersectionObserver(function (entries) {
+            header.classList.toggle('is-scrolled', !entries[0].isIntersecting)
+          }).observe(sentinel)
         }
 
         // Fade up on scroll. Elements are only hidden once we know the observer

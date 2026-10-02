@@ -1,16 +1,14 @@
 // Screenshots at the four target widths, plus the interaction checks that are
 // easy to get wrong: the header dropdown on touch and keyboard, the service
 // grid, and the page still working with JavaScript off.
-import { mkdirSync, writeFileSync, readFileSync } from 'node:fs'
+import { mkdirSync, writeFileSync } from 'node:fs'
 import { chromium } from 'playwright'
 
 const BASE = process.env.QA_BASE || 'http://127.0.0.1:4321'
 const OUT = 'qa'
 mkdirSync(OUT, { recursive: true })
 
-const prices = JSON.parse(readFileSync('src/data/prices.json', 'utf8'))
-const SOFA_FROM = Math.min(...prices.groups.sofa.items.map((item) => item.price))
-const SERVICE_COUNT = 6
+const SERVICE_COUNT = 9
 
 // 1280 is in here because it is the width the brief asks to see.
 const WIDTHS = [390, 768, 1280, 1440]
@@ -40,14 +38,6 @@ const settle = async (page) => {
     document.documentElement.classList.remove('reveal-ready')
     document.documentElement.style.scrollBehavior = 'auto'
   })
-}
-
-/** How many cards share the top of the first row, which is the column count. */
-const columnCount = () => {
-  const tops = [...document.querySelectorAll('[data-service-card]')].map((card) =>
-    Math.round(card.getBoundingClientRect().top)
-  )
-  return tops.filter((top) => top === tops[0]).length
 }
 
 const browser = await chromium.launch({
@@ -159,95 +149,72 @@ for (const width of WIDTHS) {
   await context.close()
 }
 
-// 5. The service grid at desktop width. This page has one job, so the checks
-// are about the card being a single tap that lands somewhere real.
+// 5. Every service books in one tap, at desktop width, and reports its slug.
 {
-  const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } })
   const page = await context.newPage()
   await page.goto(BASE, { waitUntil: 'networkidle' })
   await settle(page)
 
-  const cards = await page.evaluate(() =>
-    [...document.querySelectorAll('[data-service-card]')].map((card) => ({
-      slug: card.getAttribute('data-service'),
-      href: card.getAttribute('href'),
-      cta: card.getAttribute('data-cta'),
-      target: card.getAttribute('target'),
-      // An interactive element inside an anchor is invalid and breaks the
-      // keyboard order, so the Book now control must be a plain span.
-      nested: card.querySelectorAll('a, button, input, select, textarea').length,
-      headings: card.querySelectorAll('h2').length,
-    }))
+  const links = await page.$$eval('[data-cta="book"]', (all) =>
+    all.map((a) => ({ service: a.getAttribute('data-service'), href: a.getAttribute('href'), target: a.getAttribute('target') }))
   )
+  const services = links.filter((link) => link.service !== 'hero')
+  record('every service has its own booking link', services.length === SERVICE_COUNT, `${services.length}`)
+  record('every booking link opens kleaner.my/booknow', links.every((l) => l.href.startsWith('https://kleaner.my/booknow')))
+  record('booking links open in the same tab', links.every((l) => !l.target))
+  record('home cleaning is three columns at 1440', (await page.evaluate(() => {
+    const tops = [...document.querySelectorAll('#home-cleaning li')].map((li) => Math.round(li.getBoundingClientRect().top))
+    return tops.filter((t) => t === tops[0]).length
+  })) === 3)
 
-  record('every service is on the page as a card', cards.length === SERVICE_COUNT, `${cards.length} cards`)
-  record('every card has a slug and an href', cards.every((card) => card.slug && card.href))
-  // Tiles select first and book on the second tap, so they report their own
-  // cta_book event from the board script rather than through data-cta.
-  record('no tile reports a booking on its selecting tap', cards.every((card) => card.cta === null))
-  record(
-    'every card links to a known Kleaner host',
-    cards.every(
-      (card) => card.href.startsWith('https://kleaner.my/') || card.href.startsWith('https://movers.kleaner.my')
-    ),
-    cards.map((card) => card.href).join(' | ')
-  )
-  record('no card nests an interactive element inside the link', cards.every((card) => card.nested === 0))
-  const slipHeadings = await page.$$eval('[data-detail] h2', (els) => els.length)
-  record('every service is named in an H2 in the order slip', slipHeadings === SERVICE_COUNT, `${slipHeadings}`)
-  record('cards open in the same tab', cards.every((card) => !card.target))
-
-  record('grid is 3 columns at 1280', (await page.evaluate(columnCount)) === 3)
-  record(`sofa card quotes from RM${SOFA_FROM}`, (await page.content()).includes(`from RM${SOFA_FROM}`))
-
-  // Each card fires its own slug, which is what the brief asked for.
   await page.evaluate(blockNavigation)
-  await page.locator('[data-service-card]').nth(3).click()
-  const afterSelect = await page.evaluate(() => (window.dataLayer || []).filter((e) => e.event === 'cta_book').length)
-  record('the first tap selects without reporting a booking', afterSelect === 0, `${afterSelect}`)
-  record(
-    'the order bar books the selected service',
-    (await page.getAttribute('[data-order-book]', 'href')) === cards[3].href
-  )
-  await page.locator('[data-service-card]').nth(3).click()
-  const events = await page.evaluate(() => window.dataLayer || [])
-  const fired = events.filter((entry) => entry.event === 'cta_book').pop()
-  record('a card click reports its own slug', fired?.service === cards[3].slug, JSON.stringify(fired))
+  await page.locator('[data-service="aircond-maintenance"]').click()
+  const fired = await page.evaluate(() => (window.dataLayer || []).filter((e) => e.event === 'cta_book').pop())
+  record('a booking tap reports its own slug', fired?.service === 'aircond-maintenance', JSON.stringify(fired))
   record('the event reports the page', fired?.page === '/', JSON.stringify(fired?.page))
   await context.close()
 }
 
-// 6. The same grid on a phone, and the one floating control.
+// 6. On a phone: the hero fits, the pills stick and follow the scroll, and a
+// deep link lands its service below the sticky chrome.
 {
   const context = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true })
   const page = await context.newPage()
   await page.goto(BASE, { waitUntil: 'networkidle' })
   await settle(page)
 
-  record('grid is 2 columns at 390', (await page.evaluate(columnCount)) === 2)
-
-  // The order bar replaces the floating WhatsApp button on this page.
-  record('order bar is visible on a phone', await page.locator('[data-order-bar]').isVisible())
-  const placed = await page.evaluate(() => {
-    const el = document.querySelector('[data-order-bar]')
-    if (!el) return null
-    const box = el.getBoundingClientRect()
-    return { left: box.left, bottom: window.innerHeight - box.bottom, width: box.width }
+  const fold = await page.evaluate(() => {
+    const book = document.querySelector('[data-service="hero"]').getBoundingClientRect()
+    const h1 = document.querySelector('h1')
+    const lines = Math.round(h1.getBoundingClientRect().height / parseFloat(getComputedStyle(h1).lineHeight))
+    return { bookBottom: book.bottom, lines }
   })
-  record(
-    'order bar spans the bottom edge',
-    Boolean(placed) && placed.left === 0 && placed.bottom === 0 && placed.width === 390,
-    JSON.stringify(placed)
-  )
-  record('WhatsApp is still on the page', (await page.locator('a[data-cta="whatsapp"]').count()) > 0)
+  record('hero Book now is above the fold at 390', fold.bookBottom < 844, JSON.stringify(fold))
+  record('hero headline holds two lines at 390', fold.lines <= 2, JSON.stringify(fold))
+  record('no horizontal page scroll at 390', (await page.evaluate(() => document.documentElement.scrollWidth)) <= 390)
 
-  const gap = await page.evaluate(() => parseFloat(getComputedStyle(document.body).paddingBottom))
-  record('no dead space where a sticky bar would be', gap < 8, `${gap}px`)
-
-  const hrefs = await page.evaluate(() => [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href')))
-  record('no sticky bar anchor on the page', !hrefs.includes('#quote'))
-  record('the voucher CTA reaches the booking form', hrefs.includes('https://kleaner.my/booknow/'))
+  await page.evaluate(() => document.querySelector('#specialist-care').scrollIntoView({ behavior: 'instant' }))
+  await page.waitForTimeout(300)
+  const pill = await page.evaluate(() => {
+    const bar = document.querySelector('[data-pill-bar]').getBoundingClientRect()
+    const current = document.querySelector('[data-pill][aria-current="true"]')
+    return { top: Math.round(bar.top), current: current?.dataset.pill }
+  })
+  record('pill strip sticks under the header', pill.top === 59, JSON.stringify(pill))
+  record('pill strip lights the group in view', pill.current === 'specialist-care', JSON.stringify(pill))
   await context.close()
+
+  const deep = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true })
+  const deepPage = await deep.newPage()
+  await deepPage.goto(`${BASE}/#formaldehyde-removal`, { waitUntil: 'networkidle' })
+  await deepPage.waitForTimeout(400)
+  const landed = await deepPage.evaluate(() => {
+    const r = document.querySelector('#formaldehyde-removal').getBoundingClientRect()
+    return { top: Math.round(r.top) }
+  })
+  record('#formaldehyde-removal lands below the sticky chrome', landed.top >= 110 && landed.top < 200, JSON.stringify(landed))
+  await deep.close()
 }
 
 // 7. dataLayer events fire on the WhatsApp controls too.
@@ -263,7 +230,7 @@ for (const width of WIDTHS) {
   const whatsapp = events.find((entry) => entry.event === 'cta_whatsapp')
   record(
     'pushes cta_whatsapp with page and service',
-    Boolean(whatsapp) && whatsapp.page === '/' && whatsapp.service === 'services-hub',
+    Boolean(whatsapp) && whatsapp.page === '/' && whatsapp.service === 'hero',
     JSON.stringify(whatsapp)
   )
   await context.close()
@@ -294,7 +261,7 @@ for (const width of WIDTHS) {
       }).length
   )
   record('reduced motion drops the travel', moved === 0, `${moved} transformed`)
-  record('every card is still reachable under reduced motion', (await page.locator('[data-service-card]').count()) === SERVICE_COUNT)
+  record('every service is still reachable under reduced motion', (await page.locator('[data-cta="book"]').count()) === SERVICE_COUNT + 1)
   await context.close()
 }
 
@@ -304,8 +271,8 @@ for (const width of WIDTHS) {
   const page = await context.newPage()
   await page.goto(BASE, { waitUntil: 'load' })
 
-  record('every card is there without JavaScript', (await page.locator('[data-service-card]').count()) === SERVICE_COUNT)
-  record('the first card is still a link', Boolean(await page.locator('[data-service-card]').first().getAttribute('href')))
+  record('every booking link is there without JavaScript', (await page.locator('[data-cta="book"]').count()) === SERVICE_COUNT + 1)
+  record('the group pills are plain links without JavaScript', (await page.locator('[data-pill]').first().getAttribute('href')) === '#home-cleaning')
   const hidden = await page.evaluate(
     () =>
       [...document.querySelectorAll('[data-reveal]')].filter(

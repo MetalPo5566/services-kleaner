@@ -1,145 +1,120 @@
 @import 'tailwindcss';
 
-/* Self-hosted Lato. Files are copied from @fontsource/lato by scripts/copy-fonts.mjs. */
+/* Reddit Sans, the one family on the page, self hosted from @fontsource by
+   scripts/copy-fonts.mjs. It was matched to the approved comp's headline by
+   impeccable font-match: 800 for display, 700 for service names and buttons,
+   500 and 400 for labels and body. */
 @font-face {
-  font-family: 'Lato';
+  font-family: 'Reddit Sans';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/lato-latin-400-normal.woff2') format('woff2');
+  src: url('/fonts/reddit-sans-latin-400-normal.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
     U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
     U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('/fonts/lato-latin-700-normal.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-    U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
-    U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 900;
-  font-display: swap;
-  src: url('/fonts/lato-latin-900-normal.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-    U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
-    U+2215, U+FEFF, U+FFFD;
-}
-
-/* Anton, the counter-board display face: headline, tile numerals and names.
-   Oswald, the condensed label face: price tags, the order bar, small caps.
-   Both self hosted from @fontsource by scripts/copy-fonts.mjs. */
-@font-face {
-  font-family: 'Anton';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('/fonts/anton-latin-400-normal.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
-    U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
-    U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'Oswald';
+  font-family: 'Reddit Sans';
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('/fonts/oswald-latin-500-normal.woff2') format('woff2');
+  src: url('/fonts/reddit-sans-latin-500-normal.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
     U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
     U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: 'Oswald';
+  font-family: 'Reddit Sans';
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('/fonts/oswald-latin-700-normal.woff2') format('woff2');
+  src: url('/fonts/reddit-sans-latin-700-normal.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
     U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
     U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: 'Oswald';
+  font-family: 'Reddit Sans';
   font-style: normal;
-  font-weight: 600;
+  font-weight: 800;
   font-display: swap;
-  src: url('/fonts/oswald-latin-600-normal.woff2') format('woff2');
+  src: url('/fonts/reddit-sans-latin-800-normal.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
     U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
     U+2215, U+FEFF, U+FFFD;
 }
 
-/* Metric matched fallback so swapping to Lato does not shift the layout. */
+/* Metric matched fallback so the swap to Reddit Sans does not shift the layout. */
 @font-face {
-  font-family: 'Lato Fallback';
+  font-family: 'Reddit Sans Fallback';
   src: local('Arial');
-  size-adjust: 97.4%;
-  ascent-override: 101.2%;
-  descent-override: 21.8%;
-  line-gap-override: 0%;
-}
-
-/* Condensed fallbacks, so the swap to Anton and Oswald does not reflow the
-   headline or the tiles. Values fitted against Arial Narrow and Arial. */
-@font-face {
-  font-family: 'Anton Fallback';
-  src: local('Arial Narrow Bold'), local('ArialNarrow-Bold'), local('Arial Bold'), local('Arial');
-  size-adjust: 84%;
-  ascent-override: 140%;
-  descent-override: 38%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: 'Oswald Fallback';
-  src: local('Arial Narrow'), local('ArialNarrow'), local('Arial');
-  size-adjust: 81%;
-  ascent-override: 147%;
-  descent-override: 36%;
+  size-adjust: 99%;
+  ascent-override: 96%;
+  descent-override: 26%;
   line-gap-override: 0%;
 }
 
 @theme {
-  /* Brand blue is the official colour. brand-dark carries AA contrast with white
-     text, so every filled button uses it. brand-ink is for link text on tints. */
+  /* Brand blue is the official colour and the page's only accent. brand-dark
+     carries AA contrast with white text, so every filled button uses it.
+     brand-ink is blue text on light grounds. */
   --color-brand: #0088f8;
   --color-brand-dark: #0071d1;
+  --color-brand-hover: #005fb4;
   --color-brand-ink: #006abf;
-  --color-brand-tint: #eaf5ff;
-  --color-brand-circle: #cce7fe;
-  --color-brand-line: #d5e9fb;
+
+  /* Surfaces and ink. These are the tokens the dark scheme swaps below, so
+     every component that paints with them follows the system setting. */
+  --color-page: #f7f9fc;
+  --color-raised: #fdfeff;
+  --color-tint: #eef3f9;
+  --color-pill: #e6edf5;
+  --color-line: #dbe4ee;
+  --color-navy: #0b2747;
+  --color-ink: #46586f;
+
+  /* Shared kleaner.my chrome tokens, mapped onto the same system. */
+  --color-brand-tint: #eef3f9;
+  --color-brand-circle: #dcebfb;
+  --color-brand-line: #dbe4ee;
   --color-wa: #00cd56;
   --color-wa-dark: #00863a;
-  /* Counter board palette. Tile is the brand blue the enamel tiles are painted
-     in; sun is the lit, selected tile; navy is the board's ink and the order
-     bar. Text on tile is only ever large display type, which clears 3:1. */
-  --color-tile: #0088f8;
-  --color-sun: #fac93f;
-  --color-sun-dark: #edb91f;
-  --color-navy: #0b2747;
-  --color-ink: #3e5470;
-  --color-paper: #f4f7fa;
+  --color-paper: #eef3f9;
 
-  --font-sans: 'Lato', 'Lato Fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
-    Roboto, Arial, sans-serif;
-  --font-board: 'Anton', 'Anton Fallback', 'Arial Narrow', Impact, sans-serif;
-  --font-label: 'Oswald', 'Oswald Fallback', 'Arial Narrow', Arial, sans-serif;
+  --font-sans: 'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', Roboto, Arial, sans-serif;
 
-  --radius-card: 1.5rem;
+  /* One radius system: 24px tiles and photos, 16px small photos, full pills
+     for every control. */
+  --radius-tile: 1.5rem;
+  --radius-thumb: 1rem;
 
-  --shadow-soft: 0 1px 2px rgb(17 38 60 / 0.04), 0 8px 24px -12px rgb(17 38 60 / 0.12);
-  --shadow-lift: 0 2px 4px rgb(17 38 60 / 0.05), 0 18px 40px -18px rgb(17 38 60 / 0.22);
+  --shadow-soft: 0 1px 2px rgb(11 39 71 / 0.04), 0 10px 28px -16px rgb(11 39 71 / 0.18);
 
-  /* One motion vocabulary for the whole site. The browser defaults are too
-     weak to read as deliberate, so these are the stronger standards. */
+  /* One motion vocabulary for the whole site. */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* Dark scheme. The same Kleaner blue on a deep blue-black, so the brand stays
+   recognisable; surfaces step up in lightness the way the light ones step down. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-brand-ink: #4fb0ff;
+    --color-page: #0a131f;
+    --color-raised: #101c2b;
+    --color-tint: #142336;
+    --color-pill: #1a2c42;
+    --color-line: #22364e;
+    --color-navy: #e8f0f9;
+    --color-ink: #a8b7ca;
+    --color-brand-tint: #142336;
+    --color-brand-circle: #1a2c42;
+    --color-brand-line: #22364e;
+    --color-paper: #142336;
+    --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.3), 0 10px 28px -16px rgb(0 0 0 / 0.6);
+  }
 }
 
 @layer base {
@@ -148,8 +123,12 @@
     scroll-behavior: smooth;
   }
 
+  html {
+    color-scheme: light dark;
+  }
+
   body {
-    background-color: #fff;
+    background-color: var(--color-page);
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-weight: 400;
@@ -162,8 +141,9 @@
   h3,
   h4 {
     color: var(--color-navy);
-    font-weight: 700;
-    line-height: 1.15;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
     text-wrap: balance;
   }
 
@@ -181,8 +161,8 @@
   }
 
   ::selection {
-    background-color: var(--color-sun);
-    color: var(--color-navy);
+    background-color: var(--color-brand-dark);
+    color: #fdfeff;
   }
 
   input,
@@ -191,7 +171,7 @@
   }
 
   html {
-    scrollbar-color: var(--color-navy) var(--color-paper);
+    scrollbar-color: var(--color-ink) var(--color-tint);
   }
 
   a {
@@ -234,12 +214,12 @@
   /* The Chinese page uses whatever CJK face the device already has. Naming the
      common ones keeps Android and Windows off a serif default. Nothing is self
      hosted: a Simplified Chinese webfont is megabytes, which would cost more
-     than it returns on a page whose budget is the hero image. Lato still wins
+     than it returns on a page whose budget is the hero image. Reddit Sans still wins
      for Latin because its unicode-range stops it at the Latin block. */
   :lang(zh-Hans) {
     font-family:
-      'Lato',
-      'Lato Fallback',
+      'Reddit Sans',
+      'Reddit Sans Fallback',
       'PingFang SC',
       'Hiragino Sans GB',
       'Microsoft YaHei',

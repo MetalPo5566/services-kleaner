@@ -25,6 +25,7 @@ const {
 } = Astro.props as Props
 
 // The white version is masked from the same artwork, so the shape is identical.
+// In the dark scheme the default lockup swaps to it through <picture>.
 const src = variant === 'onDark' ? '/images/kleaner-logo-white.png' : '/images/kleaner-logo.png'
 
 const Wrapper = href ? 'a' : 'div'
@@ -32,6 +33,10 @@ const wrapperProps = href ? { href } : {}
 ---
 
 <Wrapper {...wrapperProps} class={`inline-block ${className}`}>
+  <picture>
+  {variant === 'default' && (
+    <source srcset="/images/kleaner-logo-white.png" media="(prefers-color-scheme: dark)" />
+  )}
   <img
     src={src}
     width={INTRINSIC_WIDTH}
@@ -42,4 +47,5 @@ const wrapperProps = href ? { href } : {}
     fetchpriority={eager ? 'high' : undefined}
     decoding="async"
   />
+  </picture>
 </Wrapper>
