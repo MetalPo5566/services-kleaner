@@ -76,7 +76,7 @@ export const SERVICES_EN: ServicesCopy = {
   meta: {
     title: 'Cleaning Services in Klang Valley | Kleaner',
     description:
-      'Every Kleaner service in one place: general cleaning, sofa and mattress, post-renovation, formaldehyde removal, movers and Kleaner Club. Book in one tap.',
+      'Every Kleaner service in one place: home, deep and post-renovation cleaning, aircond, sofa, curtain and carpet, and movers. Book in one tap.',
     ogImage: '/og/index.jpg',
   },
 
@@ -119,14 +119,14 @@ export const SERVICES_EN: ServicesCopy = {
       {
         letter: 'B',
         question: 'Stains on the sofa or mattress?',
-        answer: 'Sofa & Mattress Deep Cleaning, priced per piece.',
+        answer: 'Sofa & Mattress Cleaning, booked by the piece.',
         slug: 'sofa-mattress',
       },
       {
         letter: 'C',
         question: 'Want regular help at home?',
-        answer: 'General Cleaning, weekly, biweekly or monthly.',
-        slug: 'general-cleaning',
+        answer: 'Standard Cleaning, weekly, biweekly or monthly.',
+        slug: 'standard-cleaning',
       },
     ],
     whatsAppLead: 'Still not sure? Describe the job and we will tell you which one it is.',
