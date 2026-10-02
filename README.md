@@ -13,7 +13,7 @@ Forked from the shell in
 from [Claude-Upholstery](https://github.com/MetalPo5566/Claude-Upholstery).
 Same tokens, same motion vocabulary, same check suite.
 
-**Read [GO-LIVE.md](./GO-LIVE.md) before deploying.** The nine booking links are
+**Read [GO-LIVE.md](./GO-LIVE.md) before deploying.** The six booking links are
 the thing to look at first.
 
 ## The page
@@ -24,7 +24,7 @@ that books what you picked. The visual system is recorded in
 
 | Section | What it does |
 | --- | --- |
-| Board | "Order your clean.", the RM20 code pill (tap copies it), nine numbered tiles, no prices |
+| Board | "Order your clean.", the RM20 code pill (tap copies it), six numbered tiles with price tags |
 | Order bar | Fixed to the bottom. Names the picked tile; Book now opens that service's booking flow; the chevron opens the order slip (full name, price, what is included) |
 | Sets | Three tickets for the unsure, each straight to a booking flow, plus WhatsApp |
 | Guarantee | Reclean or full refund, and the house facts |
@@ -105,7 +105,7 @@ Two things about the cards are deliberate:
   `button`: an interactive element nested in an anchor is invalid and breaks
   keyboard order. `npm run qa` asserts no card nests one.
 - **Cards whose booking URL is the front of the flow say so**, in a line under
-  the bullets. Standard, deep and move in/out cleaning are in that state.
+  the price. Four of the six are in that state. See GO-LIVE.md.
 
 Each card carries `data-cta="book"` and `data-service="<slug>"`, so the shell's
 existing delegated handler reports a `cta_book` event per card with its slug and

@@ -2,17 +2,7 @@
 // The tile pictograms. Drawn for the counter board on a 64 unit box, one line
 // weight, round caps, so they read at the size a kopitiam menu prints its
 // little drawings. The 24 unit icon set stays for small UI icons.
-export type PictogramName =
-  | 'vacuum'
-  | 'spray'
-  | 'box'
-  | 'sofa'
-  | 'curtain'
-  | 'house'
-  | 'air'
-  | 'aircond'
-  | 'van'
-  | 'star'
+export type PictogramName = 'vacuum' | 'sofa' | 'house' | 'air' | 'van' | 'star'
 
 interface Props {
   name: PictogramName
@@ -22,17 +12,10 @@ interface Props {
 const PATHS: Record<PictogramName, string> = {
   vacuum:
     '<path d="M5 54v-5a11 11 0 0 1 11-11h11a11 11 0 0 1 11 11v5Z"/><circle cx="14" cy="48" r="2.6"/><path d="M27 38c0-13 4.5-21 13-23"/><path d="m40 14 13.5 37"/><path d="M46 54h14"/>',
-  spray:
-    '<path d="M22 54V38a8 8 0 0 1 8-8h6a8 8 0 0 1 8 8v16Z"/><path d="M27 30v-6h12v6"/><path d="M25 24v-8h17l5 5h-9v3"/><path d="M53 13h.01M56 19h.01M53 25h.01"/>',
-  box: '<path d="M10 28h44v26H10Z"/><path d="M10 28 5 19h22l5 9"/><path d="M54 28l5-9H37l-5 9"/><path d="M27 28v9h10v-9"/>',
   sofa: '<path d="M14 31v-7.5A6.5 6.5 0 0 1 20.5 17h23a6.5 6.5 0 0 1 6.5 6.5V31"/><path d="M32 17.5v13.5"/><path d="M7 36.5a5.5 5.5 0 0 1 11 0V41h28v-4.5a5.5 5.5 0 0 1 11 0V50H7Z"/><path d="M11.5 50v5M52.5 50v5"/>',
-  curtain:
-    '<path d="M5 12h54"/><path d="M11 12v42h14c-4-14-4-28 0-42"/><path d="M53 12v42H39c4-14 4-28 0-42"/><path d="M18 16v34M46 16v34"/>',
   house:
     '<path d="m7 31 25-21 25 21"/><path d="M13.5 26v28h37V26"/><path d="M44 19v-7h5.5v12"/><path d="M26 33h12v12H26Z"/><path d="M32 33v12M26 39h12"/>',
   air: '<path d="M6 24h27a7 7 0 1 0-7-7"/><path d="M6 33h36a7.5 7.5 0 1 1-7.5 7.5"/><path d="M6 42h17"/><path d="M48 24h9"/>',
-  aircond:
-    '<path d="M7 13h50a3 3 0 0 1 3 3v13a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V16a3 3 0 0 1 3-3Z"/><path d="M10 26h44"/><path d="M48 19h4"/><path d="M19 39c3 3 0 7 3 10M32 39c3 3 0 7 3 10M45 39c3 3 0 7 3 10"/>',
   van: '<path d="M18 19h25v26H18Z"/><path d="M43 26h9.5l6.5 8.5V45H43Z"/><path d="M46 29h5.5l3.5 5h-9Z"/><circle cx="26" cy="47" r="4.6"/><circle cx="51" cy="47" r="4.6"/><path d="M4 25h9M2 32h11M6 39h7"/>',
   star: '<path d="m32 8 7.1 14.4 15.9 2.3-11.5 11.2 2.7 15.8L32 44.3l-14.2 7.4 2.7-15.8L9 24.7l15.9-2.3Z"/>',
 }

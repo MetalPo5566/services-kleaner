@@ -61,8 +61,8 @@ export const SITE = {
   areaServed: 'Kuala Lumpur and Selangor',
   areaShort: 'KL & Selangor',
   /**
-   * The front of the BookingKoala flow. Standard, deep and move in/out
-   * cleaning book here; the other services have their own routes.
+   * The front of the BookingKoala flow. Four of the six service cards still
+   * point here because their direct routes are not known. See GO-LIVE.md.
    */
   bookingUrl: 'https://kleaner.my/booknow/',
   reviewsUrl: 'https://kleaner.my/reviews',

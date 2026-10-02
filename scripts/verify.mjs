@@ -27,17 +27,13 @@ const BRIEF_PRICES = {
 
 // The services as written in the brief, restated here on the same principle:
 // a service quietly dropped from src/data/services.ts should fail a check.
-// Each service books on its own route, also as written in the brief.
 const BRIEF_SERVICES = [
-  { slug: 'standard-cleaning', name: 'Standard Cleaning', url: 'https://kleaner.my/booknow/' },
-  { slug: 'deep-cleaning', name: 'Deep Cleaning', url: 'https://kleaner.my/booknow/' },
-  { slug: 'move-in-out', name: 'Move In / Move Out Cleaning', url: 'https://kleaner.my/booknow/' },
-  { slug: 'post-renovation', name: 'Post Renovation Cleaning', url: 'https://kleaner.my/booknow/post-renovation' },
-  { slug: 'formaldehyde-removal', name: 'Formaldehyde Removal', url: 'https://kleaner.my/booknow/post-renovation' },
-  { slug: 'aircond-maintenance', name: 'Aircond Maintenance', url: 'https://kleaner.my/booknow/aircond-servicing' },
-  { slug: 'sofa-mattress', name: 'Sofa & Mattress Cleaning', url: 'https://kleaner.my/booknow/upholstery-cleaning' },
-  { slug: 'curtain-carpet', name: 'Curtain & Carpet Cleaning', url: 'https://kleaner.my/booknow/upholstery-cleaning' },
-  { slug: 'movers', name: 'Mover', url: 'https://kleaner.my/booknow/movers' },
+  { slug: 'general-cleaning', name: 'General Cleaning (Hourly Maid)' },
+  { slug: 'sofa-mattress', name: 'Sofa & Mattress Deep Cleaning' },
+  { slug: 'post-renovation', name: 'Post-Renovation Cleaning' },
+  { slug: 'formaldehyde-removal', name: 'Formaldehyde Removal & Air Sterilisation' },
+  { slug: 'movers', name: 'Movers' },
+  { slug: 'kleaner-club', name: 'Kleaner Club' },
 ]
 
 // The site's own money formatting, restated rather than imported, so the check
@@ -45,6 +41,7 @@ const BRIEF_SERVICES = [
 const money = (value) => `RM${Number.isInteger(value) ? value : value.toFixed(2)}`
 
 const prices = JSON.parse(readFileSync('src/data/prices.json', 'utf8'))
+const RATE = prices.groups.postreno.items[0].price
 
 const page = join(DIST, 'index.html')
 check('the page was built', existsSync(page))
@@ -76,9 +73,10 @@ const cardCount = (html.match(/data-service-card/g) || []).length
 check('one card per service', cardCount === BRIEF_SERVICES.length, `${cardCount}`)
 
 // 3. No card may point at nothing, and none may leave the known hosts.
-const ALLOWED_BOOKING_HOSTS = ['https://kleaner.my/']
-const cardTags = [...html.matchAll(/<a\b[^>]*data-service-card[^>]*>/g)].map((tag) => tag[0])
-const cardHrefs = cardTags.map((tag) => (tag.match(/href="([^"]*)"/) || [])[1] || '')
+const ALLOWED_BOOKING_HOSTS = ['https://kleaner.my/', 'https://movers.kleaner.my']
+const cardHrefs = [...html.matchAll(/<a\b[^>]*data-service-card[^>]*>/g)].map(
+  (tag) => (tag[0].match(/href="([^"]*)"/) || [])[1] || ''
+)
 check(
   'every card has an href',
   cardHrefs.length === BRIEF_SERVICES.length && cardHrefs.every(Boolean),
@@ -86,16 +84,21 @@ check(
 )
 const offHost = cardHrefs.filter((href) => !ALLOWED_BOOKING_HOSTS.some((h) => href.startsWith(h)))
 check('every card books on a known Kleaner host', offHost.length === 0, offHost.join(', '))
-for (const service of BRIEF_SERVICES) {
-  const tag = cardTags.find((t) => t.includes(`data-service="${service.slug}"`)) || ''
-  const href = (tag.match(/href="([^"]*)"/) || [])[1] || ''
-  check(`${service.slug} books on ${service.url}`, href === service.url, href)
+
+// 4. The prices the cards quote come from prices.json, and the sofa figure is
+// the booking form one rather than the RM80 the brief gave.
+const sofaFrom = Math.min(...prices.groups.sofa.items.map((item) => item.price))
+check(`quotes sofa from ${money(sofaFrom)}`, text.includes(`from ${money(sofaFrom)}`))
+check('does not quote the RM80 carpet price for sofas', !text.includes('from RM80'))
+check(`quotes the post-renovation rate ${money(RATE)}`, text.includes(money(RATE)))
+for (const item of prices.groups.treatment.items) {
+  check(`quotes ${item.name} ${money(item.price)}`, text.includes(money(item.price)))
 }
 
-// 4. The board quotes no prices: each booking flow shows its own. Only the
-// voucher may name a ringgit figure.
-const quoted = [...new Set(text.match(/RM\d[\d,.]*/g) || [])].filter((f) => f !== 'RM20')
-check('quotes no service prices', quoted.length === 0, quoted.join(', '))
+// 4b. RM carries no decimals anywhere, with one deliberate exception: the per
+// sqft rate, which is meaningless without them.
+const decimals = [...new Set(text.match(/RM\d[\d,]*\.\d+/g) || [])].filter((f) => f !== money(RATE))
+check('writes RM without decimals, except the rate', decimals.length === 0, decimals.join(', '))
 
 // 5. No em dash anywhere in the repo we author. The character is built from its
 // code point so that this file does not fail its own check.

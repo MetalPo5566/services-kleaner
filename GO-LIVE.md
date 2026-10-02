@@ -24,31 +24,37 @@ sitemap, the Open Graph URL, the menu entry and the checks in
 
 The machine this was built on routes outbound traffic through an egress proxy
 that refuses `kleaner.my` by organisation policy. The booking flow could not be
-opened. The booking links in step 1 were supplied by the owner on 2 October
-2026.
+opened, which is why four of the six cards point at the front of it rather than
+at a service. That is step 1, and it is the most valuable thing on this list.
 
 ---
 
-## 1. The nine booking links
+## 1. The six booking links
 
-This page has one job: the visitor picks a service and books it. The board
-quotes no prices; each booking flow shows its own.
+This page has one job: the visitor picks a service and books it. Right now it
+only half does that job.
 
-| Service | Card links to |
-| --- | --- |
-| Standard Cleaning | `https://kleaner.my/booknow/` |
-| Deep Cleaning | `https://kleaner.my/booknow/` |
-| Move In / Move Out Cleaning | `https://kleaner.my/booknow/` |
-| Post Renovation Cleaning | `https://kleaner.my/booknow/post-renovation` |
-| Formaldehyde Removal | `https://kleaner.my/booknow/post-renovation` |
-| Aircond Maintenance | `https://kleaner.my/booknow/aircond-servicing` |
-| Sofa & Mattress Cleaning | `https://kleaner.my/booknow/upholstery-cleaning` |
-| Curtain & Carpet Cleaning | `https://kleaner.my/booknow/upholstery-cleaning` |
-| Mover | `https://kleaner.my/booknow/movers` |
+| Service | Card links to | Direct route? |
+| --- | --- | --- |
+| General Cleaning (Hourly Maid) | `https://kleaner.my/booknow/` | **no** |
+| Sofa & Mattress Deep Cleaning | `https://kleaner.my/booknow/upholstery-cleaning` | yes, the route the upholstery site has always used |
+| Post-Renovation Cleaning | `https://kleaner.my/booknow/` | **no** |
+| Formaldehyde Removal & Air Sterilisation | `https://kleaner.my/booknow/` | **no** |
+| Movers | `https://movers.kleaner.my` | yes |
+| Kleaner Club | `https://kleaner.my/booknow/` | **no** |
 
-The three home cleaning services share the front of the flow, where the customer
-picks the service, so their order slip says so. The links live in
-`src/data/services.ts` and `npm run verify` checks each one.
+None of them can 404, which is why they are set this way. But "one tap to book"
+becomes two taps whenever the customer has to pick the service again on the
+other side, and that second tap is where people leave.
+
+**Send the direct BookingKoala URL for each of the four.** They go into
+`src/data/services.ts`, one line each, and the "Opens the Kleaner booking form,
+where you choose this service" line under the button disappears on its own.
+
+Worth checking at the same time: whether the flow can preselect the formaldehyde
+add-on from a link, and whether it can preselect a recurring frequency for
+Kleaner Club. If it can, those are two more direct routes. If it cannot, tell us
+and we will reword both cards.
 
 ---
 
@@ -200,7 +206,7 @@ in `qa/` proves only that the internal links resolve.
 
 Then, by hand:
 
-- [ ] Open the page on a real phone and tap every one of the nine cards. Confirm
+- [ ] Open the page on a real phone and tap every one of the six cards. Confirm
       each one lands on the right service, not just on a page that loads.
 - [ ] Tap the WhatsApp button and check the prefilled message.
 - [ ] Try the voucher code at checkout.

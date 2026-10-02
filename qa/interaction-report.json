@@ -48,7 +48,7 @@
     {
       "name": "every service is on the page as a card",
       "pass": true,
-      "detail": "9 cards"
+      "detail": "6 cards"
     },
     {
       "name": "every card has a slug and an href",
@@ -63,7 +63,7 @@
     {
       "name": "every card links to a known Kleaner host",
       "pass": true,
-      "detail": "https://kleaner.my/booknow/ | https://kleaner.my/booknow/ | https://kleaner.my/booknow/ | https://kleaner.my/booknow/post-renovation | https://kleaner.my/booknow/post-renovation | https://kleaner.my/booknow/aircond-servicing | https://kleaner.my/booknow/upholstery-cleaning | https://kleaner.my/booknow/upholstery-cleaning | https://kleaner.my/booknow/movers"
+      "detail": "https://kleaner.my/booknow/ | https://kleaner.my/booknow/upholstery-cleaning | https://kleaner.my/booknow/ | https://kleaner.my/booknow/ | https://movers.kleaner.my | https://kleaner.my/booknow/"
     },
     {
       "name": "no card nests an interactive element inside the link",
@@ -73,7 +73,7 @@
     {
       "name": "every service is named in an H2 in the order slip",
       "pass": true,
-      "detail": "9"
+      "detail": "6"
     },
     {
       "name": "cards open in the same tab",
@@ -86,7 +86,7 @@
       "detail": ""
     },
     {
-      "name": "the board quotes no prices",
+      "name": "sofa card quotes from RM88",
       "pass": true,
       "detail": ""
     },
@@ -103,7 +103,7 @@
     {
       "name": "a card click reports its own slug",
       "pass": true,
-      "detail": "{\"event\":\"cta_book\",\"page\":\"/\",\"service\":\"post-renovation\",\"cta_text\":\"Post-Reno\"}"
+      "detail": "{\"event\":\"cta_book\",\"page\":\"/\",\"service\":\"formaldehyde-removal\",\"cta_text\":\"Formaldehyde\"}"
     },
     {
       "name": "the event reports the page",
