@@ -227,7 +227,9 @@ if (itemList) {
 const marks = (html.match(/\[OWNER TO CONFIRM\]/g) || []).length
 const notes = (html.match(/<p[^>]*\bdata-confirm\b/g) || []).length
 check('every owner note is a ConfirmNote', marks === notes, `${marks} marks, ${notes} notes`)
-check('the page still carries open notes to clear', marks > 0, `${marks}`)
+// The owner confirmed every claim on 2 October 2026, so the public page
+// carries no open note. A new unverified claim brings one back.
+check('no open owner notes on the public page', marks === 0, `${marks}`)
 
 // 10. Claims guardrails. These phrases are never allowed, whatever else changes.
 const FORBIDDEN = [

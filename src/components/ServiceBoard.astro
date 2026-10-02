@@ -1,0 +1,659 @@
+---
+import Icon from './Icon.astro'
+import Pictogram from './Pictogram.astro'
+import { SERVICES } from '../data/services'
+import { SITE } from '../data/site'
+import type { ServicesCopy } from '../data/copy/services.en'
+
+// The counter board. Six numbered tiles, the way a kopitiam lists its drinks
+// above the counter, and an order bar that names what you picked.
+//
+// Every tile is a real link to its booking flow, so without JavaScript (and for
+// crawlers) one tap books. With JavaScript the first tap lights the tile and
+// fills the order bar with what is included; the second tap, or Book now,
+// books. `#<slug>` in the URL preselects a tile, so an ad can land on one.
+interface Props {
+  copy: ServicesCopy
+}
+const { copy } = Astro.props as Props
+const { board, voucher } = copy
+
+const pad = (n: number) => String(n).padStart(2, '0')
+---
+
+<section class="wrap pb-6 pt-4 md:pb-10 md:pt-10" aria-labelledby="board-title">
+  <h1
+    id="board-title"
+    class="font-board text-[clamp(36px,12.4vw,128px)] uppercase lg:text-[clamp(88px,7.6vw,118px)] leading-[1.02] tracking-[0.005em] text-navy"
+  >
+    {copy.hero.h1}
+  </h1>
+  <div class="lg:mt-2 lg:flex lg:items-center lg:justify-between lg:gap-8">
+  <p class="mt-0.5 font-label text-[clamp(17px,5.75vw,34px)] font-bold leading-tight tracking-[-0.005em] text-navy md:mt-3 lg:mt-0">
+    {copy.hero.sub}
+  </p>
+
+  <div class="mt-2.5 flex justify-center md:mt-6 md:justify-start lg:mt-0">
+    <button
+      type="button"
+      class="press voucher-pill inline-flex h-[27px] items-center gap-3 rounded-full bg-brand-dark px-4 font-label text-[13.5px] font-semibold uppercase tracking-[0.015em] text-white transition-colors hover:bg-[#005fb4] md:h-10 md:px-5 md:text-[16px]"
+      data-copy-code={voucher.code}
+      aria-describedby="pill-status"
+    >
+      <span>{voucher.pill}</span>
+      <span class="h-4 w-px bg-white/70" aria-hidden="true"></span>
+      <span data-copy-label data-default={voucher.code} data-done={voucher.copied}>{voucher.code}</span>
+    </button>
+    <span id="pill-status" class="sr-only">{voucher.copy}</span>
+  </div>
+  </div>
+
+  <p id="tile-hint" class="sr-only">{board.hint}</p>
+
+  <ul class="board mt-[13px] grid grid-cols-2 gap-[6px] md:mt-8 md:grid-cols-3 lg:mt-6 md:gap-3.5" role="list">
+    {
+      SERVICES.map((service, index) => (
+        <li style={`--i:${index}`}>
+          <a
+            href={service.bookingUrl}
+            class="tile press"
+            rel="noopener"
+            data-service-card
+            data-service={service.slug}
+            data-name={service.short}
+            data-tag={service.tag}
+            aria-describedby="tile-hint"
+          >
+            <span class="tile-face">
+              <span class="tile-num" aria-hidden="true">
+                {pad(index + 1)}
+              </span>
+              <span class="tile-tags">
+                <span class="tile-tag">{service.tag.replace(/^(from|instant) /i, '$1\n')}</span>
+                {service.badge === 'New' && <span class="tile-new">New</span>}
+              </span>
+              <Pictogram name={service.pictogram} class="tile-icon" />
+              <span class="tile-name" data-long={service.short.length > 10 && !service.short.includes(' ') ? '' : undefined}>{service.short}</span>
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+{/* The order slip: what each service includes. One article per service, the
+    selected one shown above the order bar. These carry the full names as H2s,
+    so the page outline names every service even though the tiles are short. */}
+<div
+  id="order-sheet"
+  class="order-sheet"
+  role="region"
+  aria-label={board.details}
+  data-sheet
+  hidden
+>
+  <div class="wrap">
+    <div class="sheet-card">
+      <button type="button" class="sheet-close press" aria-label={board.close} data-sheet-close>
+        <Icon name="close" size={22} />
+      </button>
+      {
+        SERVICES.map((service, index) => (
+          <article data-detail={service.slug} hidden>
+            <h2 class="pr-10 font-board text-[26px] uppercase leading-[1.05] text-navy md:text-[30px]">
+              {service.name}
+            </h2>
+            <p class="mt-1.5 font-label text-[17px] font-semibold text-brand-dark">{service.price}</p>
+            <p class="mt-2 text-[15.5px] leading-snug text-ink">{service.promise}</p>
+            <ul class="mt-3 flex flex-col gap-1.5" role="list">
+              {service.bullets.map((bullet) => (
+                <li class="flex items-start gap-2 text-[15px] leading-snug text-navy">
+                  <Icon name="check" size={18} class="mt-0.5 shrink-0 text-brand-dark" />
+                  {bullet}
+                </li>
+              ))}
+            </ul>
+            {service.isFallbackUrl && (
+              <p class="mt-3 text-[13px] leading-snug text-ink">{board.fallbackNote}</p>
+            )}
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<div class="order-bar" data-order-bar>
+  <div class="wrap flex h-full items-center justify-between gap-3">
+    <button
+      type="button"
+      class="order-label"
+      aria-controls="order-sheet"
+      aria-expanded="false"
+      disabled
+      data-sheet-toggle
+    >
+      <span class="flex min-w-0 items-center gap-1.5">
+        <span class="truncate" data-order-text aria-live="polite">{board.idle}</span>
+        <span class="order-more" data-order-more hidden>
+          <span class="sr-only">{board.details}</span>
+          <Icon name="chevron" size={18} class="order-chevron" />
+        </span>
+      </span>
+    </button>
+    <a
+      href={SITE.bookingUrl}
+      class="order-book press"
+      rel="noopener"
+      data-cta="book"
+      data-service="order-bar"
+      data-order-book
+    >
+      {board.book}
+    </a>
+  </div>
+</div>
+
+<script>
+  const tiles = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-service-card]'))
+  const bar = document.querySelector<HTMLElement>('[data-order-bar]')
+  const text = document.querySelector<HTMLElement>('[data-order-text]')
+  const more = document.querySelector<HTMLElement>('[data-order-more]')
+  const book = document.querySelector<HTMLAnchorElement>('[data-order-book]')
+  const toggle = document.querySelector<HTMLButtonElement>('[data-sheet-toggle]')
+  const sheet = document.querySelector<HTMLElement>('[data-sheet]')
+  const details = Array.from(document.querySelectorAll<HTMLElement>('[data-detail]'))
+  const selectedWord = 'selected'
+
+  const push = (service: string, label: string) => {
+    const w = window as unknown as { dataLayer?: Record<string, unknown>[] }
+    w.dataLayer = w.dataLayer || []
+    w.dataLayer.push({ event: 'cta_book', page: location.pathname, service, cta_text: label })
+  }
+
+  const setSheet = (open: boolean) => {
+    if (!sheet || !toggle) return
+    toggle.setAttribute('aria-expanded', String(open))
+    bar?.classList.toggle('is-open', open)
+    if (open) {
+      sheet.hidden = false
+      requestAnimationFrame(() => sheet.classList.add('is-open'))
+    } else {
+      sheet.classList.remove('is-open')
+      window.setTimeout(() => {
+        if (!sheet.classList.contains('is-open')) sheet.hidden = true
+      }, 260)
+    }
+  }
+
+  const select = (tile: HTMLAnchorElement, updateHash = true) => {
+    const slug = tile.dataset.service || ''
+    tiles.forEach((t) => {
+      if (t === tile) t.setAttribute('aria-current', 'true')
+      else t.removeAttribute('aria-current')
+    })
+    if (text) {
+      text.textContent = `${tile.dataset.name} ${selectedWord}`
+      text.classList.remove('is-swapping')
+      void text.offsetWidth
+      text.classList.add('is-swapping')
+    }
+    if (more) more.hidden = false
+    if (toggle) toggle.disabled = false
+    if (book) {
+      book.href = tile.href
+      book.dataset.service = slug
+    }
+    details.forEach((d) => (d.hidden = d.dataset.detail !== slug))
+    bar?.classList.add('has-pick')
+    if (updateHash) history.replaceState(null, '', `#${slug}`)
+  }
+
+  tiles.forEach((tile) => {
+    tile.addEventListener('click', (event) => {
+      // New tab, new window and the like keep their native meaning.
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return
+      if (tile.getAttribute('aria-current') === 'true') {
+        push(tile.dataset.service || '', tile.dataset.name || '')
+        return
+      }
+      event.preventDefault()
+      select(tile)
+    })
+  })
+
+  toggle?.addEventListener('click', () => setSheet(toggle.getAttribute('aria-expanded') !== 'true'))
+  document.querySelector('[data-sheet-close]')?.addEventListener('click', () => {
+    setSheet(false)
+    toggle?.focus()
+  })
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+      setSheet(false)
+      toggle.focus()
+    }
+  })
+
+  const fromHash = tiles.find((t) => `#${t.dataset.service}` === location.hash)
+  if (fromHash) select(fromHash, false)
+
+  // Copy the voucher code. Every copy control on the page shares this.
+  document.querySelectorAll<HTMLElement>('[data-copy-code]').forEach((control) => {
+    control.addEventListener('click', async () => {
+      const code = control.dataset.copyCode || ''
+      try {
+        await navigator.clipboard.writeText(code)
+      } catch {
+        return
+      }
+      const label = control.querySelector<HTMLElement>('[data-copy-label]')
+      if (!label) return
+      label.textContent = label.dataset.done || ''
+      control.classList.add('is-copied')
+      window.setTimeout(() => {
+        label.textContent = label.dataset.default || ''
+        control.classList.remove('is-copied')
+      }, 1800)
+    })
+  })
+</script>
+
+<style>
+  .board > li {
+    display: flex;
+    container-type: inline-size;
+  }
+
+  /* A tile is a sign tile on the counter wall: numeral, price tag, drawing and
+     name. Rows size to their content, so a two line name makes its row taller,
+     the way the board is lettered. */
+  .tile {
+    position: relative;
+    display: flex;
+    width: 100%;
+    min-height: 75cqi;
+    padding: 6px;
+    border-radius: 7px;
+    background-color: var(--color-tile);
+    color: #fff;
+    text-decoration: none;
+    transition:
+      background-color 180ms var(--ease-out),
+      color 180ms var(--ease-out),
+      transform 120ms var(--ease-out);
+    /* The board switching on: each tile comes up from dim, in reading order.
+       Content is visible from the first frame; only its brightness moves. */
+    animation: tile-on 620ms var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 55ms + 80ms);
+  }
+
+  @keyframes tile-on {
+    from {
+      filter: brightness(0.72) saturate(0.6);
+    }
+    to {
+      filter: none;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .tile:hover {
+      background-color: #0079e0;
+    }
+    .tile[aria-current='true']:hover {
+      background-color: var(--color-sun-dark);
+    }
+  }
+
+  .tile[aria-current='true'] {
+    background-color: var(--color-sun);
+    color: var(--color-navy);
+  }
+
+  .tile:focus-visible {
+    outline-offset: 3px;
+  }
+
+  .tile-face {
+    position: relative;
+    flex: 1;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      'num tags'
+      'num pic'
+      'name name';
+    column-gap: 2cqi;
+    padding: 4cqi 3cqi 4.5cqi 5cqi;
+    border: 2px solid currentColor;
+    border-radius: 4px;
+  }
+
+  .tile[aria-current='true'] .tile-face {
+    border-color: #fff;
+  }
+
+  .tile-num {
+    grid-area: num;
+    align-self: start;
+    font-family: var(--font-board);
+    font-size: 31cqi;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+
+  .tile-tags {
+    grid-area: tags;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2cqi;
+    /* The price tag hangs close to the inset rule, like a tag clipped on. */
+    margin: -3.5cqi -1.5cqi 0 0;
+  }
+
+  .tile-tag {
+    max-width: 100%;
+    padding: 3px 5px 2px;
+    border-radius: 5px;
+    background: #fff;
+    color: var(--color-brand-dark);
+    font-family: var(--font-label);
+    white-space: pre-line;
+    font-size: max(10px, 5.6cqi);
+    font-weight: 600;
+    line-height: 1.05;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+
+  .tile[aria-current='true'] .tile-tag {
+    color: var(--color-navy);
+  }
+
+  /* NEW hangs under the price tag, out of the flow so the row keeps its
+     height; the drawing on that tile steps left to make room, as on the board. */
+  .tile-new {
+    position: absolute;
+    right: 1.5cqi;
+    top: 17cqi;
+    padding: 2px 5px 1px;
+    border-radius: 5px;
+    background: var(--color-sun);
+    color: var(--color-navy);
+    font-family: var(--font-label);
+    font-size: max(10px, 5.2cqi);
+    font-weight: 600;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  .tile[aria-current='true'] .tile-new {
+    background: var(--color-navy);
+    color: var(--color-sun);
+  }
+
+  /* The drawing reads from across the room: as tall as the numeral, filling
+     the space beside it under the tag. */
+  :global(.tile-icon) {
+    grid-area: pic;
+    justify-self: center;
+    align-self: end;
+    width: 34cqi;
+    max-width: 100%;
+    height: auto;
+    margin-top: -2cqi;
+  }
+
+  .tile-name {
+    grid-area: name;
+    align-self: end;
+    margin-top: 1.5cqi;
+    font-family: var(--font-board);
+    font-size: 15.2cqi;
+    line-height: 0.98;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+
+  /* One long word (Formaldehyde) is set a step smaller so it holds one line. */
+  .tile-name[data-long] {
+    font-size: 13.4cqi;
+  }
+
+  .tile-face:has(.tile-new) :global(.tile-icon) {
+    justify-self: start;
+    width: 30cqi;
+  }
+
+  @media (min-width: 768px) {
+    .tile {
+      min-height: 66cqi;
+      padding: 8px;
+      border-radius: 9px;
+    }
+    .tile-name {
+      font-size: 12.4cqi;
+    }
+  }
+
+  /* Wide screens: numeral, drawing and tags share one row and the name sits
+     under them, so both rows of the wall fit above the order bar. */
+  @media (min-width: 1024px) {
+    .tile {
+      min-height: 0;
+    }
+    .tile-face {
+      grid-template-columns: auto 1fr auto;
+      grid-template-rows: auto auto;
+      grid-template-areas:
+        'num pic tags'
+        'name name name';
+      padding: 4cqi 3.5cqi 4cqi 5cqi;
+    }
+    .tile-num {
+      font-size: 24cqi;
+    }
+    :global(.tile-icon),
+    .tile-face:has(.tile-new) :global(.tile-icon) {
+      width: 27cqi;
+      align-self: center;
+      justify-self: start;
+      margin: 0 0 0 4cqi;
+    }
+    .tile-name {
+      margin-top: 2cqi;
+      font-size: 10cqi;
+    }
+    .tile-new {
+      position: static;
+    }
+    .tile-tag {
+      font-size: 4.2cqi;
+    }
+    .tile-new {
+      font-size: 3.8cqi;
+    }
+  }
+
+  /* The pill is drawn 27px tall to match the board; its tap area is 45px. */
+  .voucher-pill {
+    position: relative;
+  }
+  .voucher-pill::before {
+    content: '';
+    position: absolute;
+    inset: -9px 0;
+  }
+
+  .voucher-pill.is-copied {
+    background-color: var(--color-navy);
+  }
+
+  /* The order bar. Fixed to the bottom on every width, the counter you order at. */
+  .order-bar {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 40;
+    height: calc(58px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--color-navy);
+    color: #fff;
+    box-shadow: 0 -10px 24px -18px rgb(11 39 71 / 0.6);
+  }
+
+  /* The footer runs on under the bar, so its last line is never covered. */
+  :global(body:has(.order-bar) footer) {
+    padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .order-label {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 6px 0;
+    font-family: var(--font-label);
+    font-size: 17.5px;
+    font-weight: 700;
+    line-height: 1.1;
+    text-align: left;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .order-label:disabled {
+    cursor: default;
+    color: rgb(255 255 255 / 0.82);
+  }
+
+  .order-more {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.14);
+    color: var(--color-sun);
+  }
+
+  .order-more[hidden] {
+    display: none;
+  }
+
+  :global(.order-chevron) {
+    transform: rotate(180deg);
+    transition: transform 220ms var(--ease-out);
+  }
+
+  .order-bar.is-open :global(.order-chevron) {
+    transform: none;
+  }
+
+  :global(.is-swapping) {
+    animation: swap-in 240ms var(--ease-out);
+  }
+
+  @keyframes swap-in {
+    from {
+      opacity: 0.2;
+      transform: translateY(5px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .order-book {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    height: 37px;
+    padding: 0 26px;
+    border-radius: 999px;
+    background: var(--color-sun);
+    color: var(--color-navy);
+    font-family: var(--font-board);
+    font-size: 19px;
+    line-height: 1;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition:
+      background-color 160ms var(--ease-out),
+      transform 120ms var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .order-book:hover {
+      background: var(--color-sun-dark);
+    }
+  }
+
+  .order-bar :global(:focus-visible) {
+    outline-color: var(--color-sun);
+  }
+
+  .order-sheet {
+    position: fixed;
+    inset-inline: 0;
+    bottom: calc(58px + env(safe-area-inset-bottom, 0px));
+    z-index: 39;
+    pointer-events: none;
+  }
+
+  .sheet-card {
+    position: relative;
+    max-width: 34rem;
+    padding: 18px 18px 18px;
+    border: 2px solid var(--color-navy);
+    border-bottom: 0;
+    border-radius: 10px 10px 0 0;
+    background: #fff;
+    box-shadow: 0 -18px 40px -24px rgb(11 39 71 / 0.55);
+    pointer-events: auto;
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 220ms var(--ease-out),
+      transform 280ms var(--ease-out);
+  }
+
+  .order-sheet.is-open .sheet-card {
+    opacity: 1;
+    transform: none;
+  }
+
+  .sheet-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: inline-flex;
+    height: 40px;
+    width: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    color: var(--color-navy);
+  }
+
+  .sheet-close:hover {
+    background: var(--color-paper);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tile {
+      animation: none;
+    }
+    .sheet-card {
+      transform: none;
+    }
+  }
+</style>

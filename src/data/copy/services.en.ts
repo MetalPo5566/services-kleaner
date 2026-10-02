@@ -21,46 +21,49 @@ export type ServicesCopy = {
   hero: {
     h1: string
     sub: string
-    cta: string
     whatsApp: string
     waMessage: string
   }
 
-  trust: {
-    items: readonly { icon: IconName; text: string }[]
-    confirm: string
-  }
-
-  grid: {
-    eyebrow: string
-    title: string
+  /** The tile wall and its order bar. */
+  board: {
+    /** Read to screen readers on every tile. */
+    hint: string
+    idle: string
+    selected: string
     book: string
+    details: string
+    close: string
     fallbackNote: string
   }
 
-  chooser: {
-    eyebrow: string
+  trust: {
+    items: readonly { icon: IconName; text: string }[]
+  }
+
+  sets: {
     title: string
     lead: string
-    /** Each question points at a slug in services.ts. */
-    questions: readonly { question: string; answer: string; slug: string }[]
+    /** Each set points at a slug in services.ts. */
+    items: readonly { letter: string; question: string; answer: string; slug: string }[]
     whatsAppLead: string
     whatsApp: string
     waMessage: string
   }
 
   guarantee: {
-    eyebrow: string
     title: string
     text: string
   }
 
   voucher: {
+    pill: string
     headline: string
     code: string
     terms: string
     cta: string
-    confirm: string
+    copy: string
+    copied: string
   }
 }
 
@@ -78,49 +81,51 @@ export const SERVICES_EN: ServicesCopy = {
   },
 
   hero: {
-    h1: 'Every Kleaner service, one tap to book.',
-    sub: 'Over 100,000 cleaning hours delivered across Klang Valley.',
-    cta: 'See services',
+    h1: 'Order your clean.',
+    sub: 'Every Kleaner service. Tap one to book.',
     whatsApp: 'Ask on WhatsApp',
     waMessage: "Hi Kleaner, I'd like to ask about your cleaning services.",
+  },
+
+  board: {
+    hint: 'Shows what is included and the book button. Tap again to book.',
+    idle: 'Pick a service',
+    selected: 'selected',
+    book: 'Book now',
+    details: "What's included",
+    close: 'Close',
+    fallbackNote: 'Opens the Kleaner booking form, where you choose this service.',
   },
 
   trust: {
     items: [
       { icon: 'clock', text: '100,000+ cleaning hours delivered' },
-      { icon: 'guarantee', text: 'Satisfaction guarantee: reclean or full refund' },
       { icon: 'shield', text: 'Trained in-house team, not gig workers' },
-      { icon: 'home', text: 'Klang Valley coverage' },
+      { icon: 'guarantee', text: 'Background checked providers' },
+      { icon: 'home', text: 'Kuala Lumpur and Selangor' },
     ],
-    confirm:
-      'We publish that providers are background checked. "Trained in-house team, not gig workers" is a claim about how people are employed, which is a different and stronger thing to say. Confirm it is accurate before this page goes live, because a competitor would be entitled to challenge it.',
   },
 
-  grid: {
-    eyebrow: 'Services',
-    title: 'Pick what you need',
-    book: 'Book now',
-    fallbackNote: 'Opens the Kleaner booking form, where you choose this service.',
-  },
-
-  chooser: {
-    eyebrow: 'Not sure which one?',
-    title: 'Three questions, one answer',
+  sets: {
+    title: 'Not sure? Order a set.',
     lead: 'Most people land on one of these.',
-    questions: [
+    items: [
       {
+        letter: 'A',
         question: 'Just finished a renovation?',
-        answer: 'Post-Renovation Cleaning',
+        answer: 'Post-Renovation Cleaning. Add formaldehyde removal in the same booking.',
         slug: 'post-renovation',
       },
       {
+        letter: 'B',
         question: 'Stains on the sofa or mattress?',
-        answer: 'Sofa & Mattress Deep Cleaning',
+        answer: 'Sofa & Mattress Deep Cleaning, priced per piece.',
         slug: 'sofa-mattress',
       },
       {
+        letter: 'C',
         question: 'Want regular help at home?',
-        answer: 'General Cleaning',
+        answer: 'General Cleaning, weekly, biweekly or monthly.',
         slug: 'general-cleaning',
       },
     ],
@@ -130,17 +135,17 @@ export const SERVICES_EN: ServicesCopy = {
   },
 
   guarantee: {
-    eyebrow: 'Guarantee',
-    title: 'Reclean or full refund',
+    title: 'Reclean or full refund.',
     text: 'If you are not happy with the clean, we come back and clean it again. If you are still not happy, we refund you in full. That applies to every service on this page.',
   },
 
   voucher: {
+    pill: 'RM20 off first booking',
     headline: 'RM20 off your first booking',
     code: 'KLEANERHOME',
     terms: 'One use per customer. Valid to 31 December 2026.',
     cta: 'Book and use the code',
-    confirm:
-      'Is the code KLEANERHOME live in BookingKoala right now, is it RM20 off, one use per customer, and does it run to 31 December 2026? A code that does not work at checkout costs more than no code at all, so we will pull this strip rather than publish it unchecked.',
+    copy: 'Copy code',
+    copied: 'Code copied',
   },
 }

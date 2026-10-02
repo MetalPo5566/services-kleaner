@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-02T23:30:00+08:00",
+  "title": "Design System: Kleaner Services",
+  "extensions": {
+    "colorMeta": {
+      "tile": { "role": "primary", "displayName": "Enamel Kleaner Blue", "canonical": "#0088f8", "tonalRamp": ["#000b1e", "#04274b", "#044581", "#0e66b9", "#0389f9", "#71b2fc", "#b3d4fc", "#e4f0ff"] },
+      "brand-dark": { "role": "primary", "displayName": "Deep Counter Blue", "canonical": "#0071d1", "tonalRamp": ["#000b1d", "#02264c", "#0b457f", "#0366bc", "#2c8aec", "#74b2f9", "#b2d4fd", "#e4f0fe"] },
+      "brand-ink": { "role": "primary", "displayName": "Link Blue", "canonical": "#006abf" },
+      "brand-tint": { "role": "neutral", "displayName": "Chrome Tint", "canonical": "#eaf5ff" },
+      "brand-line": { "role": "neutral", "displayName": "Chrome Hairline", "canonical": "#d5e9fb" },
+      "sun": { "role": "secondary", "displayName": "Lit Sun Yellow", "canonical": "#fac93f", "tonalRamp": ["#100a00", "#312502", "#55420b", "#7e6204", "#a78419", "#d3a826", "#fbca41", "#feedc3"] },
+      "sun-dark": { "role": "secondary", "displayName": "Pressed Sun", "canonical": "#edb91f", "tonalRamp": ["#110a00", "#322401", "#564208", "#7e6214", "#a98312", "#d6a71d", "#fec93a", "#feedc6"] },
+      "navy": { "role": "neutral", "displayName": "Board Navy", "canonical": "#0b2747", "tonalRamp": ["#000b1f", "#0b2747", "#2a4669", "#4a688d", "#6c8cb2", "#90b1d9", "#b3d4fe", "#e4f0fe"] },
+      "ink": { "role": "neutral", "displayName": "Slate Ink", "canonical": "#3e5470", "tonalRamp": ["#000b1f", "#132740", "#314662", "#516885", "#738baa", "#97b0d0", "#bad3f4", "#e4f0fe"] },
+      "paper": { "role": "neutral", "displayName": "Counter Paper", "canonical": "#f4f7fa", "tonalRamp": ["#090b0d", "#242729", "#434548", "#646669", "#87898c", "#abaeb1", "#ced1d4", "#eceff2"] },
+      "white": { "role": "neutral", "displayName": "White Ground", "canonical": "#ffffff" },
+      "wa": { "role": "tertiary", "displayName": "WhatsApp Green", "canonical": "#00cd56", "tonalRamp": ["#001002", "#042f11", "#055420", "#117b34", "#04a544", "#10d059", "#52f57d", "#c8ffcf"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Board Headline", "purpose": "Page headline only, Anton uppercase, full width on phones." },
+      "headline": { "displayName": "Section Sign", "purpose": "Section titles in Anton uppercase; larger on the guarantee band and voucher." },
+      "title": { "displayName": "Ticket Title", "purpose": "Ticket questions, order slip service name, BOOK NOW pills." },
+      "subhead": { "displayName": "Counter Subline", "purpose": "Oswald 700 line under the headline, sentence case." },
+      "label": { "displayName": "Tag and Chit", "purpose": "Oswald price tags, NEW tag, order bar text, text actions, COPY CODE." },
+      "body": { "displayName": "Counter Voice", "purpose": "Lato sentences: explanations, ticket answers, guarantee copy." }
+    },
+    "shadows": [
+      { "name": "counter-edge", "value": "0 -10px 24px -18px rgb(11 39 71 / 0.6)", "purpose": "Top edge of the fixed order bar." },
+      { "name": "slip-lift", "value": "0 -18px 40px -24px rgb(11 39 71 / 0.55)", "purpose": "Order slip rising out of the bar." },
+      { "name": "header-scrolled", "value": "0 1px 0 rgb(213 233 251), 0 8px 24px -16px rgb(17 38 60 / 0.28)", "purpose": "Shared header once the page scrolls under it." }
+    ],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.23, 1, 0.32, 1)", "purpose": "Default easing for every transition and animation." },
+      { "name": "ease-in-out", "value": "cubic-bezier(0.77, 0, 0.175, 1)", "purpose": "Available for on-screen moves that start and end at rest." },
+      { "name": "tile-power-on", "value": "620ms ease-out; filter brightness(0.72) saturate(0.6) to none; delay i * 55ms + 80ms", "purpose": "Board switching on in reading order; content visible from frame one." },
+      { "name": "press", "value": "transform scale(0.97) 120ms ease-out", "purpose": "Press feedback on every tappable." },
+      { "name": "paint-change", "value": "160-180ms ease-out on background-color and color", "purpose": "Tile select, hover, pill state." },
+      { "name": "order-swap", "value": "240ms ease-out; translateY(5px) and opacity 0.2 to rest", "purpose": "Order bar text when a new tile is picked." },
+      { "name": "slip-slide", "value": "transform 280ms ease-out, opacity 220ms ease-out from translateY(24px)", "purpose": "Order slip open and close." },
+      { "name": "reduced-motion", "value": "animations off, movement off, colour and opacity transitions at 150ms", "purpose": "prefers-reduced-motion: fewer and gentler, not none." }
+    ],
+    "breakpoints": [
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Board Tile",
+      "kind": "card",
+      "refersTo": "tile",
+      "description": "Enamel blue sign tile with inset rule, numeral, price tag, 64-box pictogram and name; lights sun yellow when selected.",
+      "html": "<div class=\"ds-board\"><a href=\"#\" class=\"ds-tile\"><span class=\"ds-tile-face\"><span class=\"ds-tile-num\">01</span><span class=\"ds-tile-tag\">INSTANT<br>PRICE</span><svg class=\"ds-tile-pic\" viewBox=\"0 7 64 50\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m7 31 25-21 25 21\"/><path d=\"M13.5 26v28h37V26\"/><path d=\"M44 19v-7h5.5v12\"/><path d=\"M26 33h12v12H26Z\"/><path d=\"M32 33v12M26 39h12\"/></svg><span class=\"ds-tile-name\">General Cleaning</span></span></a><a href=\"#\" class=\"ds-tile\" aria-current=\"true\"><span class=\"ds-tile-face\"><span class=\"ds-tile-num\">02</span><span class=\"ds-tile-tag\">FROM<br>RM88</span><svg class=\"ds-tile-pic\" viewBox=\"0 7 64 50\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M14 31v-7.5A6.5 6.5 0 0 1 20.5 17h23a6.5 6.5 0 0 1 6.5 6.5V31\"/><path d=\"M32 17.5v13.5\"/><path d=\"M7 36.5a5.5 5.5 0 0 1 11 0V41h28v-4.5a5.5 5.5 0 0 1 11 0V50H7Z\"/><path d=\"M11.5 50v5M52.5 50v5\"/></svg><span class=\"ds-tile-name\">Sofa &amp; Mattress</span></span></a></div>",
+      "css": ".ds-board { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; max-width: 420px; } .ds-board > a { container-type: inline-size; } .ds-tile { display: flex; min-height: 75cqi; padding: 6px; border-radius: 7px; background: var(--color-tile, #0088f8); color: #fff; text-decoration: none; transition: background-color 180ms cubic-bezier(0.23,1,0.32,1), color 180ms cubic-bezier(0.23,1,0.32,1), transform 120ms cubic-bezier(0.23,1,0.32,1); } .ds-tile:hover { background: #0079e0; } .ds-tile:active { transform: scale(0.97); } .ds-tile:focus-visible { outline: 3px solid var(--color-brand-dark, #0071d1); outline-offset: 3px; } .ds-tile[aria-current='true'] { background: var(--color-sun, #fac93f); color: var(--color-navy, #0b2747); } .ds-tile[aria-current='true']:hover { background: var(--color-sun-dark, #edb91f); } .ds-tile-face { flex: 1; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr auto; grid-template-areas: 'num tag' 'num pic' 'name name'; column-gap: 2cqi; padding: 4cqi 3cqi 4.5cqi 5cqi; border: 2px solid currentColor; border-radius: 4px; } .ds-tile[aria-current='true'] .ds-tile-face { border-color: #fff; } .ds-tile-num { grid-area: num; font-family: Anton, 'Arial Narrow', Impact, sans-serif; font-size: 31cqi; line-height: 1; letter-spacing: -0.01em; } .ds-tile-tag { grid-area: tag; justify-self: end; align-self: start; margin: -3.5cqi -1.5cqi 0 0; padding: 3px 5px 2px; border-radius: 5px; background: #fff; color: var(--color-brand-dark, #0071d1); font-family: Oswald, 'Arial Narrow', Arial, sans-serif; font-weight: 600; font-size: max(10px, 5.6cqi); line-height: 1.05; text-align: center; letter-spacing: 0.01em; } .ds-tile[aria-current='true'] .ds-tile-tag { color: var(--color-navy, #0b2747); } .ds-tile-pic { grid-area: pic; justify-self: center; align-self: end; width: 34cqi; max-width: 100%; margin-top: -2cqi; } .ds-tile-name { grid-area: name; margin-top: 1.5cqi; font-family: Anton, 'Arial Narrow', Impact, sans-serif; font-size: 15.2cqi; line-height: 0.98; letter-spacing: -0.02em; text-transform: uppercase; }"
+    },
+    {
+      "name": "Order Bar",
+      "kind": "nav",
+      "refersTo": "order-bar",
+      "description": "Navy counter fixed to the bottom: picked service with slip chevron on the left, sun BOOK NOW pill on the right.",
+      "html": "<div class=\"ds-order-bar\"><button type=\"button\" class=\"ds-order-label\">Sofa &amp; Mattress selected <span class=\"ds-order-more\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"m6 15 6-6 6 6\"/></svg></span></button><a href=\"#\" class=\"ds-btn-book\">Book now</a></div>",
+      "css": ".ds-order-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 58px; padding: 0 16px; background: var(--color-navy, #0b2747); color: #fff; box-shadow: 0 -10px 24px -18px rgb(11 39 71 / 0.6); } .ds-order-label { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; padding: 6px 0; color: #fff; font-family: Oswald, 'Arial Narrow', Arial, sans-serif; font-size: 17.5px; font-weight: 700; line-height: 1.1; cursor: pointer; } .ds-order-label:focus-visible, .ds-btn-book:focus-visible { outline: 3px solid var(--color-sun, #fac93f); outline-offset: 2px; } .ds-order-more { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 999px; background: rgb(255 255 255 / 0.14); color: var(--color-sun, #fac93f); } .ds-btn-book { display: inline-flex; align-items: center; height: 37px; padding: 0 26px; border-radius: 999px; background: var(--color-sun, #fac93f); color: var(--color-navy, #0b2747); font-family: Anton, 'Arial Narrow', Impact, sans-serif; font-size: 19px; line-height: 1; letter-spacing: 0.01em; text-transform: uppercase; text-decoration: none; transition: background-color 160ms cubic-bezier(0.23,1,0.32,1), transform 120ms cubic-bezier(0.23,1,0.32,1); } .ds-btn-book:hover { background: var(--color-sun-dark, #edb91f); } .ds-btn-book:active { transform: scale(0.97); }"
+    },
+    {
+      "name": "Book Pill",
+      "kind": "button",
+      "refersTo": "button-book",
+      "description": "Sun yellow Anton pill; the booking action wherever it appears.",
+      "html": "<a href=\"#\" class=\"ds-btn-book-lg\">Book and use the code <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></a>",
+      "css": ".ds-btn-book-lg { display: inline-flex; align-items: center; gap: 10px; height: 50px; padding: 0 24px; border-radius: 999px; background: var(--color-sun, #fac93f); color: var(--color-navy, #0b2747); font-family: Anton, 'Arial Narrow', Impact, sans-serif; font-size: 21px; text-transform: uppercase; text-decoration: none; transition: background-color 160ms cubic-bezier(0.23,1,0.32,1), transform 120ms cubic-bezier(0.23,1,0.32,1); } .ds-btn-book-lg:hover { background: var(--color-sun-dark, #edb91f); } .ds-btn-book-lg:active { transform: scale(0.97); } .ds-btn-book-lg:focus-visible { outline: 3px solid var(--color-brand-dark, #0071d1); outline-offset: 2px; }"
+    },
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Shared-chrome filled pill in brand-dark with white Lato 700.",
+      "html": "<a href=\"#\" class=\"ds-btn-primary\">Book now</a>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 28px; border-radius: 999px; background: var(--color-brand-dark, #0071d1); color: #fff; font-family: Lato, Arial, sans-serif; font-weight: 700; font-size: 18px; line-height: 1; text-decoration: none; transition: background-color 200ms, transform 120ms cubic-bezier(0.23,1,0.32,1); } .ds-btn-primary:hover { background: #005fb4; } .ds-btn-primary:active { background: #005099; transform: scale(0.97); } .ds-btn-primary:focus-visible { outline: 3px solid var(--color-brand-dark, #0071d1); outline-offset: 2px; }"
+    },
+    {
+      "name": "WhatsApp Button",
+      "kind": "button",
+      "refersTo": "button-whatsapp",
+      "description": "Brand green pill with navy text; the backup channel for the unsure.",
+      "html": "<a href=\"#\" class=\"ds-btn-wa\">Ask on WhatsApp</a>",
+      "css": ".ds-btn-wa { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 28px; border-radius: 999px; background: var(--color-wa, #00cd56); color: var(--color-navy, #0b2747); font-family: Lato, Arial, sans-serif; font-weight: 700; font-size: 18px; line-height: 1; text-decoration: none; transition: background-color 200ms, transform 120ms cubic-bezier(0.23,1,0.32,1); } .ds-btn-wa:hover { background: #00b94d; } .ds-btn-wa:active { background: #00a745; transform: scale(0.97); } .ds-btn-wa:focus-visible { outline: 3px solid var(--color-brand-dark, #0071d1); outline-offset: 2px; }"
+    },
+    {
+      "name": "Voucher Pill",
+      "kind": "chip",
+      "refersTo": "voucher-pill",
+      "description": "Brand-dark Oswald pill with offer and code; tap copies the code and it turns navy.",
+      "html": "<button type=\"button\" class=\"ds-voucher-pill\"><span>RM20 off first booking</span><span class=\"ds-voucher-rule\"></span><span>KLEANERHOME</span></button>",
+      "css": ".ds-voucher-pill { display: inline-flex; align-items: center; gap: 12px; height: 40px; padding: 0 20px; border: 0; border-radius: 999px; background: var(--color-brand-dark, #0071d1); color: #fff; font-family: Oswald, 'Arial Narrow', Arial, sans-serif; font-size: 16px; font-weight: 600; letter-spacing: 0.015em; text-transform: uppercase; cursor: pointer; transition: background-color 160ms, transform 120ms cubic-bezier(0.23,1,0.32,1); } .ds-voucher-pill:hover { background: #005fb4; } .ds-voucher-pill:active { background: var(--color-navy, #0b2747); transform: scale(0.97); } .ds-voucher-pill:focus-visible { outline: 3px solid var(--color-brand-dark, #0071d1); outline-offset: 2px; } .ds-voucher-rule { width: 1px; height: 16px; background: rgb(255 255 255 / 0.7); }"
+    },
+    {
+      "name": "Set Ticket",
+      "kind": "custom",
+      "refersTo": "set-ticket",
+      "description": "Printed order ticket: navy stub with set letter, dashed perforation, question, answer and text action.",
+      "html": "<a href=\"#\" class=\"ds-ticket\"><span class=\"ds-ticket-stub\"><span class=\"ds-ticket-set\">Set</span><span class=\"ds-ticket-letter\">A</span></span><span class=\"ds-ticket-body\"><span class=\"ds-ticket-q\">Just finished a renovation?</span><span class=\"ds-ticket-a\">Post-Renovation Cleaning. Add formaldehyde removal in the same booking.</span><span class=\"ds-ticket-act\">Book now</span></span></a>",
+      "css": ".ds-ticket { display: flex; max-width: 380px; overflow: hidden; border: 2px solid var(--color-navy, #0b2747); border-radius: 8px; background: #fff; text-decoration: none; transition: background-color 180ms cubic-bezier(0.23,1,0.32,1), transform 120ms cubic-bezier(0.23,1,0.32,1); } .ds-ticket:hover { background: #fffbea; } .ds-ticket:active { transform: scale(0.97); } .ds-ticket:focus-visible { outline: 3px solid var(--color-brand-dark, #0071d1); outline-offset: 2px; } .ds-ticket-stub { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; width: 76px; flex-shrink: 0; border-right: 2px dashed var(--color-navy, #0b2747); background: var(--color-navy, #0b2747); color: var(--color-sun, #fac93f); transition: background-color 180ms, color 180ms; } .ds-ticket:hover .ds-ticket-stub { background: var(--color-sun, #fac93f); color: var(--color-navy, #0b2747); } .ds-ticket-set { font-family: Oswald, 'Arial Narrow', Arial, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; } .ds-ticket-letter { font-family: Anton, 'Arial Narrow', Impact, sans-serif; font-size: 44px; line-height: 1; } .ds-ticket-body { display: block; padding: 14px 16px; } .ds-ticket-q { display: block; font-family: Anton, 'Arial Narrow', Impact, sans-serif; font-size: 22px; line-height: 1.05; text-transform: uppercase; color: var(--color-navy, #0b2747); } .ds-ticket-a { display: block; margin-top: 6px; font-family: Lato, Arial, sans-serif; font-size: 15px; line-height: 1.375; color: var(--color-ink, #3e5470); } .ds-ticket-act { display: inline-block; margin-top: 10px; font-family: Oswald, 'Arial Narrow', Arial, sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-brand-dark, #0071d1); }"
+    },
+    {
+      "name": "Voucher Tile",
+      "kind": "card",
+      "refersTo": "voucher-tile",
+      "description": "Brand-dark plate with a white inset rule, Anton headline and copyable code chip.",
+      "html": "<div class=\"ds-voucher\"><div class=\"ds-voucher-face\"><p class=\"ds-voucher-h\">RM20 off your first booking</p><button type=\"button\" class=\"ds-voucher-code\">KLEANERHOME <span class=\"ds-voucher-copy\">Copy code</span></button></div></div>",
+      "css": ".ds-voucher { max-width: 420px; padding: 8px; border-radius: 10px; background: var(--color-brand-dark, #0071d1); } .ds-voucher-face { padding: 22px 18px; border: 2px solid #fff; border-radius: 6px; } .ds-voucher-h { margin: 0; font-family: Anton, 'Arial Narrow', Impact, sans-serif; font-size: 38px; line-height: 0.98; text-transform: uppercase; color: #fff; } .ds-voucher-code { display: inline-flex; align-items: center; gap: 14px; margin-top: 20px; padding: 10px 10px 10px 16px; border: 0; border-radius: 8px; background: #fff; color: var(--color-navy, #0b2747); font-family: Anton, 'Arial Narrow', Impact, sans-serif; font-size: 26px; line-height: 1; letter-spacing: 0.06em; cursor: pointer; transition: background-color 160ms, transform 120ms cubic-bezier(0.23,1,0.32,1); } .ds-voucher-code:active { background: var(--color-sun, #fac93f); transform: scale(0.97); } .ds-voucher-code:focus-visible { outline: 3px solid #fff; outline-offset: 2px; } .ds-voucher-copy { padding: 7px 10px 6px; border-radius: 6px; background: var(--color-paper, #f4f7fa); color: var(--color-brand-dark, #0071d1); font-family: Oswald, 'Arial Narrow', Arial, sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Kopitiam Counter Board",
+    "overview": "The page is the numbered tile wall above a kopitiam counter. Every service is an enamel sign tile, painted in Kleaner blue, lettered in a heavy condensed sign face, with a white price tag clipped to its corner and a line drawing beside its numeral. You point at one, it lights up sun yellow, and the navy counter at the bottom of the screen names your order and takes it. Everything else on the page (set tickets, the guarantee band, the voucher) is printed from the same shop: the same three paints, the same two lettering faces, the same inset rule.\n\nDensity is high and legible from arm's length. Type is large, uppercase and condensed; surfaces are flat paint, not paper cards. Depth exists only where something genuinely sits on top of the board: the order bar, the order slip, the sticky header once the page scrolls under it. The confirmed refusal is the category default of soft white cards, stock cleaner photos and sparkle icons; the shipped page carries no raster imagery apart from the logo.",
+    "keyCharacteristics": [
+      "Flat enamel blue tiles with a 2px white inset rule, giant condensed numerals, line pictograms.",
+      "Three paints: Kleaner blue, sun yellow for \"lit / act\", navy for ink and the counter.",
+      "Anton for anything lettered on the board, Oswald for tags and the order bar, Lato for sentences.",
+      "Tile internals sized in container units, so a tile is the same drawing at every width.",
+      "Selection is the signature interaction: tile lights, order bar updates name and link."
+    ],
+    "rules": [
+      { "name": "The Three Paints Rule", "body": "Board surfaces are painted in blue, sun or navy and nothing else. No gradients, no glows, no tints standing in for a tile.", "section": "colors" },
+      { "name": "The Lit Means Yellow Rule", "body": "Yellow is reserved for the selected thing and the booking action. If a yellow element is not selected or not a call to book, it is wrong.", "section": "colors" },
+      { "name": "The Lettered Board Rule", "body": "Anything that is \"on the board\" (headlines, tile names, numerals, set letters, book pills) is Anton uppercase. Sentences are never Anton.", "section": "typography" },
+      { "name": "The Sign Scale Rule", "body": "Tile numerals and names are sized in container query units (cqi) from the tile's own width, so every tile is the same composition at every breakpoint.", "section": "typography" },
+      { "name": "The Flat Board Rule", "body": "Nothing painted on the board casts a shadow. Elevation is for overlays only: the order bar, the order slip, the scrolled header, dropdowns.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do paint board surfaces flat in tile blue, sun or navy, with a 2px white inset rule on plates that read as tiles.",
+      "Do light the chosen thing in sun yellow with navy ink, and keep yellow for selection and booking.",
+      "Do letter board elements in Anton uppercase, tags and chits in Oswald, sentences in Lato.",
+      "Do size tile internals in cqi so every tile keeps one composition across widths.",
+      "Do draw new pictograms on the 64-unit box with a 3.4 round-capped stroke in currentColor.",
+      "Do keep every tile and ticket a real link that books without script.",
+      "Do use brand-dark, not tile blue, under any normal-size white text."
+    ],
+    "donts": [
+      "Don't put shadows on tiles, tickets, the voucher tile or bands; elevation is for overlays only.",
+      "Don't use gradients or glows on board surfaces.",
+      "Don't return to soft white rounded service cards, stock cleaner photography or sparkle icons.",
+      "Don't set body copy or small text in white on tile blue, or white on WhatsApp green.",
+      "Don't set sentences in Anton."
+    ]
+  }
+}

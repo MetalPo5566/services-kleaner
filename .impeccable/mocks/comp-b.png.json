@@ -1,0 +1,8 @@
+{
+  "prompt": "High-fidelity mobile website design comp, full phone screen, flat UI screenshot (no device frame, no hands, no photo of a phone). Website: services.kleaner.my, the services page of Kleaner, a Kuala Lumpur cleaning company. Visual world: the wall of numbered drink tiles above a Malaysian kopitiam counter ... ORDER YOUR CLEAN. hero, RM20 pill, 2-column grid of six blue enamel tiles 01-06 with pictograms and price tags, tile 03 selected in yellow, navy bottom order bar 'Post-Reno selected' + yellow BOOK NOW",
+  "tool": "higgsfield gpt_image_2_5 (flare, high, 2k, 9:16, ref logo media 6591c71b-bf1f-4723-ae89-edfa438a526d)",
+  "higgsfield_job_id": "96970b1b-09fe-49c4-896f-765e1828594e",
+  "note": "Full prompt held in the Higgsfield job record; local file is a 758x1340 capture of the 1520x2688 original.",
+  "approved": true,
+  "approved_by": "user, structured question 2 Oct 2026"
+}

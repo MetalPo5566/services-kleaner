@@ -32,6 +32,50 @@
     U+2215, U+FEFF, U+FFFD;
 }
 
+/* Anton, the counter-board display face: headline, tile numerals and names.
+   Oswald, the condensed label face: price tags, the order bar, small caps.
+   Both self hosted from @fontsource by scripts/copy-fonts.mjs. */
+@font-face {
+  font-family: 'Anton';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/anton-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/oswald-latin-500-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/oswald-latin-700-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Oswald';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/oswald-latin-600-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
 /* Metric matched fallback so swapping to Lato does not shift the layout. */
 @font-face {
   font-family: 'Lato Fallback';
@@ -39,6 +83,25 @@
   size-adjust: 97.4%;
   ascent-override: 101.2%;
   descent-override: 21.8%;
+  line-gap-override: 0%;
+}
+
+/* Condensed fallbacks, so the swap to Anton and Oswald does not reflow the
+   headline or the tiles. Values fitted against Arial Narrow and Arial. */
+@font-face {
+  font-family: 'Anton Fallback';
+  src: local('Arial Narrow Bold'), local('ArialNarrow-Bold'), local('Arial Bold'), local('Arial');
+  size-adjust: 84%;
+  ascent-override: 140%;
+  descent-override: 38%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Oswald Fallback';
+  src: local('Arial Narrow'), local('ArialNarrow'), local('Arial');
+  size-adjust: 81%;
+  ascent-override: 147%;
+  descent-override: 36%;
   line-gap-override: 0%;
 }
 
@@ -52,11 +115,21 @@
   --color-brand-circle: #cce7fe;
   --color-brand-line: #d5e9fb;
   --color-wa: #00cd56;
-  --color-navy: #11263c;
-  --color-ink: #475c73;
+  --color-wa-dark: #00863a;
+  /* Counter board palette. Tile is the brand blue the enamel tiles are painted
+     in; sun is the lit, selected tile; navy is the board's ink and the order
+     bar. Text on tile is only ever large display type, which clears 3:1. */
+  --color-tile: #0088f8;
+  --color-sun: #fac93f;
+  --color-sun-dark: #edb91f;
+  --color-navy: #0b2747;
+  --color-ink: #3e5470;
+  --color-paper: #f4f7fa;
 
   --font-sans: 'Lato', 'Lato Fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI',
     Roboto, Arial, sans-serif;
+  --font-board: 'Anton', 'Anton Fallback', 'Arial Narrow', Impact, sans-serif;
+  --font-label: 'Oswald', 'Oswald Fallback', 'Arial Narrow', Arial, sans-serif;
 
   --radius-card: 1.5rem;
 
@@ -105,6 +178,25 @@
     body.has-sticky-cta {
       padding-bottom: 0;
     }
+  }
+
+  ::selection {
+    background-color: var(--color-sun);
+    color: var(--color-navy);
+  }
+
+  input,
+  textarea {
+    caret-color: var(--color-brand-dark);
+  }
+
+  html {
+    scrollbar-color: var(--color-navy) var(--color-paper);
+  }
+
+  a {
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 2px;
   }
 
   :focus-visible {
@@ -186,8 +278,8 @@
   /* viewport-fit=cover lets the page under the notch, so the gutter takes the
      larger of the design value and the device inset. In portrait and on any
      phone without a notch the insets are 0 and this is just the gutter. */
-  padding-left: max(1.25rem, env(safe-area-inset-left, 0px));
-  padding-right: max(1.25rem, env(safe-area-inset-right, 0px));
+  padding-left: max(1rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1rem, env(safe-area-inset-right, 0px));
 
   @media (min-width: 768px) {
     padding-left: max(2rem, env(safe-area-inset-left, 0px));

@@ -18,25 +18,33 @@ the thing to look at first.
 
 ## The page
 
+Built as a kopitiam counter board: numbered tiles you point at, an order bar
+that books what you picked. The visual system is recorded in
+[DESIGN.md](./DESIGN.md); product facts in [PRODUCT.md](./PRODUCT.md).
+
 | Section | What it does |
 | --- | --- |
-| Hero | The promise, and one button down to the grid |
-| Trust strip | Four claims, one of them still to be confirmed |
-| Service grid | Six cards, two columns on a phone, three on a desktop |
-| Not sure which one? | Three questions that each map to a service |
-| Guarantee | Reclean or full refund, stated plainly |
+| Board | "Order your clean.", the RM20 code pill (tap copies it), six numbered tiles with price tags |
+| Order bar | Fixed to the bottom. Names the picked tile; Book now opens that service's booking flow; the chevron opens the order slip (full name, price, what is included) |
+| Sets | Three tickets for the unsure, each straight to a booking flow, plus WhatsApp |
+| Guarantee | Reclean or full refund, and the house facts |
 | Voucher | RM20 off the first booking, code and terms |
+
+First tap on a tile selects it, the second tap (or Book now) books. Without
+JavaScript every tile is a plain link to its booking flow. `#<slug>` in the URL
+preselects a tile, so ads can land on one, for example
+`services.kleaner.my/#post-renovation`.
 
 ## Stack
 
 Astro 7, static output, Tailwind CSS 4. No client framework and no third party
 runtime dependency: the only external script is Google Tag Manager, and only
-when a container ID is configured. Lato is self hosted from `public/fonts`.
+when a container ID is configured. 
 
-**No raster image on the page at all.** Every icon is inline SVG from
-`src/components/Icon.astro`, so there is nothing to lazy load, nothing to size,
-and no layout shift from an image that has not arrived yet. The only images
-anywhere are the header and footer logos.
+**No raster image on the page apart from the logo.** The tile drawings are
+inline SVG from `src/components/Pictogram.astro` and the small icons from
+`src/components/Icon.astro`. Anton, Oswald and Lato are self hosted from
+`public/fonts`.
 
 ## Commands
 
@@ -105,10 +113,10 @@ no new JavaScript.
 
 ## Claims, and what stops them drifting
 
-Only facts verified against the booking form or already published by Kleaner
-are stated as facts. Anything else carries a visible `[OWNER TO CONFIRM]` note
-and is listed in `content/OWNER-CONFIRM.md`, which regenerates on every build.
-There are **8** open items.
+The owner confirmed every claim on the page on 2 October 2026, so there are
+**0** open items and no visible notes. A new unverified claim gets a `confirm`
+string in `services.ts`, which renders a visible `[OWNER TO CONFIRM]` note and
+lands in `content/OWNER-CONFIRM.md` on the next build.
 
 `npm run verify` holds a list of phrases that may never appear: no 100 per cent
 anything, nothing permanent or clinical, no claim about viruses, no promise
@@ -127,8 +135,8 @@ with the service slug, and `cta_whatsapp`.
 
 ## Performance
 
-Lighthouse mobile, on the production build: **100 across Performance,
-Accessibility, Best Practices and SEO.**
+Lighthouse mobile, on the production build: **99 Performance, 100
+Accessibility, Best Practices and SEO** (2 October 2026).
 
 CLS reads 0.006 under Lighthouse's throttled emulation, which is the font swap,
 not the layout. Measured unthrottled there is no shift at all, and `npm run qa`
