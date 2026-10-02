@@ -1,7 +1,7 @@
 # Kleaner services hub
 
 One page listing every Kleaner service, each card a single tap to its booking
-page. Deployed as a standalone static site on `services.kleaner.my`.
+page. Deployed as a standalone static site on `home.kleaner.my`.
 
 kleaner.my runs on BookingKoala, which cannot host custom coded pages, so this
 follows the same pattern already used for `movers.kleaner.my`,
@@ -37,7 +37,7 @@ system is recorded in [DESIGN.md](./DESIGN.md); product facts in
 | Close | WhatsApp us, for the unsure |
 
 Every service has its own anchor, so ads and WhatsApp can deep-link, for
-example `services.kleaner.my/#formaldehyde-removal`. The previous page's
+example `home.kleaner.my/#formaldehyde-removal`. The previous page's
 anchors (`#general-cleaning`, `#sofa-mattress`, `#post-renovation`,
 `#formaldehyde-removal`, `#movers`) still land on the matching service.
 

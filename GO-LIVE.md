@@ -1,4 +1,4 @@
-# Go live checklist: services.kleaner.my
+# Go live checklist: home.kleaner.my
 
 One page, the hub that lists every Kleaner service. Standalone static site,
 because kleaner.my runs on BookingKoala and cannot host custom coded pages.
@@ -7,7 +7,7 @@ Same pattern as `movers.kleaner.my`, `upholstery.kleaner.my` and
 
 | Page | URL once live |
 | --- | --- |
-| All Services | `https://services.kleaner.my/` |
+| All Services | `https://home.kleaner.my/` |
 
 ---
 
@@ -15,7 +15,7 @@ Same pattern as `movers.kleaner.my`, `upholstery.kleaner.my` and
 
 ### The hostname was chosen, the rest was assumed
 
-`services.kleaner.my` is the host you asked for. It is set once, as `SITE.url`
+`home.kleaner.my` is the host you asked for. It is set once, as `SITE.url`
 in `src/data/site.ts`, and everything else reads from it: the canonical, the
 sitemap, the Open Graph URL, the menu entry and the checks in
 `scripts/verify.mjs`.
@@ -76,7 +76,7 @@ fail. Do **not** use `NPM_FLAGS=--production` instead: Tailwind is also a
 devDependency and the build genuinely needs it.
 
 Then **Custom domains**, **Set up a custom domain**, and enter
-`services.kleaner.my`.
+`home.kleaner.my`.
 
 ### Option B: Vercel (`vercel.json` is already in the repo)
 
@@ -85,7 +85,7 @@ npm install -g vercel
 vercel login
 vercel link
 vercel --prod
-vercel domains add services.kleaner.my
+vercel domains add home.kleaner.my
 ```
 
 ### The DNS record
@@ -109,7 +109,7 @@ The main site menu lives in the BookingKoala admin, not in this repo. In the
 
 | Label | URL |
 | --- | --- |
-| `All Services` | `https://services.kleaner.my/` |
+| `All Services` | `https://home.kleaner.my/` |
 
 Add the same entry at the top of the footer's Cleaning Services list.
 
@@ -178,9 +178,9 @@ Then, by hand:
 - [ ] Open the page on a real phone and tap every one of the nine buttons. Confirm
       each one lands on the right service, not just on a page that loads.
 - [ ] Tap the WhatsApp button and check the prefilled message.
-- [ ] Open `services.kleaner.my/#formaldehyde-removal` and check it lands on that service.
+- [ ] Open `home.kleaner.my/#formaldehyde-removal` and check it lands on that service.
 - [ ] Paste the URL into WhatsApp to check the share card renders.
-- [ ] Submit `https://services.kleaner.my/sitemap.xml` in Google Search Console.
+- [ ] Submit `https://home.kleaner.my/sitemap.xml` in Google Search Console.
 - [ ] Run the URL through the Google Rich Results Test and confirm the ItemList.
 
 ---

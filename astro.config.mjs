@@ -1,11 +1,11 @@
 import { defineConfig } from 'astro/config'
 import tailwindcss from '@tailwindcss/vite'
 
-// Static output for services.kleaner.my.
+// Static output for home.kleaner.my.
 // build.format 'file' emits index.html, which both Vercel
 // (cleanUrls) and Cloudflare Pages serve at the extensionless clean URL.
 export default defineConfig({
-  site: 'https://services.kleaner.my',
+  site: 'https://home.kleaner.my',
   output: 'static',
   trailingSlash: 'never',
   build: {

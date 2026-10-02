@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://services.kleaner.my/sitemap.xml
+Sitemap: https://home.kleaner.my/sitemap.xml

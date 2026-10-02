@@ -7,7 +7,7 @@ import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 
 const DIST = 'dist'
-const HOST = 'https://services.kleaner.my'
+const HOST = 'https://home.kleaner.my'
 const results = []
 const check = (name, pass, detail = '') => {
   results.push({ name, pass, detail })

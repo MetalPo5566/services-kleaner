@@ -12,7 +12,7 @@ Households and small businesses in Kuala Lumpur and Selangor who need cleaning (
 
 ## Product Purpose
 
-services.kleaner.my is the one page that lists every Kleaner service and sends the visitor straight into that service's booking flow. Success is a tap through to booking (owner confirmed: booking is the one action; WhatsApp is the backup for the unsure).
+home.kleaner.my is the one page that lists every Kleaner service and sends the visitor straight into that service's booking flow. Success is a tap through to booking (owner confirmed: booking is the one action; WhatsApp is the backup for the unsure).
 
 ## Positioning
 

@@ -45,7 +45,7 @@ export const STERILISATION_PRICE = priceOf('treatment', 'Air & Surface Sterilisa
 export const SITE = {
   name: 'Kleaner',
   tagline: 'The Benchmark of Cleaning Service',
-  url: 'https://services.kleaner.my',
+  url: 'https://home.kleaner.my',
   mainSite: 'https://kleaner.my',
   /** The other standalone Kleaner sites this one links out to. */
   postRenoSite: 'https://postreno.kleaner.my',

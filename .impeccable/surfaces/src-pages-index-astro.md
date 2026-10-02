@@ -7,7 +7,7 @@ related_targets: []
 
 ## Scope
 
-services.kleaner.my, the single page (`src/pages/index.astro`). Mode: Persuade. Mobile first, 390px primary.
+home.kleaner.my, the single page (`src/pages/index.astro`). Mode: Persuade. Mobile first, 390px primary.
 
 Audience and job: Klang Valley homeowners, condo residents, people moving or renovating, mostly on a phone from ads and WhatsApp. Job: find their service in seconds and tap the right booking link. Backup: WhatsApp +60 17-477 0978.
 

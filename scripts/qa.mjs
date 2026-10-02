@@ -125,7 +125,7 @@ for (const width of WIDTHS) {
   const links = await panel.locator('a').evaluateAll((all) => all.map((a) => a.getAttribute('href')))
   record(
     'dropdown routes each service to its own site',
-    links.includes('https://services.kleaner.my/') &&
+    links.includes('https://home.kleaner.my/') &&
       links.includes('https://postreno.kleaner.my/') &&
       links.includes('https://upholstery.kleaner.my/sofa-mattress-cleaning'),
     `${links.length} links`
