@@ -1,16 +1,14 @@
 // Screenshots at the four target widths, plus the interaction checks that are
 // easy to get wrong: the header dropdown on touch and keyboard, the service
 // grid, and the page still working with JavaScript off.
-import { mkdirSync, writeFileSync, readFileSync } from 'node:fs'
+import { mkdirSync, writeFileSync } from 'node:fs'
 import { chromium } from 'playwright'
 
 const BASE = process.env.QA_BASE || 'http://127.0.0.1:4321'
 const OUT = 'qa'
 mkdirSync(OUT, { recursive: true })
 
-const prices = JSON.parse(readFileSync('src/data/prices.json', 'utf8'))
-const SOFA_FROM = Math.min(...prices.groups.sofa.items.map((item) => item.price))
-const SERVICE_COUNT = 6
+const SERVICE_COUNT = 9
 
 // 1280 is in here because it is the width the brief asks to see.
 const WIDTHS = [390, 768, 1280, 1440]
@@ -188,7 +186,7 @@ for (const width of WIDTHS) {
   record(
     'every card links to a known Kleaner host',
     cards.every(
-      (card) => card.href.startsWith('https://kleaner.my/') || card.href.startsWith('https://movers.kleaner.my')
+      (card) => card.href.startsWith('https://kleaner.my/booknow/')
     ),
     cards.map((card) => card.href).join(' | ')
   )
@@ -198,7 +196,7 @@ for (const width of WIDTHS) {
   record('cards open in the same tab', cards.every((card) => !card.target))
 
   record('grid is 3 columns at 1280', (await page.evaluate(columnCount)) === 3)
-  record(`sofa card quotes from RM${SOFA_FROM}`, (await page.content()).includes(`from RM${SOFA_FROM}`))
+  record('the board quotes no prices', !/RM\d/.test(await page.locator('.board').innerText()))
 
   // Each card fires its own slug, which is what the brief asked for.
   await page.evaluate(blockNavigation)

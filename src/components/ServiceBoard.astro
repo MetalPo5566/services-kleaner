@@ -5,7 +5,7 @@ import { SERVICES } from '../data/services'
 import { SITE } from '../data/site'
 import type { ServicesCopy } from '../data/copy/services.en'
 
-// The counter board. Six numbered tiles, the way a kopitiam lists its drinks
+// The counter board. Nine numbered tiles, the way a kopitiam lists its drinks
 // above the counter, and an order bar that names what you picked.
 //
 // Every tile is a real link to its booking flow, so without JavaScript (and for
@@ -61,17 +61,17 @@ const pad = (n: number) => String(n).padStart(2, '0')
             data-service-card
             data-service={service.slug}
             data-name={service.short}
-            data-tag={service.tag}
             aria-describedby="tile-hint"
           >
             <span class="tile-face">
               <span class="tile-num" aria-hidden="true">
                 {pad(index + 1)}
               </span>
-              <span class="tile-tags">
-                <span class="tile-tag">{service.tag.replace(/^(from|instant) /i, '$1\n')}</span>
-                {service.badge === 'New' && <span class="tile-new">New</span>}
-              </span>
+              {service.badge === 'New' && (
+                <span class="tile-tags">
+                  <span class="tile-new">New</span>
+                </span>
+              )}
               <Pictogram name={service.pictogram} class="tile-icon" />
               <span class="tile-name" data-long={service.short.length > 10 && !service.short.includes(' ') ? '' : undefined}>{service.short}</span>
             </span>
@@ -104,16 +104,17 @@ const pad = (n: number) => String(n).padStart(2, '0')
             <h2 class="pr-10 font-board text-[26px] uppercase leading-[1.05] text-navy md:text-[30px]">
               {service.name}
             </h2>
-            <p class="mt-1.5 font-label text-[17px] font-semibold text-brand-dark">{service.price}</p>
             <p class="mt-2 text-[15.5px] leading-snug text-ink">{service.promise}</p>
-            <ul class="mt-3 flex flex-col gap-1.5" role="list">
-              {service.bullets.map((bullet) => (
-                <li class="flex items-start gap-2 text-[15px] leading-snug text-navy">
-                  <Icon name="check" size={18} class="mt-0.5 shrink-0 text-brand-dark" />
-                  {bullet}
-                </li>
-              ))}
-            </ul>
+            {service.bullets.length > 0 && (
+              <ul class="mt-3 flex flex-col gap-1.5" role="list">
+                {service.bullets.map((bullet) => (
+                  <li class="flex items-start gap-2 text-[15px] leading-snug text-navy">
+                    <Icon name="check" size={18} class="mt-0.5 shrink-0 text-brand-dark" />
+                    {bullet}
+                  </li>
+                ))}
+              </ul>
+            )}
             {service.isFallbackUrl && (
               <p class="mt-3 text-[13px] leading-snug text-ink">{board.fallbackNote}</p>
             )}
@@ -265,8 +266,7 @@ const pad = (n: number) => String(n).padStart(2, '0')
     container-type: inline-size;
   }
 
-  /* A tile is a sign tile on the counter wall: numeral, price tag, drawing and
-     name. Rows size to their content, so a two line name makes its row taller,
+  /* A tile is a sign tile on the counter wall: numeral, drawing and name. Rows size to their content, so a two line name makes its row taller,
      the way the board is lettered. */
   .tile {
     position: relative;
@@ -347,48 +347,23 @@ const pad = (n: number) => String(n).padStart(2, '0')
   .tile-tags {
     grid-area: tags;
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 2cqi;
-    /* The price tag hangs close to the inset rule, like a tag clipped on. */
+    align-items: flex-start;
+    justify-content: flex-end;
+    /* NEW hangs close to the inset rule, like a tag clipped on. */
     margin: -3.5cqi -1.5cqi 0 0;
   }
 
-  .tile-tag {
-    max-width: 100%;
-    padding: 3px 5px 2px;
-    border-radius: 5px;
-    background: #fff;
-    color: var(--color-brand-dark);
-    font-family: var(--font-label);
-    white-space: pre-line;
-    font-size: max(10px, 5.6cqi);
-    font-weight: 600;
-    line-height: 1.05;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 0.01em;
-  }
-
-  .tile[aria-current='true'] .tile-tag {
-    color: var(--color-navy);
-  }
-
-  /* NEW hangs under the price tag, out of the flow so the row keeps its
-     height; the drawing on that tile steps left to make room, as on the board. */
   .tile-new {
-    position: absolute;
-    right: 1.5cqi;
-    top: 17cqi;
-    padding: 2px 5px 1px;
+    padding: 3px 5px 2px;
     border-radius: 5px;
     background: var(--color-sun);
     color: var(--color-navy);
     font-family: var(--font-label);
-    font-size: max(10px, 5.2cqi);
+    font-size: max(10px, 5.6cqi);
     font-weight: 600;
-    line-height: 1.1;
+    line-height: 1.05;
     text-transform: uppercase;
+    letter-spacing: 0.01em;
   }
 
   .tile[aria-current='true'] .tile-new {
@@ -441,7 +416,7 @@ const pad = (n: number) => String(n).padStart(2, '0')
   }
 
   /* Wide screens: numeral, drawing and tags share one row and the name sits
-     under them, so both rows of the wall fit above the order bar. */
+     under them, so the wall stays short. */
   @media (min-width: 1024px) {
     .tile {
       min-height: 0;
@@ -469,13 +444,7 @@ const pad = (n: number) => String(n).padStart(2, '0')
       font-size: 10cqi;
     }
     .tile-new {
-      position: static;
-    }
-    .tile-tag {
       font-size: 4.2cqi;
-    }
-    .tile-new {
-      font-size: 3.8cqi;
     }
   }
 

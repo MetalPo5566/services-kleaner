@@ -16,12 +16,12 @@ services.kleaner.my is the one page that lists every Kleaner service and sends t
 
 ## Positioning
 
-Kleaner is a Klang Valley cleaning company with 100,000+ cleaning hours delivered, a trained in-house team (not gig workers), and a reclean-or-full-refund guarantee on every service. One operator covers the whole job: general cleaning, sofa and mattress, post-renovation, formaldehyde removal, movers, and a recurring Club.
+Kleaner is a Klang Valley cleaning company with 100,000+ cleaning hours delivered, a trained in-house team (not gig workers), and a reclean-or-full-refund guarantee on every service. One operator covers the whole job: standard, deep and move in/out cleaning, post-renovation, formaldehyde removal, aircond maintenance, sofa and mattress, curtain and carpet, and movers.
 
 ## Operating Context
 
 - kleaner.my runs on BookingKoala, which cannot host custom pages, so this is a standalone static site like movers., upholstery. and postreno.kleaner.my. Header and footer link back to kleaner.my with absolute URLs.
-- Booking links: four of six cards open the front of the BookingKoala flow (kleaner.my/booknow/) because direct routes are not known yet; sofa and mattress uses /booknow/upholstery-cleaning; movers goes to movers.kleaner.my.
+- Booking links: standard, deep and move in/out cleaning open kleaner.my/booknow/; post-renovation and formaldehyde use /booknow/post-renovation; aircond /booknow/aircond-servicing; sofa, mattress, curtain and carpet /booknow/upholstery-cleaning; movers /booknow/movers. The board shows no prices.
 - Contact: WhatsApp +60 17-477 0978 (primary), call line +60 17-477 0010. Hours Monday to Sunday, 7:30 AM to 6:00 PM.
 
 ## Capabilities and Constraints
