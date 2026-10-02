@@ -7,29 +7,30 @@ related_targets: []
 
 ## Scope
 
-services.kleaner.my, the single page (`src/pages/index.astro`). Mode: Persuade. Mobile first.
+services.kleaner.my, the single page (`src/pages/index.astro`). Mode: Persuade. Mobile first, 390px primary.
 
-Audience and job: Klang Valley households and small businesses who know roughly what they need (renovation done, stained sofa, regular help, moving) and want to get into the right booking flow fast. Action: tap through to that service's booking page. Backup: WhatsApp for the unsure.
+Audience and job: Klang Valley homeowners, condo residents, people moving or renovating, mostly on a phone from ads and WhatsApp. Job: find their service in seconds and tap the right booking link. Backup: WhatsApp +60 17-477 0978.
 
-Constraints: logo and #0088F8 blue fixed; kleaner.my header and footer links kept; prices only from prices.json; every claim on the page owner-confirmed (2 Oct 2026); no em dashes; English only.
+Proof allowed: 100,000+ cleaning hours delivered; reclean or full refund guarantee. Nothing else. No prices on the page.
 
-Approved comp: `.impeccable/mocks/comp-b.png` (Higgsfield job 96970b1b-09fe-49c4-896f-765e1828594e, 758x1340 capture). Alternates in the same folder carry no approval.
+Constraints: Astro + Tailwind, no framework migration; logo asset unchanged; #0088F8 accent, #0071D1 filled buttons; tagline "Your home, our honour."; Phosphor icons only, one weight; light and dark modes; zero em or en dashes; no eyebrows, no section numbers; each group a different layout family; anchor id per service; CTA "Book now" for cleaning, "Get a quote" for Mover.
+
+Services and links: Standard, Deep, Move In / Move Out -> https://kleaner.my/booknow; Post Renovation, Formaldehyde Removal -> https://kleaner.my/booknow/post-renovation; Aircond Maintenance -> https://kleaner.my/booknow/aircond-servicing; Sofa & Mattress, Curtain & Carpet -> https://kleaner.my/booknow/upholstery-cleaning; Mover -> https://kleaner.my/booknow/movers.
 
 ## Direction contract
 
-THESIS: The services page is the numbered tile wall above a kopitiam counter: every service is a tile you point at and order, its price on a tag. It refuses the category default of soft white cards, stock cleaner photos and sparkle icons.
+THESIS: The services page is a super-app service menu, the Grab or Touch 'n Go home screen grammar visitors use daily: services grouped by need as big thumb-reach photo tiles, each a direct tap into booking. It refuses the category default of a long brochure of equal white cards with a contact form.
 
-OWN-WORLD: Kleaner blue #0088F8 enamel tiles with a thin white inset rule, giant white condensed numerals, white line pictograms, white rounded price tags. Selected tile flips to sunny yellow #FAC93F (sampled from the approved comp) with navy #11263C ink. Navy order bar, yellow BOOK NOW pill. Display in a heavy condensed sign face (Anton), labels in a condensed workhorse (Oswald), body in Lato. White ground, no gradients, no glow.
+OWN-WORLD: White and cool off-white ground in light, deep blue-black in dark; Kleaner blue #0088F8 as the single accent, #0071D1 for filled buttons. One soft radius system (large rounded tiles, pill buttons and chips). Real photography inside every tile, no text on photos. A sturdy rounded sans with character for headings, a plain workhorse for body. Phosphor regular icons. Sticky pill bar for jumping between groups, like an app's category strip.
 
-STORY: The visitor sees all six services and their prices at once, taps one, it lights up, the order bar names it and BOOK NOW opens that booking flow. A chevron in the bar opens the order slip: the service's full name, price, what is included and, where the link lands on the front of the BookingKoala form (four of six), which service to choose there. Product-truth citation: GO-LIVE.md step 1 and PRODUCT.md Operating Context. The unsure get three set combos and WhatsApp. Then the guarantee, the trust facts, the RM20 code, and the kleaner.my footer.
+STORY: The visitor lands on a split hero (cleaner at work in a Klang Valley condo), reads "Your home, our honour.", sees Book now and WhatsApp us. Below, a scroll-snap strip of four group pills. Four groups follow, each a different tile arrangement: home cleaning, after renovation, specialist care, moving. Each tile: photo, name, one plain line, Book now (Get a quote for Mover). Then 100,000+ hours and reclean or refund, then a WhatsApp close, then the kleaner.my footer.
 
-FIRST VIEWPORT: 390 phone. Tiles are flat enamel, no drop shadow; rows size to content (two line names make row one taller). Header: logo left, menu right. "ORDER YOUR CLEAN." full width, about 45px cap height. Subline beneath. Blue RM20 pill, tap copies KLEANERHOME. Two-column tile grid starting near y=200, four tiles visible. Navy order bar fixed at the bottom, selected service on the left, yellow BOOK NOW on the right. Desktop: same order, headline larger, grid three across.
+FIRST VIEWPORT: 390 phone. Single-line header, logo left, menu right, 64px. Headline left-aligned, two lines, subtext under 20 words, Book now filled #0071D1 and WhatsApp us outlined, side by side. Hero photo below the CTAs, rounded, about 40% of the viewport, the group pill strip peeking at the bottom edge. Desktop 1440: split, copy left, photo right, pills visible under the fold line.
 
-FORM: Kopitiam counter menu board, position 3 of 7 on the ordered list (1 floor plan, 2 MRT line map, 3 kopitiam menu board, 4 handover checklist, 5 job ticket, 6 care label, 7 super-app grid); approved comp is the numbered-tile variant. Seed key b9dd7c26 (degraded roll, no challengers). Signature interaction: tile select lights the tile and the order bar updates name, price and link; deep links `#<slug>` preselect a service for ads.
+FORM: Super-app service menu, position 1 of 7 on the ordered list (1 super-app service menu, 2 condo lobby directory, 3 renovation handover checklist, 4 service job sheet, 5 property listing magazine, 6 MRT line map, 7 uniform care label). User chose IMPECCABLE'S PICK over the assigned job sheet. Seed key 59da3b4a (degraded roll, no challengers). Signature interaction: the group pill strip tracks the section in view and jumps with a smooth scroll; every service has its own anchor for ads and WhatsApp deep links.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
 
 ## Unresolved
 
-- Four of six booking links still open the front of the BookingKoala flow (GO-LIVE.md step 1).
-- The logo file still carries "The Benchmark of Cleaning Service"; newer wording "The Benchmark in Cleaning" needs a new logo file.
+- Logo file still reads "The Benchmark of Cleaning Service"; the brief's wording "THE BENCHMARK IN CLEANING" needs a new logo file from the owner.
