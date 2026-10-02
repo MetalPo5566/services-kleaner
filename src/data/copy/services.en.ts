@@ -60,7 +60,7 @@ export const SERVICES_EN: ServicesCopy = {
     title: 'Done properly, or done again.',
     hours: {
       figure: '100,000+',
-      text: 'cleaning hours delivered across Kuala Lumpur and Selangor.',
+      text: 'cleaning hours delivered.',
     },
     guarantee: {
       title: 'Reclean or full refund',

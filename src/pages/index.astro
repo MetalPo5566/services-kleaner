@@ -60,7 +60,7 @@ const wa = (message: string) => whatsappLink(message)
 >
   {/* Hero. Phone: the photo leads, copy and actions under it. Desktop: copy
       left, photo right. Nothing is ever set on the photo. */}
-  <section class="wrap pt-4 md:pt-8 lg:pt-12" aria-labelledby="hero-title">
+  <section class="wrap pt-4 md:pt-8 lg:pt-12" aria-labelledby="hero-title" data-hero>
     <div class="grid gap-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center lg:gap-14">
       <picture class="hero-photo block overflow-hidden rounded-tile lg:order-2">
         <source type="image/avif" srcset={heroAvif.srcSet.attribute} sizes={HERO_SIZES} />
@@ -124,7 +124,7 @@ const wa = (message: string) => whatsappLink(message)
                 class="launcher-photo"
                 loading="lazy"
               />
-              <Icon name={group.icon} size={22} class="mt-2 text-brand-ink md:mt-3" />
+              <Icon name={group.icon} size={28} class="mt-2 text-brand-ink md:mt-3" />
               <span class="launcher-label">{group.name}</span>
             </a>
           </li>
@@ -350,35 +350,40 @@ const wa = (message: string) => whatsappLink(message)
   // The pill strip follows the group in view: the group whose section crosses
   // the band just under the strip is the current one. Observer only, no
   // scroll listener; with JavaScript off the pills are plain anchor links.
+  const strip = document.querySelector<HTMLElement>('.pill-track')
   const pills = new Map(
     Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-pill]')).map((pill) => [
       pill.dataset.pill,
       pill,
     ])
   )
+  // Lights one pill, or none while the hero is in view, and slides the strip
+  // so the lit pill shows. Only the strip scrolls, never the page.
   const setCurrent = (slug: string | undefined) => {
     pills.forEach((pill, key) => {
-      if (key === slug) {
-        pill.setAttribute('aria-current', 'true')
-        // Keep the lit pill visible inside the strip on narrow screens.
-        pill.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'auto' })
-      } else {
-        pill.removeAttribute('aria-current')
-      }
+      if (key === slug) pill.setAttribute('aria-current', 'true')
+      else pill.removeAttribute('aria-current')
     })
+    if (!strip) return
+    const lit = slug ? pills.get(slug) : undefined
+    strip.scrollTo({ left: lit ? Math.max(0, lit.offsetLeft - strip.offsetLeft - 16) : 0 })
   }
 
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) setCurrent((entry.target as HTMLElement).id)
+          if (!entry.isIntersecting) return
+          const target = entry.target as HTMLElement
+          setCurrent(target.hasAttribute('data-hero') ? undefined : target.id)
         })
       },
       // A thin band 30 to 35 per cent down the viewport.
       { rootMargin: '-30% 0px -65% 0px' }
     )
-    document.querySelectorAll<HTMLElement>('[data-group]').forEach((section) => observer.observe(section))
+    document
+      .querySelectorAll<HTMLElement>('[data-group], [data-hero]')
+      .forEach((section) => observer.observe(section))
   }
 </script>
 
@@ -756,7 +761,11 @@ const wa = (message: string) => whatsappLink(message)
       aspect-ratio: auto;
     }
     .bento-small .bento-body {
+      justify-content: center;
       padding: 1.5rem;
+    }
+    .bento-small .bento-body :global(.btn) {
+      margin-top: 0;
     }
     .bento-small .card-name {
       font-size: 20px;
