@@ -1,69 +1,35 @@
-import type { IconName } from '../../components/Icon.astro'
-
 /**
- * Every word on /services that is not a service itself. Services live in
- * src/data/services.ts.
+ * Every word on the services page that is not a service itself. Services live
+ * in src/data/services.ts. English only for now; a translation is a copy of
+ * this file and one import.
  *
- * The page is English only for now. The shell already switches EN and ZH on
- * the post-renovation page, but there is no Bahasa Malaysia anywhere on the
- * site yet, so a three way switcher here would point at two pages that do not
- * exist. Everything is in this one file so services.ms.ts and services.zh.ts
- * are a copy, a translation and one import.
+ * Proof is limited to what the owner has confirmed: 100,000+ cleaning hours
+ * and the reclean or full refund guarantee. Nothing else is claimed.
  */
 export type ServicesCopy = {
   htmlLang: string
   ogLocale: string
   path: string
-  navLabel: string
-
   meta: { title: string; description: string; ogImage: string }
-
   hero: {
     h1: string
     sub: string
-    whatsApp: string
-    waMessage: string
-  }
-
-  /** The tile wall and its order bar. */
-  board: {
-    /** Read to screen readers on every tile. */
-    hint: string
-    idle: string
-    selected: string
     book: string
-    details: string
-    close: string
-    fallbackNote: string
-  }
-
-  trust: {
-    items: readonly { icon: IconName; text: string }[]
-  }
-
-  sets: {
-    title: string
-    lead: string
-    /** Each set points at a slug in services.ts. */
-    items: readonly { letter: string; question: string; answer: string; slug: string }[]
-    whatsAppLead: string
     whatsApp: string
     waMessage: string
+    photoAlt: string
   }
-
-  guarantee: {
+  jump: { label: string }
+  proof: {
+    title: string
+    hours: { figure: string; text: string }
+    guarantee: { title: string; text: string }
+  }
+  close: {
     title: string
     text: string
-  }
-
-  voucher: {
-    pill: string
-    headline: string
-    code: string
-    terms: string
-    cta: string
-    copy: string
-    copied: string
+    whatsApp: string
+    waMessage: string
   }
 }
 
@@ -71,81 +37,41 @@ export const SERVICES_EN: ServicesCopy = {
   htmlLang: 'en-MY',
   ogLocale: 'en_MY',
   path: '/',
-  navLabel: 'All Services',
 
   meta: {
     title: 'Cleaning Services in Klang Valley | Kleaner',
     description:
-      'Every Kleaner service in one place: general cleaning, sofa and mattress, post-renovation, formaldehyde removal, movers and Kleaner Club. Book in one tap.',
+      'Home, deep and move-out cleaning, post renovation, formaldehyde removal, aircond, sofa, curtain and carpet care, and movers in Klang Valley.',
     ogImage: '/og/index.jpg',
   },
 
   hero: {
-    h1: 'Order your clean.',
-    sub: 'Every Kleaner service. Tap one to book.',
-    whatsApp: 'Ask on WhatsApp',
-    waMessage: "Hi Kleaner, I'd like to ask about your cleaning services.",
-  },
-
-  board: {
-    hint: 'Shows what is included and the book button. Tap again to book.',
-    idle: 'Pick a service',
-    selected: 'selected',
+    h1: 'Your home, our honour.',
+    sub: 'Home cleaning, renovation clean-ups, aircond, upholstery and moving across Klang Valley. Pick a service and book.',
     book: 'Book now',
-    details: "What's included",
-    close: 'Close',
-    fallbackNote: 'Opens the Kleaner booking form, where you choose this service.',
+    whatsApp: 'WhatsApp us',
+    waMessage: "Hi Kleaner, I'd like to ask about your services.",
+    photoAlt: 'A Kleaner cleaner mopping the floor of a sunlit condo living room with the Kuala Lumpur skyline outside',
   },
 
-  trust: {
-    items: [
-      { icon: 'clock', text: '100,000+ cleaning hours delivered' },
-      { icon: 'shield', text: 'Trained in-house team, not gig workers' },
-      { icon: 'guarantee', text: 'Background checked providers' },
-      { icon: 'home', text: 'Kuala Lumpur and Selangor' },
-    ],
+  jump: { label: 'Jump to a service group' },
+
+  proof: {
+    title: 'Done properly, or done again.',
+    hours: {
+      figure: '100,000+',
+      text: 'cleaning hours delivered.',
+    },
+    guarantee: {
+      title: 'Reclean or full refund',
+      text: 'Not happy with the clean? We come back and clean it again. Still not happy, you get a full refund.',
+    },
   },
 
-  sets: {
-    title: 'Not sure? Order a set.',
-    lead: 'Most people land on one of these.',
-    items: [
-      {
-        letter: 'A',
-        question: 'Just finished a renovation?',
-        answer: 'Post-Renovation Cleaning. Add formaldehyde removal in the same booking.',
-        slug: 'post-renovation',
-      },
-      {
-        letter: 'B',
-        question: 'Stains on the sofa or mattress?',
-        answer: 'Sofa & Mattress Deep Cleaning, priced per piece.',
-        slug: 'sofa-mattress',
-      },
-      {
-        letter: 'C',
-        question: 'Want regular help at home?',
-        answer: 'General Cleaning, weekly, biweekly or monthly.',
-        slug: 'general-cleaning',
-      },
-    ],
-    whatsAppLead: 'Still not sure? Describe the job and we will tell you which one it is.',
-    whatsApp: 'Ask on WhatsApp',
+  close: {
+    title: 'Not sure which service you need?',
+    text: 'Send us a WhatsApp message with what needs doing and we will point you to the right one.',
+    whatsApp: 'WhatsApp us',
     waMessage: "Hi Kleaner, I'm not sure which service I need. Here is the job:",
-  },
-
-  guarantee: {
-    title: 'Reclean or full refund.',
-    text: 'If you are not happy with the clean, we come back and clean it again. If you are still not happy, we refund you in full. That applies to every service on this page.',
-  },
-
-  voucher: {
-    pill: 'RM20 off first booking',
-    headline: 'RM20 off your first booking',
-    code: 'KLEANERHOME',
-    terms: 'One use per customer. Valid to 31 December 2026.',
-    cta: 'Book and use the code',
-    copy: 'Copy code',
-    copied: 'Code copied',
   },
 }

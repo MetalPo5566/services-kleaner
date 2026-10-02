@@ -1,288 +1,321 @@
 ---
 name: Kleaner Services
-description: Every Kleaner service on one kopitiam counter board; point at a tile, order, book.
+description: Every Kleaner service as a super-app service menu; find your group, tap the photo tile, book.
 colors:
-  tile: "#0088f8"
+  brand: "#0088f8"
   brand-dark: "#0071d1"
+  brand-hover: "#005fb4"
   brand-ink: "#006abf"
-  brand-tint: "#eaf5ff"
-  brand-line: "#d5e9fb"
-  sun: "#fac93f"
-  sun-dark: "#edb91f"
+  page: "#f7f9fc"
+  raised: "#fdfeff"
+  tint: "#eef3f9"
+  pill: "#e6edf5"
+  line: "#dbe4ee"
   navy: "#0b2747"
-  ink: "#3e5470"
-  paper: "#f4f7fa"
-  white: "#ffffff"
-  wa: "#00cd56"
+  ink: "#46586f"
+  panel-text: "#e3efff"
+  footer-heading: "#8fcbff"
+  brand-ink-dark: "#4fb0ff"
+  page-dark: "#0a131f"
+  raised-dark: "#101c2b"
+  tint-dark: "#142336"
+  pill-dark: "#1a2c42"
+  line-dark: "#22364e"
+  navy-dark: "#e8f0f9"
+  ink-dark: "#a8b7ca"
 typography:
   display:
-    fontFamily: "Anton, 'Anton Fallback', 'Arial Narrow', Impact, sans-serif"
-    fontSize: "clamp(36px, 12.4vw, 128px)"
-    fontWeight: 400
-    lineHeight: 1.02
-    letterSpacing: "0.005em"
-  headline:
-    fontFamily: "Anton, 'Anton Fallback', 'Arial Narrow', Impact, sans-serif"
-    fontSize: "clamp(34px, 9.4vw, 64px)"
-    fontWeight: 400
+    fontFamily: "'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif"
+    fontSize: "clamp(2.25rem, 9.6vw, 3.25rem)"
+    fontWeight: 800
+    lineHeight: 1.04
+    letterSpacing: "-0.03em"
+  display-wide:
+    fontFamily: "'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, sans-serif"
+    fontSize: "clamp(3.25rem, 4.6vw, 4.5rem)"
+    fontWeight: 800
+    lineHeight: 1.04
+    letterSpacing: "-0.03em"
+  figure:
+    fontFamily: "'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, sans-serif"
+    fontSize: "56px"
+    fontWeight: 800
     lineHeight: 1
-  title:
-    fontFamily: "Anton, 'Anton Fallback', 'Arial Narrow', Impact, sans-serif"
-    fontSize: "22px"
-    fontWeight: 400
-    lineHeight: 1.05
-  subhead:
-    fontFamily: "Oswald, 'Oswald Fallback', 'Arial Narrow', Arial, sans-serif"
-    fontSize: "clamp(17px, 5.75vw, 34px)"
-    fontWeight: 700
-    lineHeight: 1.25
-    letterSpacing: "-0.005em"
-  label:
-    fontFamily: "Oswald, 'Oswald Fallback', 'Arial Narrow', Arial, sans-serif"
-    fontSize: "15px"
-    fontWeight: 600
+    letterSpacing: "-0.04em"
+  headline:
+    fontFamily: "'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, sans-serif"
+    fontSize: "28px"
+    fontWeight: 800
     lineHeight: 1.1
-    letterSpacing: "0.04em"
+    letterSpacing: "-0.02em"
+  title:
+    fontFamily: "'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, sans-serif"
+    fontSize: "20px"
+    fontWeight: 700
+    lineHeight: 1.2
+    letterSpacing: "-0.01em"
   body:
-    fontFamily: "Lato, 'Lato Fallback', ui-sans-serif, system-ui, sans-serif"
-    fontSize: "16px"
+    fontFamily: "'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, sans-serif"
+    fontSize: "17px"
     fontWeight: 400
-    lineHeight: 1.65
+    lineHeight: 1.625
+  body-card:
+    fontFamily: "'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, sans-serif"
+    fontSize: "15.5px"
+    fontWeight: 400
+    lineHeight: 1.5
+  label:
+    fontFamily: "'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, sans-serif"
+    fontSize: "15px"
+    fontWeight: 700
+    lineHeight: 1
+  label-small:
+    fontFamily: "'Reddit Sans', 'Reddit Sans Fallback', ui-sans-serif, system-ui, sans-serif"
+    fontSize: "13px"
+    fontWeight: 700
+    lineHeight: 1.2
 rounded:
-  rule: "4px"
-  tag: "5px"
-  tile: "7px"
-  tile-wide: "9px"
-  ticket: "8px"
-  plate: "10px"
+  tile: "24px"
+  thumb: "16px"
   pill: "999px"
 spacing:
-  board-gap: "6px"
-  board-gap-wide: "14px"
   gutter: "16px"
   gutter-wide: "32px"
-  section: "40px"
-  section-wide: "64px"
-  container: "76rem"
+  tile-gap: "12px"
+  tile-gap-wide: "16px"
+  tile-pad: "20px"
+  panel-pad: "24px"
+  group-gap: "40px"
+  group-gap-wide: "72px"
+  container: "1216px"
 components:
-  tile:
-    backgroundColor: "{colors.tile}"
-    textColor: "{colors.white}"
-    rounded: "{rounded.tile}"
-    padding: "6px"
-  tile-selected:
-    backgroundColor: "{colors.sun}"
-    textColor: "{colors.navy}"
-    rounded: "{rounded.tile}"
-  tile-selected-hover:
-    backgroundColor: "{colors.sun-dark}"
-  price-tag:
-    backgroundColor: "{colors.white}"
-    textColor: "{colors.brand-dark}"
-    rounded: "{rounded.tag}"
-    padding: "3px 5px 2px"
-  order-bar:
-    backgroundColor: "{colors.navy}"
-    textColor: "{colors.white}"
-    height: "58px"
-  button-book:
-    backgroundColor: "{colors.sun}"
-    textColor: "{colors.navy}"
-    typography: "{typography.title}"
-    rounded: "{rounded.pill}"
-    padding: "0 26px"
-    height: "37px"
-  button-book-hover:
-    backgroundColor: "{colors.sun-dark}"
   button-primary:
     backgroundColor: "{colors.brand-dark}"
-    textColor: "{colors.white}"
-    rounded: "{rounded.pill}"
-    padding: "16px 28px"
-  button-whatsapp:
-    backgroundColor: "{colors.wa}"
-    textColor: "{colors.navy}"
-    rounded: "{rounded.pill}"
-    padding: "16px 28px"
-  voucher-pill:
-    backgroundColor: "{colors.brand-dark}"
-    textColor: "{colors.white}"
+    textColor: "{colors.raised}"
     typography: "{typography.label}"
     rounded: "{rounded.pill}"
-  set-ticket:
-    backgroundColor: "{colors.white}"
+    padding: "0 24px"
+    height: "48px"
+  button-primary-hover:
+    backgroundColor: "{colors.brand-hover}"
+  button-line:
+    backgroundColor: "transparent"
+    textColor: "{colors.brand-ink}"
+    rounded: "{rounded.pill}"
+    padding: "0 24px"
+    height: "48px"
+  button-line-hover:
+    backgroundColor: "{colors.tint}"
+  button-on-blue:
+    backgroundColor: "{colors.raised}"
+    textColor: "{colors.brand-dark}"
+    rounded: "{rounded.pill}"
+    padding: "0 24px"
+    height: "48px"
+  button-on-blue-hover:
+    backgroundColor: "{colors.panel-text}"
+  group-pill:
+    backgroundColor: "{colors.pill}"
     textColor: "{colors.navy}"
-    rounded: "{rounded.ticket}"
-  set-ticket-stub:
-    backgroundColor: "{colors.navy}"
-    textColor: "{colors.sun}"
-    width: "76px"
-  voucher-tile:
+    typography: "{typography.label}"
+    rounded: "{rounded.pill}"
+    padding: "0 17.6px"
+    height: "44px"
+  group-pill-current:
     backgroundColor: "{colors.brand-dark}"
-    textColor: "{colors.white}"
-    rounded: "{rounded.plate}"
-    padding: "8px"
-  order-slip:
-    backgroundColor: "{colors.white}"
+    textColor: "{colors.raised}"
+  launcher-tile:
+    backgroundColor: "{colors.tint}"
     textColor: "{colors.navy}"
-    rounded: "{rounded.plate}"
-    padding: "18px"
+    typography: "{typography.label-small}"
+    rounded: "{rounded.tile}"
+    padding: "12px 4px 13.6px"
+  launcher-tile-hover:
+    backgroundColor: "{colors.pill}"
+  photo-card:
+    backgroundColor: "{colors.raised}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.tile}"
+    padding: "20px"
+  wide-row:
+    backgroundColor: "{colors.tint}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.tile}"
+  blue-panel:
+    backgroundColor: "{colors.brand-dark}"
+    textColor: "{colors.panel-text}"
+    rounded: "{rounded.tile}"
+    padding: "24px"
+  close-band:
+    backgroundColor: "{colors.tint}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.tile}"
+    padding: "28px 24px"
 ---
 
 # Design System: Kleaner Services
 
 ## Overview
 
-**Creative North Star: "The Kopitiam Counter Board"**
+**Creative North Star: "The Super-App Service Menu"**
 
-The page is the numbered tile wall above a kopitiam counter. Every service is an enamel sign tile, painted in Kleaner blue, lettered in a heavy condensed sign face, with a white price tag clipped to its corner and a line drawing beside its numeral. You point at one, it lights up sun yellow, and the navy counter at the bottom of the screen names your order and takes it. Everything else on the page (set tickets, the guarantee band, the voucher) is printed from the same shop: the same three paints, the same two lettering faces, the same inset rule.
+The page borrows the home screen grammar Klang Valley visitors already use every day in Grab and Touch 'n Go: services grouped by need, shown as big thumb-reach photo tiles, each one a direct tap into booking. A row of round photo launchers names the four groups, a sticky strip of pills follows the scroll and lights the group in view, and each group below is laid out in its own arrangement so the page reads as a menu of distinct places rather than a column of equal cards.
 
-Density is high and legible from arm's length. Type is large, uppercase and condensed; surfaces are flat paint, not paper cards. Depth exists only where something genuinely sits on top of the board: the order bar, the order slip, the sticky header once the page scrolls under it. The confirmed refusal is the category default of soft white cards, stock cleaner photos and sparkle icons; the shipped page carries no raster imagery apart from the logo.
+The material is soft and friendly but disciplined. One blue does every job, from the filled button to the lit pill to the moving panel. Surfaces are cool off-white in light and deep blue-black in dark, stepped by tone rather than by shadow. Corners come from one system: 24px on every tile and photo, full pills on every control. Real photography of the Kleaner team fills every tile and is never written on. Type is a single family, Reddit Sans, carried from heavy 800 headlines down to 400 body. Motion is limited to a fade up on scroll and a small press on tap.
+
+This world replaces the earlier counter board system (condensed display faces, yellow, order bar). None of that vocabulary carries forward.
 
 **Key Characteristics:**
-- Flat enamel blue tiles with a 2px white inset rule, giant condensed numerals, line pictograms.
-- Three paints: Kleaner blue, sun yellow for "lit / act", navy for ink and the counter.
-- Anton for anything lettered on the board, Oswald for tags and the order bar, Lato for sentences.
-- Tile internals sized in container units, so a tile is the same drawing at every width.
-- Selection is the signature interaction: tile lights, order bar updates name and link.
+- One accent: Kleaner blue, in four steps, and nothing else that competes with it.
+- Tonal surfaces (page, raised, tint, pill, line) that invert cleanly for the dark scheme.
+- One radius system: 24px tiles and photos, full pills for controls, circles for launcher photos.
+- Reddit Sans only, weights 400, 500, 700 and 800.
+- Phosphor regular icons, one weight, drawn in currentColor.
+- Real photography in every tile, never text on top of a photo.
+- Each service group in its own layout family.
 
 ## Colors
 
-A signwriter's palette: one saturated blue, one warm yellow, one deep navy, on white.
+A single cool blue family on cool off-white, with navy for headings and slate for reading text.
 
 ### Primary
-- **Enamel Kleaner Blue** (tile): the official brand blue. Paint for every board tile. Text on it is only ever large display type, or white tags carrying blue text; never small body copy on this blue.
-- **Deep Counter Blue** (brand-dark): the AA-safe blue for anything filled that carries white text at normal size (buttons, the RM20 pill, the voucher tile ground) and for price-tag text and Oswald labels on white. Hover deepens to #005fb4.
-
-### Secondary
-- **Lit Sun Yellow** (sun): the selected tile, the BOOK NOW pills, the NEW tag, the trust icons on navy, the ticket stub letter, text selection. Yellow means "this one" or "do it".
-- **Pressed Sun** (sun-dark): hover and pressed state of anything yellow.
-
-### Tertiary
-- **WhatsApp Green** (wa): only on the WhatsApp button, always with navy text (white on this green fails contrast).
+- **Kleaner Blue** (#0088f8): the brand anchor, carried by the logo lockup. The interface never paints white text on it because it does not reach AA; it uses the deeper steps below.
+- **Button Blue** (#0071d1): every filled button, the lit group pill, the moving panel, the focus ring, text selection and the input caret. AA with white text, so it is the only blue that carries a label on a fill.
+- **Pressed Blue** (#005fb4): hover state of filled buttons on pointer devices only.
+- **Link Blue** (#006abf, dark scheme #4fb0ff): blue as text on a light or dark ground: outline button labels, group launcher icons, the 100,000+ figure and the guarantee icon.
 
 ### Neutral
-- **Board Navy** (navy): headings, the order bar, the guarantee band, the footer, ticket borders and stubs, ink on lit tiles.
-- **Slate Ink** (ink): body text on white.
-- **Counter Paper** (paper): quiet hover grounds and the COPY CODE chip; not a page background.
-- **White**: the page ground and the inset rule.
-- **Brand Tint / Brand Line / Brand Ink** (brand-tint, brand-line, brand-ink): header and nav hover grounds, the header hairline, link text on tints. These belong to the shared kleaner.my chrome.
+- **Cool Paper** (#f7f9fc, dark #0a131f): the page ground and, at 92 per cent with a 10px blur, the sticky pill strip.
+- **Raised White** (#fdfeff, dark #101c2b): the header, the dropdown and mobile menu, home cleaning cards and the two small bento tiles. Also the white used for text on blue, in place of pure white.
+- **Mist Tint** (#eef3f9, dark #142336): the quiet tile ground: group launchers, after renovation rows, the tall bento tile, the WhatsApp close band, hover wash on outline buttons and menu items.
+- **Pill Mist** (#e6edf5, dark #1a2c42): resting group pills and launcher hover.
+- **Hairline** (#dbe4ee, dark #22364e): 1px borders on raised cards, the header underline, the proof divider.
+- **Harbour Navy** (#0b2747, dark #e8f0f9): every heading and service name, launcher labels, pill labels. In dark it flips to near white.
+- **Slate Ink** (#46586f, dark #a8b7ca): body text and the one plain line under each service name.
+- **Panel Text** (#e3efff): the service line on the blue moving panel, and the hover of the white button that sits on it.
+- **Footer Sky** (#8fcbff): footer column headings on the navy footer.
 
 ### Named Rules
-**The Three Paints Rule.** Board surfaces are painted in blue, sun or navy and nothing else. No gradients, no glows, no tints standing in for a tile.
+**The One Blue Rule.** The page has one accent and it is Kleaner blue. Every call to action, the lit pill and the moving panel use Button Blue (#0071d1); no second hue is introduced for emphasis, status or decoration, and WhatsApp actions on this page are blue like every other action.
 
-**The Lit Means Yellow Rule.** Yellow is reserved for the selected thing and the booking action. If a yellow element is not selected or not a call to book, it is wrong.
+**The Swap The Token Rule.** Surfaces and ink are painted only through the page, raised, tint, pill, line, navy, ink and brand-ink tokens, because those are the ones the dark scheme redefines. A literal colour on a surface will not follow the system setting.
 
 ## Typography
 
-**Display Font:** Anton (with Anton Fallback, metric-fitted from Arial Narrow Bold)
-**Label Font:** Oswald 500 / 600 / 700 (with Oswald Fallback, metric-fitted from Arial Narrow)
-**Body Font:** Lato 400 / 700 (with Lato Fallback, metric-fitted from Arial)
+**Display Font:** Reddit Sans (with a metric matched Arial fallback, then the system sans)
+**Body Font:** Reddit Sans
+**Label Font:** Reddit Sans
 
-**Character:** Anton is the hand-lettered sign; Oswald is the printed price tag and order chit; Lato is the person behind the counter explaining in full sentences. All three are self-hosted with size-adjusted fallbacks so the swap never reflows the board.
+**Character:** One sturdy, rounded humanist sans does everything. Weight carries the hierarchy: 800 for headlines and the proof figure, 700 for service names, buttons, pills and labels, 400 for reading text. Headings sit tight (line height 1.1, tracking minus 0.02em, balanced wrapping); body opens up to a 1.65 line height.
 
 ### Hierarchy
-- **Display** (Anton, clamp(36px, 12.4vw, 128px), 1.02, uppercase): the page headline only, full width on phones.
-- **Headline** (Anton, clamp(34px, 9.4vw, 64px), 1, uppercase): section titles. Scales up on the navy guarantee band (clamp(44px, 13vw, 112px)) and the voucher (clamp(38px, 11vw, 84px)) at 0.98 line height.
-- **Title** (Anton, 22 to 30px, 1.05, uppercase): ticket questions, the order slip service name, BOOK NOW pills (19 to 21px).
-- **Tile lettering** (Anton, numeral 31cqi and name 15.2cqi on phones; 24cqi and 10cqi from 1024px): sized to the tile, never to the viewport.
-- **Subhead** (Oswald 700, clamp(17px, 5.75vw, 34px)): the line under the headline, sentence case.
-- **Label** (Oswald 600, 13 to 17.5px, uppercase where it is a tag or action, 0.01 to 0.06em tracking): price tags, NEW tag, order bar text, text actions, COPY CODE; trust facts in Oswald 500.
-- **Body** (Lato 400, 15 to 19px, 1.65 base, snug in lists): explanations, ticket answers, guarantee copy. Keep long runs to 42rem.
+- **Display** (800, clamp 36px to 52px on phones, 52px to 72px from 1024px, line height 1.04, tracking minus 0.03em): the hero headline only, left aligned, two lines.
+- **Figure** (800, 56px, 80px from 768px, line height 1, tracking minus 0.04em, Link Blue): the 100,000+ hours number, the one numeric moment on the page.
+- **Headline** (800, 28px, 40px from 768px, line height 1.1, tracking minus 0.02em): group titles and the close band title. The proof title steps up to 30px and 44px; the guarantee and mover names sit at 24px and 30px.
+- **Title** (700, 20px, line height 1.2, tracking minus 0.01em): service names inside tiles. The two small bento tiles drop to 17px on phones.
+- **Body** (400, 17px, 19px from 768px, line height about 1.65): hero subtext, proof and close copy, held to roughly 34rem.
+- **Card line** (400, 15.5px, line height 1.5): the one plain line under each service name; 14.5px in the small bento tiles on phones.
+- **Label** (700, 15px to 16px, line height 1): buttons (16px), group pills (15px), header links (15px).
+- **Small label** (700, 13px, 18px from 768px, line height 1.2): launcher tile names.
 
 ### Named Rules
-**The Lettered Board Rule.** Anything that is "on the board" (headlines, tile names, numerals, set letters, book pills) is Anton uppercase. Sentences are never Anton.
+**The One Family Rule.** Reddit Sans is the only face. Hierarchy comes from weight (800, 700, 400) and size, never from a second family, italics, or uppercase tracking.
 
-**The Sign Scale Rule.** Tile numerals and names are sized in container query units (cqi) from the tile's own width, so every tile is the same composition at every breakpoint.
+**The No Kicker Rule.** No eyebrow labels, section numbers or small caps over headings. A group is introduced by its title alone.
 
 ## Layout
 
-Single column page inside a 76rem container with 16px gutters (32px from 768px), safe-area aware. The board is a two-column grid on phones with 6px seams, three columns from 768px with 14px seams. Rows size to content: a two-line tile name makes its row taller. Each grid cell is an inline-size container; tiles take min-height 75cqi on phones, 66cqi from 768px, and drop the minimum at 1024px, where numeral, pictogram and tag share one row and the name runs underneath so both rows of the wall fit above the order bar.
+A single centred container, 1216px wide (76rem), with a 16px gutter on phones and 32px from 768px, widened by the safe area inset when the device has a notch. Mobile first at 390px; the main breakpoints are 768px (tablet layouts of every group) and 1024px (split hero), with the full header navigation appearing at 1280px.
 
-Sections step 40px vertical on phones, 64px from 768px (the navy band 48px and 80px). The order bar is fixed to the bottom at every width, 58px plus the safe-area inset, and the footer pads its bottom by the same amount so nothing is covered. Breakpoints in use: 768px and 1024px, plus 1280px for the header's desktop nav.
+The page runs in a fixed order: hero, group launchers, sticky pill strip, the four groups, proof, WhatsApp close, footer. On phones the hero photo leads at a 2:1 crop with the headline and buttons under it; from 1024px the hero splits 5:7 with copy left and the photo right at 4:3, capped to the viewport height. The launcher is four columns at every width (8px gaps, 16px from 768px).
+
+Groups are separated by 40px on phones and 72px from 768px, with titles 16px (24px) above their tiles. Tiles sit 12px apart on phones and 16px apart on wider screens. Every group and every service has its own anchor, offset so it lands below the header and pill strip (scroll margin 120px to 150px).
+
+### Named Rules
+**The Own Layout Family Rule.** Each group is arranged differently: home cleaning is a swipeable snap row of photo cards on phones (each card 80 per cent wide so the next one shows) and a 1.35:1:1 grid from 768px; after renovation is a stack of wide rows (photo, words, action); specialist care is a bento of three (one tall tile, two small ones beside it); moving is one banner of photo plus blue panel. A new group gets a new arrangement, not a copy of an existing one.
+
+**The Thumb Reach Rule.** Every tile ends in its own action, at least 48px tall, and on phones the action spans the card or sits directly under the words.
 
 ## Elevation & Depth
 
-The board is flat. Tiles, tickets, the voucher tile and the guarantee band carry no shadow; depth on the board is expressed by paint (blue to yellow) and by the inset rule. Shadows exist only on layers that genuinely float over the page.
+Flat by default. Depth comes from tone: cool paper ground, mist tinted tiles, raised white cards with a 1px hairline. There are no shadows on tiles or buttons. The one shadow in the system is a soft ambient lift that appears on the sticky header once the page has scrolled, and under the desktop services dropdown; in the dark scheme it deepens to near black. The sticky pill strip separates itself with a 92 per cent page wash and a 10px backdrop blur instead of a shadow.
 
 ### Shadow Vocabulary
-- **Counter edge** (`box-shadow: 0 -10px 24px -18px rgb(11 39 71 / 0.6)`): the order bar's top edge where content scrolls beneath it.
-- **Slip lift** (`box-shadow: 0 -18px 40px -24px rgb(11 39 71 / 0.55)`): the order slip rising out of the bar.
-- **Header on scroll** (`box-shadow: 0 1px 0 rgb(213 233 251), 0 8px 24px -16px rgb(17 38 60 / 0.28)`): shared kleaner.my header, only once the page has scrolled under it.
+- **Soft lift** (`box-shadow: 0 1px 2px rgb(11 39 71 / 0.04), 0 10px 28px -16px rgb(11 39 71 / 0.18)`; dark `0 1px 2px rgb(0 0 0 / 0.3), 0 10px 28px -16px rgb(0 0 0 / 0.6)`): the header after scroll and the header dropdown panel only.
 
 ### Named Rules
-**The Flat Board Rule.** Nothing painted on the board casts a shadow. Elevation is for overlays only: the order bar, the order slip, the scrolled header, dropdowns.
+**The Tone Not Shadow Rule.** Tiles are told apart from the ground by tint or hairline, never by a drop shadow.
 
 ## Shapes
 
-Small, firm corners, like enamel signs and printed tickets: 7px tiles (9px from 768px) with a 4px-cornered inset face, 5px price tags, 8px tickets, 10px plates (voucher tile, order slip top corners). Actions and the voucher pill are full pills (999px). The recurring geometry is the inset rule: a 2px line drawn 6 to 8px inside a painted plate, used on tiles and on the voucher tile. Tickets use a 2px navy outline and a 2px dashed navy perforation between stub and body.
+One soft radius system. Every tile, card, row, banner, band and photo frame takes 24px. Every control (buttons, group pills, the phone button, the menu button, the skip link) is a full pill. Launcher photos are full circles, 64px on phones and 120px from 768px. Inside the header menus, the dropdown panel uses 24px and its items 16px. Photos are clipped by their tile's corners rather than rounded on their own, so photo and tile always share one silhouette. Borders are 1px hairlines on raised cards and 2px on the outline button.
 
-Pictograms are drawn on a 64-unit box (viewBox cropped to 0 7 64 50), one 3.4 stroke, round caps and joins, no fill, currentColor. They are separate from the 24-unit UI icon set, which stays for chevrons, checks, arrows and phone.
+### Named Rules
+**The Two Corners Rule.** A shape is either a 24px tile or a full pill. No square corners, no in between radii on page content.
 
 ## Components
 
-### Board Tile (signature)
-An enamel sign you point at.
-- **Shape:** 7px corners (9px from 768px), 6px padding (8px from 768px) around an inset face with a 2px currentColor rule and 4px corners.
-- **Anatomy:** two-digit Anton numeral top left, white price tag top right (two lines for "from" and "instant" prices), line pictogram beside the numeral, Anton uppercase name across the bottom. An optional NEW tag in sun yellow hangs under the price tag.
-- **Default:** tile blue paint, white lettering and rule. Hover (fine pointers only) deepens to #0079e0.
-- **Selected (aria-current):** sun yellow paint, navy lettering, rule stays white, tag text turns navy, NEW tag inverts to navy on yellow. Hover on selected goes to sun-dark.
-- **Behaviour:** every tile is a real link to its booking flow. With script, the first tap selects and the second books; `#slug` deep links preselect.
-
-### Order Bar and Order Slip
-The counter you order at.
-- **Bar:** navy, fixed bottom, 58px. Left: Oswald 700 17.5px order text (idle prompt at 82% white, then "<name> selected") with a 24px round chevron chip (14% white ground, sun chevron). Right: the BOOK NOW pill. Focus rings inside the bar turn sun yellow.
-- **Slip:** a white card max 34rem wide, 2px navy border with no bottom edge, 10px top corners, rising from the bar. Contents: Anton service name, Oswald price in brand-dark, Lato promise and check-marked list.
-
 ### Buttons
-- **Book pill:** sun yellow, navy Anton uppercase, full pill; 37px tall in the order bar (19px type), 50px on the voucher (21px). Hover sun-dark.
-- **Primary (shared chrome):** brand-dark fill, white Lato 700 18px, full pill, 16px by 28px. Hover #005fb4.
-- **WhatsApp:** wa green with navy text, same shape as primary. Used once, as the backup for the unsure.
-- **Text action:** Oswald 600 uppercase 15px in brand-dark with an arrow icon (BOOK NOW inside tickets).
+Confident full pills, one height, one weight.
+- **Shape:** full pill (999px), 48px minimum height, 24px side padding, 8px gap to an icon.
+- **Primary (filled):** Button Blue fill, Raised White label, Reddit Sans 700 at 16px. Used for every Book now, Get a quote and the closing WhatsApp us.
+- **Outline:** 2px Button Blue border, Link Blue label, transparent fill. The secondary action in the hero (WhatsApp us, with the Phosphor WhatsApp icon at 20px).
+- **On blue:** Raised White fill, Button Blue label. Only on the moving panel.
+- **Hover:** pointer devices only. Filled goes to Pressed Blue, outline washes with Mist Tint, on blue goes to Panel Text. Colour transitions run 160ms on the shared ease out.
+- **Press:** scale to 0.97 over 120ms on tap; removed under reduced motion.
+- **Focus:** 3px Button Blue outline, 2px offset.
 
-### Chips
-- **RM20 voucher pill:** brand-dark full pill, Oswald 600 uppercase, offer and code separated by a 1px white rule; tap copies the code and the pill turns navy while confirming.
-- **Code chip:** white 8px plate with the code in Anton at 0.06em tracking, and a paper COPY CODE chip in Oswald; turns sun yellow when copied.
+### Group Pills
+The app's category strip.
+- **Style:** Pill Mist fill, Harbour Navy label at 15px 700, 44px tall, about 18px side padding, 8px apart.
+- **Current:** Button Blue fill with Raised White label, set with aria-current by an IntersectionObserver watching a band 30 to 35 per cent down the viewport. No pill is lit while the hero is in view.
+- **Behaviour:** the strip sticks under the header (59px, 72px from 768px), scrolls horizontally with snap and no visible scrollbar, and slides itself so the lit pill shows. Without JavaScript the pills are plain anchor links.
 
-### Set Ticket
-A printed order ticket for the unsure.
-- **Shape:** white body, 2px navy border, 8px corners.
-- **Stub:** 76px navy column with "SET" in Oswald and the letter in Anton 44px, sun on navy, divided from the body by a 2px dashed navy perforation.
-- **Body:** Anton question, Lato answer, Oswald text action.
-- **Hover:** body warms to #fffbea, stub flips to sun with navy letter.
+### Group Launcher
+- **Style:** Mist Tint tile, 24px corners, a circular group photo, a Phosphor icon in Link Blue (28px), and the group name in Harbour Navy small label.
+- **Hover / Press:** Pill Mist wash on pointer devices; press scale on tap.
 
-### Guarantee Band
-Full-bleed navy, Anton headline in white, Lato body at 85% white, trust facts in Oswald 500 uppercase with sun line icons, divided by 20% white hairlines.
-
-### Voucher Tile
-One more tile on the wall: brand-dark plate with 8px padding and 10px corners, a 2px white inset rule with 6px corners, Anton headline, code chip, Lato terms, sun book pill.
+### Cards / Containers
+- **Corner Style:** 24px, photo clipped by the tile.
+- **Photo card (home cleaning):** Raised White with a 1px Hairline, a 3:2 photo (240px tall from 768px), 20px padding, service name, one line, full width Book now pinned to the bottom.
+- **Wide row (after renovation):** Mist Tint, photo column of 34 per cent on phones and 300px from 768px, words beside it, action under the words on phones and at the row's end on wider screens.
+- **Bento (specialist care):** the tall tile on Mist Tint with a 4:3 photo (full height from 768px, 352px minimum); the two small tiles on Raised White with a Hairline, square photos on phones and a 42 per cent side photo from 768px.
+- **Blue panel (moving):** a 16:9 photo stacked over a Button Blue panel on phones; from 768px a 1.45:1 split with the panel beside the photo. Name in Raised White at 24px 800, line in Panel Text, the on blue button.
+- **Close band:** Mist Tint, 28px by 24px padding (48px from 768px), title and line beside a filled WhatsApp us button on wide screens.
+- **Shadow Strategy:** none; see Elevation & Depth.
 
 ### Navigation
-The header and footer are the shared kleaner.my chrome (Lato 700 nav on white with tint hovers; navy footer with white links) and keep that link structure. The board world does not restyle them.
+- **Header:** sticky, Raised White with a Hairline underline, 59px tall on phones and 72px from 768px. Logo left; the kleaner.my menu (15px 700 Harbour Navy, pill shaped Mist Tint hover) from 1280px; a filled Button Blue call pill from 640px; a 48px circular menu button below 1280px. Gains the soft lift once scrolled.
+- **Mobile menu:** drops under the header on Raised White, 17px 700 items in 16px rounded rows, phone pill at the bottom.
+- **Footer:** the shared kleaner.my footer on Harbour Navy (#0b2747) in both schemes, white logo lockup, Footer Sky column headings, links at 80 per cent white, a white phone pill.
+
+### Proof
+Two facts only, side by side from 768px and split by a Hairline: the 100,000+ figure in Link Blue with one sentence under it, and the reclean or full refund guarantee with a 44px Phosphor seal check icon.
+
+### Icons
+Phosphor, regular weight, read from @phosphor-icons/core at build time and drawn inline at a 256 viewBox in currentColor. Sizes in use: 16, 18, 20, 26, 28 and 44px.
 
 ### Motion
-- **Board power-on:** each tile animates from brightness(0.72) saturate(0.6) to full over 620ms, staggered 55ms in reading order after 80ms. Content is visible from the first frame; only brightness moves.
-- **Press:** scale 0.97 over 120ms on every tappable.
-- **Order text swap:** 240ms rise from 5px with opacity from 0.2.
-- **Slip:** opacity 220ms and translateY(24px) to rest over 280ms; chevron rotates over 220ms.
-- **Paint changes:** 160 to 180ms colour transitions.
-- **Easing:** ease-out cubic-bezier(0.23, 1, 0.32, 1) everywhere; ease-in-out cubic-bezier(0.77, 0, 0.175, 1) is available.
-- **Reduced motion:** power-on and slip travel are removed, scroll reveals show content immediately, colour and opacity transitions stay at 150ms.
+- **Reveal:** tiles, proof blocks and the close band fade up 18px over 520ms on the ease out curve cubic-bezier(0.23, 1, 0.32, 1) when they enter the viewport; siblings stagger by 60ms, capped at six. Content is only hidden once the observer can run.
+- **Press:** scale 0.97 over 120ms.
+- **Reduced motion:** reveals are skipped entirely (everything present), press and travel are removed, smooth scrolling turns off, and only colour and opacity transitions remain at 150ms.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** paint board surfaces flat in tile blue, sun or navy, with a 2px white inset rule on plates that read as tiles.
-- **Do** light the chosen thing in sun yellow with navy ink, and keep yellow for selection and booking.
-- **Do** letter board elements in Anton uppercase, tags and chits in Oswald, sentences in Lato.
-- **Do** size tile internals in cqi so every tile keeps one composition across widths.
-- **Do** draw new pictograms on the 64-unit box with a 3.4 round-capped stroke in currentColor.
-- **Do** keep every tile and ticket a real link that books without script.
-- **Do** use brand-dark, not tile blue, under any normal-size white text.
+- **Do** use Button Blue (#0071d1) for every filled action and the lit pill, with Raised White (#fdfeff) text.
+- **Do** paint surfaces and text through the swapping tokens (page, raised, tint, pill, line, navy, ink, brand-ink) so the dark scheme follows.
+- **Do** give every service tile a real photograph, clipped by the tile's 24px corners.
+- **Do** keep every control a full pill at least 44px tall, buttons 48px.
+- **Do** give a new group its own layout family and its own anchor id.
+- **Do** keep motion to the scroll reveal and the 0.97 press, and honour reduced motion.
+- **Do** use Phosphor regular icons only, at one weight.
 
 ### Don't:
-- **Don't** put shadows on tiles, tickets, the voucher tile or bands; elevation is for overlays only.
-- **Don't** use gradients or glows on board surfaces.
-- **Don't** return to soft white rounded service cards, stock cleaner photography or sparkle icons.
-- **Don't** set body copy or small text in white on tile blue, or white on WhatsApp green.
-- **Don't** set sentences in Anton.
+- **Don't** set any text, badge or button on top of a photograph.
+- **Don't** introduce a second accent hue, a second typeface, or a gradient.
+- **Don't** put white text on Kleaner Blue (#0088f8); it fails contrast. Use Button Blue.
+- **Don't** add drop shadows to tiles or buttons; separate them by tone or hairline.
+- **Don't** use eyebrow labels, section numbers or uppercase kickers over headings.
+- **Don't** add proof beyond 100,000+ hours and reclean or full refund, and show no prices.
+- **Don't** use em dashes or en dashes in copy.

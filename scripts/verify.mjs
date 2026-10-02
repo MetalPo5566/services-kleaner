@@ -27,21 +27,27 @@ const BRIEF_PRICES = {
 
 // The services as written in the brief, restated here on the same principle:
 // a service quietly dropped from src/data/services.ts should fail a check.
+// Each with the exact booking link the owner gave on 2 October 2026.
 const BRIEF_SERVICES = [
-  { slug: 'general-cleaning', name: 'General Cleaning (Hourly Maid)' },
-  { slug: 'sofa-mattress', name: 'Sofa & Mattress Deep Cleaning' },
-  { slug: 'post-renovation', name: 'Post-Renovation Cleaning' },
-  { slug: 'formaldehyde-removal', name: 'Formaldehyde Removal & Air Sterilisation' },
-  { slug: 'movers', name: 'Movers' },
-  { slug: 'kleaner-club', name: 'Kleaner Club' },
+  { slug: 'standard-cleaning', name: 'Standard Cleaning', url: 'https://kleaner.my/booknow', cta: 'Book now' },
+  { slug: 'deep-cleaning', name: 'Deep Cleaning', url: 'https://kleaner.my/booknow', cta: 'Book now' },
+  { slug: 'move-in-move-out', name: 'Move In / Move Out Cleaning', url: 'https://kleaner.my/booknow', cta: 'Book now' },
+  { slug: 'post-renovation', name: 'Post Renovation Cleaning', url: 'https://kleaner.my/booknow/post-renovation', cta: 'Book now' },
+  { slug: 'formaldehyde-removal', name: 'Formaldehyde Removal', url: 'https://kleaner.my/booknow/post-renovation', cta: 'Book now' },
+  { slug: 'aircond-maintenance', name: 'Aircond Maintenance', url: 'https://kleaner.my/booknow/aircond-servicing', cta: 'Book now' },
+  { slug: 'sofa-mattress', name: 'Sofa & Mattress Cleaning', url: 'https://kleaner.my/booknow/upholstery-cleaning', cta: 'Book now' },
+  { slug: 'curtain-carpet', name: 'Curtain & Carpet Cleaning', url: 'https://kleaner.my/booknow/upholstery-cleaning', cta: 'Book now' },
+  { slug: 'movers', name: 'Mover', url: 'https://kleaner.my/booknow/movers', cta: 'Get a quote' },
 ]
+const GROUP_IDS = ['home-cleaning', 'after-renovation', 'specialist-care', 'moving']
+// Anchors from the previous page that ads may still use.
+const LEGACY_ANCHORS = ['general-cleaning', 'sofa-mattress', 'post-renovation', 'formaldehyde-removal', 'movers']
 
 // The site's own money formatting, restated rather than imported, so the check
 // does not pass just because the helper and the page share a bug.
 const money = (value) => `RM${Number.isInteger(value) ? value : value.toFixed(2)}`
 
 const prices = JSON.parse(readFileSync('src/data/prices.json', 'utf8'))
-const RATE = prices.groups.postreno.items[0].price
 
 const page = join(DIST, 'index.html')
 check('the page was built', existsSync(page))
@@ -64,45 +70,51 @@ for (const [group, items] of Object.entries(BRIEF_PRICES)) {
   }
 }
 
-// 2. Every service reaches the page, as a card, with its own analytics tag.
+// 2. Every service reaches the page with its own anchor, its own analytics tag
+// and exactly the booking link and label the brief gives it.
+const bookLinks = [...html.matchAll(/<a\b[^>]*data-cta="book"[^>]*>([\s\S]*?)<\/a>/g)].map((m) => ({
+  tag: m[0],
+  label: m[1].replace(/<[^>]+>/g, '').trim(),
+  href: (m[0].match(/href="([^"]*)"/) || [])[1] || '',
+  service: (m[0].match(/data-service="([^"]*)"/) || [])[1] || '',
+}))
 for (const service of BRIEF_SERVICES) {
-  check(`renders the ${service.slug} card`, text.includes(service.name))
-  check(`tags ${service.slug} for analytics`, html.includes(`data-service="${service.slug}"`))
+  check(`renders ${service.slug}`, text.includes(service.name))
+  check(`${service.slug} has its anchor`, html.includes(`id="${service.slug}"`))
+  const links = bookLinks.filter((link) => link.service === service.slug)
+  check(`${service.slug} has one booking link`, links.length === 1, `${links.length}`)
+  check(`${service.slug} books on ${service.url}`, links[0]?.href === service.url, links[0]?.href)
+  check(`${service.slug} says "${service.cta}"`, links[0]?.label === service.cta, links[0]?.label)
 }
-const cardCount = (html.match(/data-service-card/g) || []).length
-check('one card per service', cardCount === BRIEF_SERVICES.length, `${cardCount}`)
+for (const id of GROUP_IDS) check(`group #${id} exists`, html.includes(`id="${id}"`))
+for (const id of LEGACY_ANCHORS) check(`legacy anchor #${id} still lands`, html.includes(`id="${id}"`))
+const hero = bookLinks.find((link) => link.service === 'hero')
+check('hero Book now opens the booking flow', hero?.href === 'https://kleaner.my/booknow' && hero?.label === 'Book now', hero?.href)
 
-// 3. No card may point at nothing, and none may leave the known hosts.
-const ALLOWED_BOOKING_HOSTS = ['https://kleaner.my/', 'https://movers.kleaner.my']
-const cardHrefs = [...html.matchAll(/<a\b[^>]*data-service-card[^>]*>/g)].map(
-  (tag) => (tag[0].match(/href="([^"]*)"/) || [])[1] || ''
-)
-check(
-  'every card has an href',
-  cardHrefs.length === BRIEF_SERVICES.length && cardHrefs.every(Boolean),
-  `${cardHrefs.length} cards`
-)
-const offHost = cardHrefs.filter((href) => !ALLOWED_BOOKING_HOSTS.some((h) => href.startsWith(h)))
-check('every card books on a known Kleaner host', offHost.length === 0, offHost.join(', '))
+// 3. One label per intent: booking says "Book now" (Mover: "Get a quote").
+const labels = [...new Set(bookLinks.map((link) => link.label))].sort()
+check('booking labels are only Book now and Get a quote', labels.join('|') === 'Book now|Get a quote', labels.join('|'))
+const offHost = bookLinks.filter((link) => !link.href.startsWith('https://kleaner.my/booknow'))
+check('every booking link opens kleaner.my/booknow', offHost.length === 0, offHost.map((l) => l.href).join(', '))
 
-// 4. The prices the cards quote come from prices.json, and the sofa figure is
-// the booking form one rather than the RM80 the brief gave.
-const sofaFrom = Math.min(...prices.groups.sofa.items.map((item) => item.price))
-check(`quotes sofa from ${money(sofaFrom)}`, text.includes(`from ${money(sofaFrom)}`))
-check('does not quote the RM80 carpet price for sofas', !text.includes('from RM80'))
-check(`quotes the post-renovation rate ${money(RATE)}`, text.includes(money(RATE)))
-for (const item of prices.groups.treatment.items) {
-  check(`quotes ${item.name} ${money(item.price)}`, text.includes(money(item.price)))
+// 4. The page quotes no prices and no proof beyond the two confirmed facts.
+// Visible words only: markup and URLs carry %-encoding that is not a claim.
+const main = text
+  .slice(text.indexOf('<main'), text.indexOf('</main>'))
+  .replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, ' ')
+  .replace(/<[^>]+>/g, ' ')
+const ringgit = main.match(/RM\s?\d[\d,.]*/g) || []
+check('quotes no prices', ringgit.length === 0, ringgit.join(', '))
+check('shows the 100,000+ hours proof', main.includes('100,000+'))
+check('shows the reclean or full refund guarantee', main.includes('Reclean or full refund'))
+for (const banned of ['rating', 'review', '★', 'stars', '%']) {
+  check(`main content claims no ${banned}`, !main.toLowerCase().includes(banned.toLowerCase()))
 }
-
-// 4b. RM carries no decimals anywhere, with one deliberate exception: the per
-// sqft rate, which is meaningless without them.
-const decimals = [...new Set(text.match(/RM\d[\d,]*\.\d+/g) || [])].filter((f) => f !== money(RATE))
-check('writes RM without decimals, except the rate', decimals.length === 0, decimals.join(', '))
 
 // 5. No em dash anywhere in the repo we author. The character is built from its
 // code point so that this file does not fail its own check.
 const EM_DASH = String.fromCharCode(0x2014)
+const EN_DASH = String.fromCharCode(0x2013)
 const SKIP = new Set(['node_modules', 'dist', '.git', '.astro', 'qa', '.vercel', 'preview'])
 const offenders = []
 const walk = (dir) => {
@@ -126,6 +138,7 @@ for (const file of ['GO-LIVE.md', 'README.md', 'vercel.json']) {
 }
 check('no em dash in authored source', offenders.length === 0, offenders.join(', '))
 check('no em dash in rendered HTML', !html.includes(EM_DASH))
+check('no en dash in rendered HTML', !html.includes(EN_DASH))
 
 // 5b. House style lives in the copy files, so it is checked there rather than
 // in rendered HTML, where an inline script would produce false positives.
@@ -218,7 +231,7 @@ const itemList = parsed.find((entry) => entry['@type'] === 'ItemList')
 if (itemList) {
   check('ItemList covers every service', itemList.itemListElement.length === BRIEF_SERVICES.length, `${itemList.itemListElement.length}`)
   const schemaUrls = itemList.itemListElement.map((entry) => entry.url)
-  check('ItemList URLs match the card links', schemaUrls.every((url) => cardHrefs.includes(url)), schemaUrls.join(', '))
+  check('ItemList URLs match the booking links, in order', schemaUrls.every((url, i) => url === BRIEF_SERVICES[i].url), schemaUrls.join(', '))
   check('ItemList points at this site', itemList.url === `${HOST}/`, itemList.url)
 }
 
@@ -267,13 +280,17 @@ const h1s = (html.match(/<h1\b/g) || []).length
 check('exactly one H1', h1s === 1, `${h1s}`)
 for (const service of BRIEF_SERVICES) {
   const escaped = service.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace('&', '&amp;')
-  check(`names ${service.slug} in an H2`, new RegExp(`<h2[^>]*>[^<]*${escaped}`).test(html))
+  check(`names ${service.slug} in a heading`, new RegExp(`<h3[^>]*>[^<]*${escaped}`).test(html))
 }
 
 // 13. Performance and platform contracts.
 const preloads = [...html.matchAll(/<link rel="preload"[^>]*as="image"[^>]*>/g)]
-check('preloads no image, because the page has none', preloads.length === 0, `${preloads.length}`)
-check('renders no raster image', !/<img\b[^>]*src="\/images\/(?!kleaner-logo)/.test(html))
+check('preloads exactly one image, the hero', preloads.length === 1 && /hero-photo/.test(preloads[0]?.[0] || ''), `${preloads.length}`)
+const imgs = html.match(/<img\b[^>]*>/g) || []
+check('every image has alt text', imgs.every((tag) => /\salt(="|[\s>])/.test(tag)), `${imgs.length} images`)
+check('every image reserves its size', imgs.every((tag) => /\swidth="\d+"/.test(tag) && /\sheight="\d+"/.test(tag)))
+const eagerPhotos = imgs.filter((tag) => /loading="eager"/.test(tag) && !/kleaner-logo/.test(tag))
+check('only the hero photo loads eagerly', eagerPhotos.length === 1, `${eagerPhotos.length}`)
 check('drops the mobile sticky bar', !/<body[^>]*class="[^"]*has-sticky-cta/.test(html))
 
 const viewport = (html.match(/<meta name="viewport" content="([^"]*)"/) || [])[1] || ''

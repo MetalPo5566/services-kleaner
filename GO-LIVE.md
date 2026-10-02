@@ -24,37 +24,26 @@ sitemap, the Open Graph URL, the menu entry and the checks in
 
 The machine this was built on routes outbound traffic through an egress proxy
 that refuses `kleaner.my` by organisation policy. The booking flow could not be
-opened, which is why four of the six cards point at the front of it rather than
-at a service. That is step 1, and it is the most valuable thing on this list.
+opened. The booking links in step 1 come from the owner, not from reading the
+flow, so tap each one once after deploy (step 8).
 
 ---
 
-## 1. The six booking links
+## 1. The nine booking links
 
-This page has one job: the visitor picks a service and books it. Right now it
-only half does that job.
+Supplied by the owner on 2 October 2026. `npm run verify` checks each one.
 
-| Service | Card links to | Direct route? |
+| Service | Booking link | Button |
 | --- | --- | --- |
-| General Cleaning (Hourly Maid) | `https://kleaner.my/booknow/` | **no** |
-| Sofa & Mattress Deep Cleaning | `https://kleaner.my/booknow/upholstery-cleaning` | yes, the route the upholstery site has always used |
-| Post-Renovation Cleaning | `https://kleaner.my/booknow/` | **no** |
-| Formaldehyde Removal & Air Sterilisation | `https://kleaner.my/booknow/` | **no** |
-| Movers | `https://movers.kleaner.my` | yes |
-| Kleaner Club | `https://kleaner.my/booknow/` | **no** |
-
-None of them can 404, which is why they are set this way. But "one tap to book"
-becomes two taps whenever the customer has to pick the service again on the
-other side, and that second tap is where people leave.
-
-**Send the direct BookingKoala URL for each of the four.** They go into
-`src/data/services.ts`, one line each, and the "Opens the Kleaner booking form,
-where you choose this service" line under the button disappears on its own.
-
-Worth checking at the same time: whether the flow can preselect the formaldehyde
-add-on from a link, and whether it can preselect a recurring frequency for
-Kleaner Club. If it can, those are two more direct routes. If it cannot, tell us
-and we will reword both cards.
+| Standard Cleaning | `https://kleaner.my/booknow` | Book now |
+| Deep Cleaning | `https://kleaner.my/booknow` | Book now |
+| Move In / Move Out Cleaning | `https://kleaner.my/booknow` | Book now |
+| Post Renovation Cleaning | `https://kleaner.my/booknow/post-renovation` | Book now |
+| Formaldehyde Removal | `https://kleaner.my/booknow/post-renovation` | Book now |
+| Aircond Maintenance | `https://kleaner.my/booknow/aircond-servicing` | Book now |
+| Sofa & Mattress Cleaning | `https://kleaner.my/booknow/upholstery-cleaning` | Book now |
+| Curtain & Carpet Cleaning | `https://kleaner.my/booknow/upholstery-cleaning` | Book now |
+| Mover | `https://kleaner.my/booknow/movers` | Get a quote |
 
 ---
 
@@ -138,7 +127,7 @@ variables and redeploy.
 
 | Event | Parameters | Fires when |
 | --- | --- | --- |
-| `cta_book` | `page`, `service`, `cta_text` | any service card, the chooser cards, the voucher button |
+| `cta_book` | `page`, `service`, `cta_text` | hero Book now (`service: hero`) and every service's button (`service: <slug>`) |
 | `cta_whatsapp` | `page`, `service`, `cta_text` | any WhatsApp control |
 
 On a service card, `service` is that card's slug, so you can see which service
@@ -146,34 +135,14 @@ people actually tap. That is the number worth watching on this page.
 
 ---
 
-## 5. Three things on the page are not verified
+## 5. Claims on the page
 
-`content/OWNER-CONFIRM.md` lists **8** open items, each printed on the page in
-an amber `[OWNER TO CONFIRM]` note. Six are the per card questions in step 1.
-The other two:
-
-1. **The voucher.** The strip offers RM20 off with code `KLEANERHOME` to
-   31 December 2026. Confirm the code is live in BookingKoala on those terms. A
-   code that fails at checkout costs more than no code at all, so say the word
-   and we pull the strip instead.
-2. **"Trained in-house team, not gig workers."** What Kleaner publishes is that
-   providers are background checked. This is a claim about how people are
-   employed, which is a different and stronger thing to say, and a competitor
-   would be entitled to challenge it.
-
-Those notes are **visible to visitors**, so clear them before you point the main
-menu here. They are kept out of the structured data, and `npm run verify`
-enforces that.
-
----
-
-## 6. One price was corrected against the booking form
-
-The brief put sofa and mattress cleaning at "from RM80". The booking form has
-sofa from RM88 and mattress from RM108, and RM80 is the smallest carpet. The
-card shows **from RM88**, computed from `prices.json` rather than typed in, and
-`npm run verify` fails the build if RM80 ever appears there. Confirm which is
-right.
+The page states two facts and nothing else: 100,000+ cleaning hours delivered,
+and reclean or full refund. Both are owner confirmed. It quotes no prices, no
+ratings and no reviews, and `npm run verify` fails the build if a price, a
+rating or a percentage appears in the page content. The RM20 voucher strip from
+the previous page is retired; the code still works at kleaner.my/booknow if the
+owner wants it back.
 
 ---
 
@@ -206,10 +175,10 @@ in `qa/` proves only that the internal links resolve.
 
 Then, by hand:
 
-- [ ] Open the page on a real phone and tap every one of the six cards. Confirm
+- [ ] Open the page on a real phone and tap every one of the nine buttons. Confirm
       each one lands on the right service, not just on a page that loads.
 - [ ] Tap the WhatsApp button and check the prefilled message.
-- [ ] Try the voucher code at checkout.
+- [ ] Open `services.kleaner.my/#formaldehyde-removal` and check it lands on that service.
 - [ ] Paste the URL into WhatsApp to check the share card renders.
 - [ ] Submit `https://services.kleaner.my/sitemap.xml` in Google Search Console.
 - [ ] Run the URL through the Google Rich Results Test and confirm the ItemList.

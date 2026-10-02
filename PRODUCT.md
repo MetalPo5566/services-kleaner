@@ -16,18 +16,18 @@ services.kleaner.my is the one page that lists every Kleaner service and sends t
 
 ## Positioning
 
-Kleaner is a Klang Valley cleaning company with 100,000+ cleaning hours delivered, a trained in-house team (not gig workers), and a reclean-or-full-refund guarantee on every service. One operator covers the whole job: general cleaning, sofa and mattress, post-renovation, formaldehyde removal, movers, and a recurring Club.
+Kleaner is a Klang Valley cleaning company with 100,000+ cleaning hours delivered, a trained in-house team (not gig workers), and a reclean-or-full-refund guarantee on every service. One operator covers the whole job: standard, deep and move in / move out cleaning, post renovation cleaning, formaldehyde removal, aircond maintenance, sofa and mattress, curtain and carpet, and movers.
 
 ## Operating Context
 
 - kleaner.my runs on BookingKoala, which cannot host custom pages, so this is a standalone static site like movers., upholstery. and postreno.kleaner.my. Header and footer link back to kleaner.my with absolute URLs.
-- Booking links: four of six cards open the front of the BookingKoala flow (kleaner.my/booknow/) because direct routes are not known yet; sofa and mattress uses /booknow/upholstery-cleaning; movers goes to movers.kleaner.my.
+- Booking links (owner, 2 Oct 2026): Standard, Deep and Move In / Move Out open kleaner.my/booknow; Post Renovation and Formaldehyde Removal /booknow/post-renovation; Aircond /booknow/aircond-servicing; Sofa & Mattress and Curtain & Carpet /booknow/upholstery-cleaning; Mover /booknow/movers. The page shows no prices.
 - Contact: WhatsApp +60 17-477 0978 (primary), call line +60 17-477 0010. Hours Monday to Sunday, 7:30 AM to 6:00 PM.
 
 ## Capabilities and Constraints
 
 - Astro 7 static output, Tailwind CSS 4, no client framework. Deployed on Cloudflare Pages (project kleaner-services).
-- Services and prices are data driven: `src/data/services.ts`, `src/data/prices.json`, helpers in `src/data/site.ts`. No price is typed into markup.
+- Services and booking links are data driven from `src/data/services.ts`. The page quotes no prices (`prices.json` stays as the record of the booking form's rates).
 - `npm run verify` enforces banned claims (no 100 per cent anything, nothing permanent or clinical, no virus claims, no health promises), no em dashes, and price integrity (sofa from RM88, never RM80).
 - English only for now; copy lives in `src/data/copy/services.en.ts` so BM and ZH can follow.
 - House style: Malaysian English, short sentences, second person, no exclamation marks, no em dashes, RM with no decimals except the RM1.20 per sqft rate.

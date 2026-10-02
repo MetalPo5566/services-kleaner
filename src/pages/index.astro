@@ -1,21 +1,24 @@
 ---
+import { Picture, getImage } from 'astro:assets'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import Button from '../components/Button.astro'
 import Icon from '../components/Icon.astro'
-import ServiceBoard from '../components/ServiceBoard.astro'
-import { SERVICES } from '../data/services'
+import { GROUPS, SERVICES, BOOKING_URL, type Service } from '../data/services'
 import { SERVICES_EN as copy } from '../data/copy/services.en'
 import { SITE, ABSOLUTE_PAGES, whatsappLink } from '../data/site'
 import { localBusinessSchema, itemListSchema } from '../lib/schema'
+import heroPhoto from '../../assets/plates/hero-photo.png'
 
-// The all services hub, built as a kopitiam counter board: numbered tiles you
-// point at, an order bar that books what you picked. One job: the visitor
-// picks a service and books it.
-//
-// No raster image on this page apart from the logo. The pictograms are inline
-// SVG from the shared set, so there is nothing to lazy load and no layout
-// shift from an image arriving late.
-const SERVICE = 'services-hub'
+// The services hub, laid out like a super-app service menu: a photo-led hero,
+// a launcher of the four groups, a sticky strip of group pills that follows the
+// scroll, then each group in its own arrangement. One job: the visitor finds
+// their service and taps straight into its booking link.
+const PAGE = 'services-hub'
+
+const [home, reno, specialist, moving] = GROUPS
+// The bento leads with the tall sofa tile; the data keeps the brief's order.
+const bySlug = (slug: string) => specialist.services.find((service) => service.slug === slug)!
+const [sofa, aircond, curtain] = ['sofa-mattress', 'aircond-maintenance', 'curtain-carpet'].map(bySlug)
+const mover = moving.services[0]
 
 const schemas = [
   localBusinessSchema(`${SITE.url}${copy.meta.ogImage}`),
@@ -25,13 +28,18 @@ const schemas = [
     items: SERVICES.map((service) => ({
       name: service.name,
       bookingUrl: service.bookingUrl,
-      promise: service.promise,
+      promise: service.line,
     })),
   }),
 ]
 
-const bookingUrlFor = (slug: string) =>
-  SERVICES.find((service) => service.slug === slug)?.bookingUrl ?? SITE.bookingUrl
+// The hero photo is the LCP element, so its exact candidates are preloaded.
+const HERO_WIDTHS = [480, 720, 960, 1280, 1600]
+const HERO_SIZES = '(min-width: 1024px) 56vw, calc(100vw - 32px)'
+const heroAvif = await getImage({ src: heroPhoto, widths: HERO_WIDTHS, format: 'avif' })
+const heroWebp = await getImage({ src: heroPhoto, widths: HERO_WIDTHS, format: 'webp' })
+
+const wa = (message: string) => whatsappLink(message)
 ---
 
 <BaseLayout
@@ -40,249 +48,786 @@ const bookingUrlFor = (slug: string) =>
   path={copy.path}
   ogImage={copy.meta.ogImage}
   schemas={schemas}
-  whatsappHref={whatsappLink(copy.hero.waMessage)}
-  service={SERVICE}
+  whatsappHref={wa(copy.hero.waMessage)}
+  service={PAGE}
   htmlLang={copy.htmlLang}
   ogLocale={copy.ogLocale}
   stickyBar={false}
   showFloatingCtas={false}
+  preloadImage={heroAvif.src}
+  preloadImageSrcset={heroAvif.srcSet.attribute}
+  preloadImageSizes={HERO_SIZES}
 >
-  {/* 1. The board: headline, the RM20 pill, six tiles and the order bar. */}
-  <ServiceBoard copy={copy} />
+  {/* Hero. Phone: the photo leads, copy and actions under it. Desktop: copy
+      left, photo right. Nothing is ever set on the photo. */}
+  <section class="wrap pt-4 md:pt-8 lg:pt-12" aria-labelledby="hero-title" data-hero>
+    <div class="grid gap-5 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center lg:gap-14">
+      <picture class="hero-photo block overflow-hidden rounded-tile lg:order-2">
+        <source type="image/avif" srcset={heroAvif.srcSet.attribute} sizes={HERO_SIZES} />
+        <source type="image/webp" srcset={heroWebp.srcSet.attribute} sizes={HERO_SIZES} />
+        <img
+          src={heroWebp.src}
+          width={heroPhoto.width}
+          height={heroPhoto.height}
+          alt={copy.hero.photoAlt}
+          class="h-full w-full object-cover"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </picture>
 
-  {/* 2. Sets, for the visitor who is not sure which tile is theirs. */}
-  <section class="wrap py-10 md:py-16" aria-labelledby="sets-title">
-    <h2 id="sets-title" class="font-board text-[clamp(34px,9.4vw,64px)] uppercase leading-none text-navy">
-      {copy.sets.title}
-    </h2>
-    <p class="mt-2 text-[16px] text-ink md:text-[18px]">{copy.sets.lead}</p>
+      <div class="lg:order-1">
+        <h1
+          id="hero-title"
+          class="text-[clamp(2.25rem,9.6vw,3.25rem)] leading-[1.04] tracking-[-0.03em] lg:text-[clamp(3.25rem,4.6vw,4.5rem)]"
+        >
+          {copy.hero.h1}
+        </h1>
+        <p class="mt-3 max-w-[34rem] text-[17px] leading-relaxed text-ink md:mt-4 md:text-[19px]">
+          {copy.hero.sub}
+        </p>
+        <div class="mt-5 flex flex-wrap gap-3 md:mt-7">
+          <a href={BOOKING_URL} class="btn btn-fill press" rel="noopener" data-cta="book" data-service="hero">
+            {copy.hero.book}
+          </a>
+          <a
+            href={wa(copy.hero.waMessage)}
+            class="btn btn-line press"
+            rel="noopener"
+            data-cta="whatsapp"
+            data-service="hero"
+          >
+            <Icon name="whatsapp" size={20} />
+            {copy.hero.whatsApp}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <ul class="mt-6 grid gap-3 md:grid-cols-3 md:gap-4" role="list">
+  {/* Group launcher: the super-app shortcut row. Four tiles, one per group,
+      each jumping to its group. Four across at every width. */}
+  <nav class="wrap mt-7 md:mt-10" aria-label={copy.jump.label}>
+    <ul class="grid grid-cols-4 gap-2 md:gap-4" role="list">
       {
-        copy.sets.items.map((set) => (
-          <li class="flex" data-reveal>
-            <a
-              href={bookingUrlFor(set.slug)}
-              class="ticket press"
-              rel="noopener"
-              data-cta="book"
-              data-service={`set-${set.slug}`}
-            >
-              <span class="ticket-stub" aria-hidden="true">
-                <span class="font-label text-[12px] font-semibold uppercase tracking-[0.12em]">Set</span>
-                <span class="font-board text-[44px] leading-none">{set.letter}</span>
-              </span>
-              <span class="ticket-body">
-                <span class="sr-only">Set {set.letter}. </span>
-                <span class="block font-board text-[22px] uppercase leading-[1.05] text-navy md:text-[24px]">
-                  {set.question}
-                </span>
-                <span class="mt-1.5 block text-[15px] leading-snug text-ink">{set.answer}</span>
-                <span class="mt-2.5 inline-flex items-center gap-1.5 font-label text-[15px] font-semibold uppercase tracking-[0.04em] text-brand-dark">
-                  {copy.board.book}
-                  <Icon name="arrow" size={17} />
-                </span>
-              </span>
+        GROUPS.map((group) => (
+          <li>
+            <a href={`#${group.slug}`} class="launcher press" data-jump={group.slug}>
+              <Picture
+                src={group.photo}
+                widths={[96, 160, 240]}
+                sizes="(min-width: 768px) 120px, 64px"
+                formats={['avif', 'webp']}
+                fallbackFormat="webp"
+                alt=""
+                class="launcher-photo"
+                loading="lazy"
+              />
+              <Icon name={group.icon} size={28} class="mt-2 text-brand-ink md:mt-3" />
+              <span class="launcher-label">{group.name}</span>
             </a>
           </li>
         ))
       }
     </ul>
+  </nav>
 
-    <div class="mt-6 flex flex-col items-start gap-4 border-t-2 border-navy pt-5 md:flex-row md:items-center md:justify-between" data-reveal>
-      <p class="max-w-xl text-[16px] leading-snug text-navy md:text-[17px]">{copy.sets.whatsAppLead}</p>
-      <Button
-        href={whatsappLink(copy.sets.waMessage)}
-        variant="whatsapp"
-        icon="whatsapp"
-        cta="whatsapp"
-        service={SERVICE}
-      >
-        {copy.sets.whatsApp}
-      </Button>
-    </div>
-  </section>
-
-  {/* 3. The guarantee and the house facts, on the board's navy. */}
-  <section class="bg-navy py-12 text-white md:py-20" aria-labelledby="guarantee-title">
-    <div class="wrap lg:grid lg:grid-cols-[1.35fr_1fr] lg:items-end lg:gap-16">
-      <div>
-        <h2
-          id="guarantee-title"
-          class="max-w-4xl font-board text-[clamp(44px,13vw,112px)] uppercase leading-[0.98] text-white"
-        >
-          {copy.guarantee.title}
-        </h2>
-        <p class="mt-5 max-w-2xl text-[17px] leading-relaxed text-white/85 md:text-[19px]">
-          {copy.guarantee.text}
-        </p>
-      </div>
-
-      <ul class="mt-9 grid grid-cols-2 gap-x-5 gap-y-6 border-t border-white/20 pt-7 md:grid-cols-4 lg:mt-0 lg:grid-cols-1 lg:gap-0 lg:divide-y lg:divide-white/20 lg:border-t-0 lg:pt-0" role="list">
+  {/* The category strip. Sticks under the header and lights the group in view. */}
+  <div class="pill-bar" data-pill-bar>
+    <nav class="wrap" aria-label="Service groups">
+      <ul class="pill-track" role="list">
         {
-          copy.trust.items.map((item) => (
-            <li class="flex flex-col gap-2.5 lg:flex-row lg:items-center lg:gap-4 lg:py-4">
-              <Icon name={item.icon} size={30} strokeWidth={1.8} class="text-sun" />
-              <span class="font-label text-[17px] font-medium uppercase leading-tight tracking-[0.02em] md:text-[19px]">
-                {item.text}
-              </span>
+          GROUPS.map((group) => (
+            <li>
+              <a href={`#${group.slug}`} class="pill" data-pill={group.slug}>
+                {group.name}
+              </a>
             </li>
           ))
         }
       </ul>
+    </nav>
+  </div>
+
+  {/* Home cleaning: a swipeable row of photo cards on phones; on wide screens
+      the first card takes the larger column. */}
+  <section id={home.slug} class="group-section wrap" aria-labelledby={`${home.slug}-title`} data-group>
+    <h2 id={`${home.slug}-title`} class="group-title">{home.name}</h2>
+    <ul class="home-track" role="list">
+      {
+        home.services.map((service) => (
+          <li id={service.slug} class="anchor-target home-card" data-reveal>
+            {service.aliases?.map((alias) => <span id={alias} class="anchor-alias" aria-hidden="true" />)}
+            <Picture
+              src={service.photo}
+              widths={[360, 560, 800, 1100]}
+              sizes="(min-width: 768px) 40vw, 80vw"
+              formats={['avif', 'webp']}
+                fallbackFormat="webp"
+              alt={service.alt}
+              class="aspect-[3/2] w-full object-cover"
+            />
+            <div class="flex flex-1 flex-col p-5">
+              <h3 class="card-name">{service.name}</h3>
+              <p class="card-line">{service.line}</p>
+              <a
+                href={service.bookingUrl}
+                class="btn btn-fill btn-block press mt-auto"
+                rel="noopener"
+                data-cta="book"
+                data-service={service.slug}
+              >
+                {service.cta}
+              </a>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {/* After renovation: two wide rows, photo, words, action. */}
+  <section id={reno.slug} class="group-section wrap" aria-labelledby={`${reno.slug}-title`} data-group>
+    <h2 id={`${reno.slug}-title`} class="group-title">{reno.name}</h2>
+    <ul class="flex flex-col gap-3 md:gap-4" role="list">
+      {
+        reno.services.map((service) => (
+          <li id={service.slug} class="anchor-target reno-row" data-reveal>
+            <Picture
+              src={service.photo}
+              widths={[240, 400, 640]}
+              sizes="(min-width: 768px) 300px, 34vw"
+              formats={['avif', 'webp']}
+                fallbackFormat="webp"
+              alt={service.alt}
+              class="reno-photo"
+            />
+            <div class="reno-body">
+              <h3 class="card-name">{service.name}</h3>
+              <p class="card-line">{service.line}</p>
+            </div>
+            <a
+              href={service.bookingUrl}
+              class="btn btn-fill press reno-cta"
+              rel="noopener"
+              data-cta="book"
+              data-service={service.slug}
+            >
+              {service.cta}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {/* Specialist care: a bento of three. The tall sofa tile on the left, aircond
+      and curtains stacked beside it. Phones: the tall tile, then two side by side. */}
+  <section
+    id={specialist.slug}
+    class="group-section wrap"
+    aria-labelledby={`${specialist.slug}-title`}
+    data-group
+  >
+    <h2 id={`${specialist.slug}-title`} class="group-title">{specialist.name}</h2>
+    <ul class="bento" role="list">
+      {
+        [sofa, aircond, curtain].map((service, index) => (
+          <li
+            id={service.slug}
+            class:list={['anchor-target bento-tile', index === 0 ? 'bento-tall' : 'bento-small']}
+            data-reveal
+          >
+            <Picture
+              src={service.photo}
+              widths={index === 0 ? [400, 700, 1000] : [300, 500, 800]}
+              sizes={index === 0 ? '(min-width: 768px) 46vw, 100vw' : '(min-width: 768px) 22vw, 46vw'}
+              formats={['avif', 'webp']}
+                fallbackFormat="webp"
+              alt={service.alt}
+              class="bento-photo"
+            />
+            <div class="bento-body">
+              <h3 class="card-name">{service.name}</h3>
+              <p class="card-line">{service.line}</p>
+              <a
+                href={service.bookingUrl}
+                class="btn btn-fill press mt-auto self-start"
+                rel="noopener"
+                data-cta="book"
+                data-service={service.slug}
+              >
+                {service.cta}
+              </a>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {/* Moving: one wide banner, photo and a blue panel. Phones stack them. */}
+  <section id={moving.slug} class="group-section wrap" aria-labelledby={`${moving.slug}-title`} data-group>
+    <h2 id={`${moving.slug}-title`} class="group-title">{moving.name}</h2>
+    <article id={mover.slug} class="anchor-target mover" data-reveal>
+      {mover.aliases?.map((alias) => <span id={alias} class="anchor-alias" aria-hidden="true" />)}
+      <Picture
+        src={mover.photo}
+        widths={[480, 800, 1200, 1600]}
+        sizes="(min-width: 768px) 58vw, 100vw"
+        formats={['avif', 'webp']}
+                fallbackFormat="webp"
+        alt={mover.alt}
+        class="mover-photo"
+      />
+      <div class="mover-panel">
+        <h3 class="text-[24px] font-extrabold leading-tight tracking-[-0.02em] text-[#fdfeff] md:text-[30px]">
+          {mover.name}
+        </h3>
+        <p class="mt-2 text-[16px] leading-relaxed text-[#e3efff] md:text-[17px]">{mover.line}</p>
+        <a
+          href={mover.bookingUrl}
+          class="btn btn-on-blue press mt-6 self-start"
+          rel="noopener"
+          data-cta="book"
+          data-service={mover.slug}
+        >
+          {mover.cta}
+        </a>
+      </div>
+    </article>
+  </section>
+
+  {/* Proof: the two facts the owner has confirmed, and nothing else. */}
+  <section class="wrap mt-16 md:mt-24" aria-labelledby="proof-title">
+    <div class="border-t border-line pt-10 md:pt-14">
+      <h2 id="proof-title" class="text-[30px] leading-tight md:text-[44px]">{copy.proof.title}</h2>
+      <div class="mt-8 grid gap-8 md:mt-10 md:grid-cols-2 md:gap-0">
+        <div class="md:pr-12" data-reveal>
+          <p class="text-[56px] font-extrabold leading-none tracking-[-0.04em] text-brand-ink md:text-[80px]">
+            {copy.proof.hours.figure}
+          </p>
+          <p class="mt-3 max-w-[22rem] text-[17px] leading-relaxed text-ink md:text-[19px]">
+            {copy.proof.hours.text}
+          </p>
+        </div>
+        <div class="md:border-l md:border-line md:pl-12" data-reveal>
+          <Icon name="guarantee" size={44} class="text-brand-ink" />
+          <h3 class="mt-3 text-[24px] font-extrabold leading-tight md:text-[30px]">
+            {copy.proof.guarantee.title}
+          </h3>
+          <p class="mt-2 max-w-[26rem] text-[17px] leading-relaxed text-ink md:text-[19px]">
+            {copy.proof.guarantee.text}
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
-  {/* 4. The voucher, printed as one more tile. */}
-  <section class="wrap py-10 md:py-16" aria-labelledby="voucher-title">
-    <div class="voucher" data-reveal>
-      <div class="voucher-face">
-        <h2 id="voucher-title" class="font-board text-[clamp(38px,11vw,84px)] uppercase leading-[0.98] text-white">
-          {copy.voucher.headline}
-        </h2>
-        <div class="mt-5 flex flex-wrap items-center gap-3">
-          <button
-            type="button"
-            class="press voucher-code"
-            data-copy-code={copy.voucher.code}
-            aria-describedby="voucher-copy"
-          >
-            <span data-copy-label data-default={copy.voucher.code} data-done={copy.voucher.copied}>
-              {copy.voucher.code}
-            </span>
-            <span id="voucher-copy" class="voucher-copy">{copy.voucher.copy}</span>
-          </button>
-        </div>
-        <p class="mt-4 text-[15px] text-white/90">{copy.voucher.terms}</p>
-        <a
-          href={SITE.bookingUrl}
-          class="press voucher-book"
-          rel="noopener"
-          data-cta="book"
-          data-service="voucher"
-        >
-          {copy.voucher.cta}
-          <Icon name="arrow" size={20} />
-        </a>
+  {/* Close: WhatsApp, for the visitor who is still unsure. */}
+  <section class="wrap mb-14 mt-16 md:mb-20 md:mt-24" aria-labelledby="close-title">
+    <div class="close-band" data-reveal>
+      <div>
+        <h2 id="close-title" class="text-[28px] leading-tight md:text-[40px]">{copy.close.title}</h2>
+        <p class="mt-3 max-w-[32rem] text-[17px] leading-relaxed text-ink md:text-[19px]">{copy.close.text}</p>
       </div>
+      <a
+        href={wa(copy.close.waMessage)}
+        class="btn btn-fill press shrink-0"
+        rel="noopener"
+        data-cta="whatsapp"
+        data-service="close"
+      >
+        <Icon name="whatsapp" size={20} />
+        {copy.close.whatsApp}
+      </a>
     </div>
   </section>
 </BaseLayout>
 
+<script>
+  // The pill strip follows the group in view: the group whose section crosses
+  // the band just under the strip is the current one. Observer only, no
+  // scroll listener; with JavaScript off the pills are plain anchor links.
+  const strip = document.querySelector<HTMLElement>('.pill-track')
+  const pills = new Map(
+    Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-pill]')).map((pill) => [
+      pill.dataset.pill,
+      pill,
+    ])
+  )
+  // Lights one pill, or none while the hero is in view, and slides the strip
+  // so the lit pill shows. Only the strip scrolls, never the page.
+  const setCurrent = (slug: string | undefined) => {
+    pills.forEach((pill, key) => {
+      if (key === slug) pill.setAttribute('aria-current', 'true')
+      else pill.removeAttribute('aria-current')
+    })
+    if (!strip) return
+    const lit = slug ? pills.get(slug) : undefined
+    strip.scrollTo({ left: lit ? Math.max(0, lit.offsetLeft - strip.offsetLeft - 16) : 0 })
+  }
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return
+          const target = entry.target as HTMLElement
+          setCurrent(target.hasAttribute('data-hero') ? undefined : target.id)
+        })
+      },
+      // A thin band 30 to 35 per cent down the viewport.
+      { rootMargin: '-30% 0px -65% 0px' }
+    )
+    document
+      .querySelectorAll<HTMLElement>('[data-group], [data-hero]')
+      .forEach((section) => observer.observe(section))
+  }
+</script>
+
 <style>
-  .ticket {
-    display: flex;
-    width: 100%;
-    overflow: hidden;
-    border: 2px solid var(--color-navy);
-    border-radius: 8px;
-    background: #fff;
-    text-decoration: none;
-    transition:
-      transform 120ms var(--ease-out),
-      background-color 180ms var(--ease-out);
+  .hero-photo {
+    aspect-ratio: 2 / 1;
   }
-
-  @media (hover: hover) and (pointer: fine) {
-    .ticket:hover {
-      background: #fffbea;
-    }
-    .ticket:hover .ticket-stub {
-      background: var(--color-sun);
-      color: var(--color-navy);
+  @media (min-width: 1024px) {
+    .hero-photo {
+      aspect-ratio: 4 / 3;
+      max-height: calc(100dvh - 72px - 6rem);
+      width: 100%;
     }
   }
 
-  .ticket-stub {
-    display: flex;
-    width: 76px;
-    flex-shrink: 0;
-    flex-direction: column;
+  /* Buttons: full pills, one height, one weight. Filled is the action; the
+     line button is the secondary. */
+  :global(.btn) {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 2px;
-    border-right: 2px dashed var(--color-navy);
-    background: var(--color-navy);
-    color: var(--color-sun);
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0 1.5rem;
+    border-radius: 999px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
     transition:
-      background-color 180ms var(--ease-out),
-      color 180ms var(--ease-out);
+      background-color 160ms var(--ease-out),
+      color 160ms var(--ease-out),
+      border-color 160ms var(--ease-out),
+      transform 120ms var(--ease-out);
   }
-
-  .ticket-body {
-    display: block;
-    padding: 14px 16px 14px;
-  }
-
-  .voucher {
-    padding: 8px;
-    border-radius: 10px;
+  :global(.btn-fill) {
     background: var(--color-brand-dark);
+    color: #fdfeff;
   }
-
-  .voucher-face {
-    border: 2px solid #fff;
-    border-radius: 6px;
-    padding: 22px 18px 22px;
+  :global(.btn-line) {
+    border: 2px solid var(--color-brand-dark);
+    color: var(--color-brand-ink);
   }
-
-  @media (min-width: 768px) {
-    .voucher-face {
-      padding: 40px 44px;
+  :global(.btn-on-blue) {
+    background: #fdfeff;
+    color: #0071d1;
+  }
+  :global(.btn-block) {
+    width: 100%;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    :global(.btn-fill:hover) {
+      background: var(--color-brand-hover);
+    }
+    :global(.btn-line:hover) {
+      background: var(--color-tint);
+    }
+    :global(.btn-on-blue:hover) {
+      background: #e3efff;
     }
   }
 
-  .voucher-code {
-    display: inline-flex;
+  .launcher {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
     align-items: center;
-    gap: 14px;
-    padding: 10px 10px 10px 16px;
-    border-radius: 8px;
-    background: #fff;
-    color: var(--color-navy);
-    font-family: var(--font-board);
-    font-size: 26px;
-    line-height: 1;
-    letter-spacing: 0.06em;
-    cursor: pointer;
-  }
-
-  .voucher-copy {
-    padding: 7px 10px 6px;
-    border-radius: 6px;
-    background: var(--color-paper);
-    color: var(--color-brand-dark);
-    font-family: var(--font-label);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .voucher-code.is-copied {
-    background: var(--color-sun);
-  }
-
-  .voucher-book {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 22px;
-    height: 50px;
-    padding: 0 24px;
-    border-radius: 999px;
-    background: var(--color-sun);
-    color: var(--color-navy);
-    font-family: var(--font-board);
-    font-size: 21px;
-    text-transform: uppercase;
+    padding: 0.75rem 0.25rem 0.85rem;
+    border-radius: var(--radius-tile);
+    background: var(--color-tint);
+    text-align: center;
     text-decoration: none;
     transition: background-color 160ms var(--ease-out), transform 120ms var(--ease-out);
   }
-
   @media (hover: hover) and (pointer: fine) {
-    .voucher-book:hover {
-      background: var(--color-sun-dark);
+    .launcher:hover {
+      background: var(--color-pill);
+    }
+  }
+  .launcher :global(.launcher-photo) {
+    width: 64px;
+    height: 64px;
+    border-radius: 999px;
+    object-fit: cover;
+  }
+  .launcher-label {
+    margin-top: 0.35rem;
+    color: var(--color-navy);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  @media (min-width: 768px) {
+    .launcher {
+      padding: 1.25rem 0.75rem 1.4rem;
+    }
+    .launcher :global(.launcher-photo) {
+      width: 120px;
+      height: 120px;
+    }
+    .launcher-label {
+      font-size: 18px;
+    }
+    .launcher :global(svg) {
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  /* The strip sticks under the 59px (72px from 768px) header. */
+  .pill-bar {
+    position: sticky;
+    top: 59px;
+    z-index: 40;
+    margin-top: 1.25rem;
+    padding-block: 0.6rem;
+    background: color-mix(in srgb, var(--color-page) 92%, transparent);
+    backdrop-filter: blur(10px);
+  }
+  @media (min-width: 768px) {
+    .pill-bar {
+      top: 72px;
+      margin-top: 2rem;
+    }
+  }
+  .pill-track {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .pill-track::-webkit-scrollbar {
+    display: none;
+  }
+  .pill-track > li {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0 1.1rem;
+    border-radius: 999px;
+    background: var(--color-pill);
+    color: var(--color-navy);
+    font-size: 15px;
+    font-weight: 700;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out);
+  }
+  .pill[aria-current='true'] {
+    background: var(--color-brand-dark);
+    color: #fdfeff;
+  }
+
+  .group-section {
+    margin-top: 2.5rem;
+    scroll-margin-top: 120px;
+  }
+  @media (min-width: 768px) {
+    .group-section {
+      margin-top: 4.5rem;
+      scroll-margin-top: 140px;
+    }
+  }
+  .group-title {
+    margin-bottom: 1rem;
+    font-size: 28px;
+  }
+  @media (min-width: 768px) {
+    .group-title {
+      margin-bottom: 1.5rem;
+      font-size: 40px;
+    }
+  }
+  .anchor-target {
+    scroll-margin-top: 130px;
+  }
+  @media (min-width: 768px) {
+    .anchor-target {
+      scroll-margin-top: 150px;
+    }
+  }
+  .anchor-alias {
+    position: absolute;
+    top: 0;
+    scroll-margin-top: inherit;
+  }
+
+  /* Astro wraps each photo in <picture>. Let the img be the grid or flex
+     item itself, so the layout rules below size the photo, not the wrapper. */
+  .home-card > :global(picture),
+  .reno-row > :global(picture),
+  .bento-tile > :global(picture),
+  .mover > :global(picture) {
+    display: contents;
+  }
+
+  .card-name {
+    color: var(--color-navy);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  .card-line {
+    margin-top: 0.4rem;
+    margin-bottom: 1.1rem;
+    color: var(--color-ink);
+    font-size: 15.5px;
+    line-height: 1.5;
+  }
+
+  /* Home cleaning. Phones: a horizontal snap row with the next card showing.
+     768px and up: a three column grid, the first column wider. */
+  .home-track {
+    display: flex;
+    gap: 0.75rem;
+    margin-inline: -1rem;
+    padding: 0.25rem 1rem 0.75rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1rem;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .home-track::-webkit-scrollbar {
+    display: none;
+  }
+  .home-card {
+    position: relative;
+    display: flex;
+    flex: 0 0 80%;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-tile);
+    background: var(--color-raised);
+    scroll-snap-align: start;
+  }
+  @media (min-width: 768px) {
+    .home-card :global(img) {
+      height: 15rem;
+      aspect-ratio: auto;
+    }
+    .home-track {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr 1fr;
+      gap: 1rem;
+      margin-inline: 0;
+      padding: 0;
+      overflow: visible;
+    }
+  }
+
+  /* After renovation. Rows: photo, words, action. Phones put the action under
+     the words. */
+  .reno-row {
+    display: grid;
+    grid-template-columns: 34% 1fr;
+    grid-template-areas:
+      'photo body'
+      'photo cta';
+    column-gap: 1rem;
+    overflow: hidden;
+    border-radius: var(--radius-tile);
+    background: var(--color-tint);
+  }
+  .reno-row :global(.reno-photo) {
+    grid-area: photo;
+    width: 100%;
+    height: 100%;
+    min-height: 9rem;
+    object-fit: cover;
+  }
+  .reno-body {
+    grid-area: body;
+    padding: 1rem 1rem 0 0;
+  }
+  .reno-cta {
+    grid-area: cta;
+    justify-self: start;
+    margin: 0 1rem 1rem 0;
+  }
+  @media (min-width: 768px) {
+    .reno-row {
+      grid-template-columns: 300px 1fr auto;
+      grid-template-areas: 'photo body cta';
+      align-items: center;
+      column-gap: 2rem;
+    }
+    .reno-row :global(.reno-photo) {
+      min-height: 10.5rem;
+    }
+    .reno-body {
+      padding: 1.5rem 0;
+    }
+    .reno-body .card-line {
+      margin-bottom: 0;
+    }
+    .reno-cta {
+      margin: 0 2rem 0 0;
+    }
+  }
+
+  /* Specialist care. Phones: the tall tile full width, then the two small ones
+     side by side. 768px and up: tall tile left across two rows, small tiles
+     stacked on the right with their photo beside the words. */
+  .bento {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  .bento-tile {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: var(--radius-tile);
+  }
+  .bento-tall {
+    grid-column: 1 / -1;
+    background: var(--color-tint);
+  }
+  .bento-small {
+    border: 1px solid var(--color-line);
+    background: var(--color-raised);
+  }
+  .bento-tile :global(.bento-photo) {
+    width: 100%;
+    object-fit: cover;
+  }
+  .bento-tall :global(.bento-photo) {
+    aspect-ratio: 4 / 3;
+  }
+  .bento-small :global(.bento-photo) {
+    aspect-ratio: 1 / 1;
+  }
+  .bento-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .bento-small .card-name {
+    font-size: 17px;
+  }
+  .bento-small .card-line {
+    font-size: 14.5px;
+  }
+  @media (min-width: 768px) {
+    .bento {
+      grid-template-columns: 1.1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 1rem;
+    }
+    .bento-tall {
+      grid-column: 1;
+      grid-row: 1 / 3;
+    }
+    .bento-tall :global(.bento-photo) {
+      aspect-ratio: auto;
+      flex: 1;
+      min-height: 22rem;
+    }
+    .bento-tall .bento-body {
+      flex: 0;
+      padding: 1.5rem;
+    }
+    .bento-small {
+      flex-direction: row;
+    }
+    .bento-small :global(.bento-photo) {
+      width: 42%;
+      aspect-ratio: auto;
+    }
+    .bento-small .bento-body {
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .bento-small .bento-body :global(.btn) {
+      margin-top: 0;
+    }
+    .bento-small .card-name {
+      font-size: 20px;
+    }
+    .bento-small .card-line {
+      font-size: 15.5px;
+    }
+  }
+
+  /* Moving. Photo and a blue panel; phones stack them. */
+  .mover {
+    position: relative;
+    display: grid;
+    overflow: hidden;
+    border-radius: var(--radius-tile);
+    background: #0071d1;
+  }
+  .mover :global(.mover-photo) {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+  .mover-panel {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+  @media (min-width: 768px) {
+    .mover {
+      grid-template-columns: 1.45fr 1fr;
+      align-items: stretch;
+    }
+    .mover :global(.mover-photo) {
+      height: 100%;
+      aspect-ratio: auto;
+      min-height: 22rem;
+    }
+    .mover-panel {
+      justify-content: center;
+      padding: 2.5rem;
+    }
+  }
+
+  .close-band {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.75rem 1.5rem;
+    border-radius: var(--radius-tile);
+    background: var(--color-tint);
+  }
+  @media (min-width: 768px) {
+    .close-band {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      padding: 3rem;
     }
   }
 </style>

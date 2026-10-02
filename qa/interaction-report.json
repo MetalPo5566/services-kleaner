@@ -46,64 +46,29 @@
       "detail": ""
     },
     {
-      "name": "every service is on the page as a card",
+      "name": "every service has its own booking link",
       "pass": true,
-      "detail": "6 cards"
+      "detail": "9"
     },
     {
-      "name": "every card has a slug and an href",
+      "name": "every booking link opens kleaner.my/booknow",
       "pass": true,
       "detail": ""
     },
     {
-      "name": "no tile reports a booking on its selecting tap",
+      "name": "booking links open in the same tab",
       "pass": true,
       "detail": ""
     },
     {
-      "name": "every card links to a known Kleaner host",
-      "pass": true,
-      "detail": "https://kleaner.my/booknow/ | https://kleaner.my/booknow/upholstery-cleaning | https://kleaner.my/booknow/ | https://kleaner.my/booknow/ | https://movers.kleaner.my | https://kleaner.my/booknow/"
-    },
-    {
-      "name": "no card nests an interactive element inside the link",
+      "name": "home cleaning is three columns at 1440",
       "pass": true,
       "detail": ""
     },
     {
-      "name": "every service is named in an H2 in the order slip",
+      "name": "a booking tap reports its own slug",
       "pass": true,
-      "detail": "6"
-    },
-    {
-      "name": "cards open in the same tab",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "name": "grid is 3 columns at 1280",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "name": "sofa card quotes from RM88",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "name": "the first tap selects without reporting a booking",
-      "pass": true,
-      "detail": "0"
-    },
-    {
-      "name": "the order bar books the selected service",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "name": "a card click reports its own slug",
-      "pass": true,
-      "detail": "{\"event\":\"cta_book\",\"page\":\"/\",\"service\":\"formaldehyde-removal\",\"cta_text\":\"Formaldehyde\"}"
+      "detail": "{\"event\":\"cta_book\",\"page\":\"/\",\"service\":\"aircond-maintenance\",\"cta_text\":\"Book now\"}"
     },
     {
       "name": "the event reports the page",
@@ -111,44 +76,39 @@
       "detail": "\"/\""
     },
     {
-      "name": "grid is 2 columns at 390",
+      "name": "hero Book now is above the fold at 390",
+      "pass": true,
+      "detail": "{\"bookBottom\":515.71875,\"lines\":2}"
+    },
+    {
+      "name": "hero headline holds two lines at 390",
+      "pass": true,
+      "detail": "{\"bookBottom\":515.71875,\"lines\":2}"
+    },
+    {
+      "name": "no horizontal page scroll at 390",
       "pass": true,
       "detail": ""
     },
     {
-      "name": "order bar is visible on a phone",
+      "name": "pill strip sticks under the header",
       "pass": true,
-      "detail": ""
+      "detail": "{\"top\":59,\"current\":\"specialist-care\"}"
     },
     {
-      "name": "order bar spans the bottom edge",
+      "name": "pill strip lights the group in view",
       "pass": true,
-      "detail": "{\"left\":0,\"bottom\":0,\"width\":390}"
+      "detail": "{\"top\":59,\"current\":\"specialist-care\"}"
     },
     {
-      "name": "WhatsApp is still on the page",
+      "name": "#formaldehyde-removal lands below the sticky chrome",
       "pass": true,
-      "detail": ""
-    },
-    {
-      "name": "no dead space where a sticky bar would be",
-      "pass": true,
-      "detail": "0px"
-    },
-    {
-      "name": "no sticky bar anchor on the page",
-      "pass": true,
-      "detail": ""
-    },
-    {
-      "name": "the voucher CTA reaches the booking form",
-      "pass": true,
-      "detail": ""
+      "detail": "{\"top\":112}"
     },
     {
       "name": "pushes cta_whatsapp with page and service",
       "pass": true,
-      "detail": "{\"event\":\"cta_whatsapp\",\"page\":\"/\",\"service\":\"services-hub\",\"cta_text\":\"Ask on WhatsApp\"}"
+      "detail": "{\"event\":\"cta_whatsapp\",\"page\":\"/\",\"service\":\"hero\",\"cta_text\":\"WhatsApp us\"}"
     },
     {
       "name": "reduced motion leaves nothing hidden",
@@ -161,17 +121,17 @@
       "detail": "0 transformed"
     },
     {
-      "name": "every card is still reachable under reduced motion",
+      "name": "every service is still reachable under reduced motion",
       "pass": true,
       "detail": ""
     },
     {
-      "name": "every card is there without JavaScript",
+      "name": "every booking link is there without JavaScript",
       "pass": true,
       "detail": ""
     },
     {
-      "name": "the first card is still a link",
+      "name": "the group pills are plain links without JavaScript",
       "pass": true,
       "detail": ""
     },
