@@ -56,7 +56,7 @@
       "detail": ""
     },
     {
-      "name": "every card is tagged as a booking CTA",
+      "name": "no tile reports a booking on its selecting tap",
       "pass": true,
       "detail": ""
     },
@@ -71,9 +71,9 @@
       "detail": ""
     },
     {
-      "name": "every card names its service in an H2",
+      "name": "every service is named in an H2 in the order slip",
       "pass": true,
-      "detail": ""
+      "detail": "6"
     },
     {
       "name": "cards open in the same tab",
@@ -91,9 +91,19 @@
       "detail": ""
     },
     {
+      "name": "the first tap selects without reporting a booking",
+      "pass": true,
+      "detail": "0"
+    },
+    {
+      "name": "the order bar books the selected service",
+      "pass": true,
+      "detail": ""
+    },
+    {
       "name": "a card click reports its own slug",
       "pass": true,
-      "detail": "{\"event\":\"cta_book\",\"page\":\"/\",\"service\":\"formaldehyde-removal\",\"cta_text\":\"New    Formaldehyde Removal & Air Sterilisation  Formaldehyd\"}"
+      "detail": "{\"event\":\"cta_book\",\"page\":\"/\",\"service\":\"formaldehyde-removal\",\"cta_text\":\"Formaldehyde\"}"
     },
     {
       "name": "the event reports the page",
@@ -106,14 +116,19 @@
       "detail": ""
     },
     {
-      "name": "WhatsApp button is visible on a phone",
+      "name": "order bar is visible on a phone",
       "pass": true,
       "detail": ""
     },
     {
-      "name": "WhatsApp button sits bottom right",
+      "name": "order bar spans the bottom edge",
       "pass": true,
-      "detail": "{\"right\":20,\"bottom\":20}"
+      "detail": "{\"left\":0,\"bottom\":0,\"width\":390}"
+    },
+    {
+      "name": "WhatsApp is still on the page",
+      "pass": true,
+      "detail": ""
     },
     {
       "name": "no dead space where a sticky bar would be",

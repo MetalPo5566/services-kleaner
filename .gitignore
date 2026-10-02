@@ -14,3 +14,8 @@ preview/
 
 # Uploadable build archives
 *-site.zip
+
+# Impeccable working files (screens, diffs, measurements)
+.impeccable/review/
+.impeccable/build/
+.impeccable/mocks/decision/

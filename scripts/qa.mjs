@@ -182,7 +182,9 @@ for (const width of WIDTHS) {
 
   record('every service is on the page as a card', cards.length === SERVICE_COUNT, `${cards.length} cards`)
   record('every card has a slug and an href', cards.every((card) => card.slug && card.href))
-  record('every card is tagged as a booking CTA', cards.every((card) => card.cta === 'book'))
+  // Tiles select first and book on the second tap, so they report their own
+  // cta_book event from the board script rather than through data-cta.
+  record('no tile reports a booking on its selecting tap', cards.every((card) => card.cta === null))
   record(
     'every card links to a known Kleaner host',
     cards.every(
@@ -191,7 +193,8 @@ for (const width of WIDTHS) {
     cards.map((card) => card.href).join(' | ')
   )
   record('no card nests an interactive element inside the link', cards.every((card) => card.nested === 0))
-  record('every card names its service in an H2', cards.every((card) => card.headings === 1))
+  const slipHeadings = await page.$$eval('[data-detail] h2', (els) => els.length)
+  record('every service is named in an H2 in the order slip', slipHeadings === SERVICE_COUNT, `${slipHeadings}`)
   record('cards open in the same tab', cards.every((card) => !card.target))
 
   record('grid is 3 columns at 1280', (await page.evaluate(columnCount)) === 3)
@@ -199,6 +202,13 @@ for (const width of WIDTHS) {
 
   // Each card fires its own slug, which is what the brief asked for.
   await page.evaluate(blockNavigation)
+  await page.locator('[data-service-card]').nth(3).click()
+  const afterSelect = await page.evaluate(() => (window.dataLayer || []).filter((e) => e.event === 'cta_book').length)
+  record('the first tap selects without reporting a booking', afterSelect === 0, `${afterSelect}`)
+  record(
+    'the order bar books the selected service',
+    (await page.getAttribute('[data-order-book]', 'href')) === cards[3].href
+  )
   await page.locator('[data-service-card]').nth(3).click()
   const events = await page.evaluate(() => window.dataLayer || [])
   const fired = events.filter((entry) => entry.event === 'cta_book').pop()
@@ -216,16 +226,20 @@ for (const width of WIDTHS) {
 
   record('grid is 2 columns at 390', (await page.evaluate(columnCount)) === 2)
 
-  const float = page.locator('a[data-cta="whatsapp"].fixed')
-  record('WhatsApp button is visible on a phone', await float.isVisible())
-
+  // The order bar replaces the floating WhatsApp button on this page.
+  record('order bar is visible on a phone', await page.locator('[data-order-bar]').isVisible())
   const placed = await page.evaluate(() => {
-    const el = document.querySelector('a[data-cta="whatsapp"].fixed')
+    const el = document.querySelector('[data-order-bar]')
     if (!el) return null
     const box = el.getBoundingClientRect()
-    return { right: window.innerWidth - box.right, bottom: window.innerHeight - box.bottom }
+    return { left: box.left, bottom: window.innerHeight - box.bottom, width: box.width }
   })
-  record('WhatsApp button sits bottom right', Boolean(placed) && placed.right < 40 && placed.bottom < 60, JSON.stringify(placed))
+  record(
+    'order bar spans the bottom edge',
+    Boolean(placed) && placed.left === 0 && placed.bottom === 0 && placed.width === 390,
+    JSON.stringify(placed)
+  )
+  record('WhatsApp is still on the page', (await page.locator('a[data-cta="whatsapp"]').count()) > 0)
 
   const gap = await page.evaluate(() => parseFloat(getComputedStyle(document.body).paddingBottom))
   record('no dead space where a sticky bar would be', gap < 8, `${gap}px`)

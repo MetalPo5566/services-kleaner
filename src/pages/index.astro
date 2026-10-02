@@ -1,20 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import Section from '../components/Section.astro'
 import Button from '../components/Button.astro'
 import Icon from '../components/Icon.astro'
-import ConfirmNote from '../components/ConfirmNote.astro'
-import ServiceGrid from '../components/ServiceGrid.astro'
+import ServiceBoard from '../components/ServiceBoard.astro'
 import { SERVICES } from '../data/services'
 import { SERVICES_EN as copy } from '../data/copy/services.en'
 import { SITE, ABSOLUTE_PAGES, whatsappLink } from '../data/site'
 import { localBusinessSchema, itemListSchema } from '../lib/schema'
 
-// The all services hub. One job: the visitor picks a service and books it.
+// The all services hub, built as a kopitiam counter board: numbered tiles you
+// point at, an order bar that books what you picked. One job: the visitor
+// picks a service and books it.
 //
-// No raster image on this page at all. The cards carry inline SVG icons from
-// the shared set, so there is nothing to lazy load, nothing to size, and no
-// layout shift by construction.
+// No raster image on this page apart from the logo. The pictograms are inline
+// SVG from the shared set, so there is nothing to lazy load and no layout
+// shift from an image arriving late.
 const SERVICE = 'services-hub'
 
 const schemas = [
@@ -45,71 +45,43 @@ const bookingUrlFor = (slug: string) =>
   htmlLang={copy.htmlLang}
   ogLocale={copy.ogLocale}
   stickyBar={false}
+  showFloatingCtas={false}
 >
-  {/* 1. Hero. Flat brand tint, no gradient. */}
-  <section class="border-b border-brand-line bg-brand-tint">
-    <div class="wrap py-12 text-center md:py-20">
-      <div class="mx-auto max-w-3xl" data-reveal>
-        <h1 class="text-[32px] font-black leading-[1.1] md:text-[52px]">{copy.hero.h1}</h1>
-        <p class="mx-auto mt-5 max-w-xl text-[17px] leading-relaxed md:text-[20px]">
-          {copy.hero.sub}
-        </p>
-        <div class="mt-8 flex justify-center">
-          <Button href="#services" icon="arrow" external={false}>{copy.hero.cta}</Button>
-        </div>
-      </div>
-    </div>
-  </section>
+  {/* 1. The board: headline, the RM20 pill, six tiles and the order bar. */}
+  <ServiceBoard copy={copy} />
 
-  {/* 2. Trust strip. */}
-  <section class="border-b border-brand-line bg-white py-8 md:py-10">
-    <div class="wrap">
-      <ul class="grid grid-cols-2 gap-x-5 gap-y-5 md:grid-cols-4">
-        {
-          copy.trust.items.map((item) => (
-            <li class="flex items-start gap-3" data-reveal>
-              <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-circle text-brand">
-                <Icon name={item.icon} size={21} />
-              </span>
-              <span class="text-[14px] font-bold leading-snug text-navy md:text-[15px]">
-                {item.text}
-              </span>
-            </li>
-          ))
-        }
-      </ul>
-      <ConfirmNote class="mt-6">{copy.trust.confirm}</ConfirmNote>
-    </div>
-  </section>
+  {/* 2. Sets, for the visitor who is not sure which tile is theirs. */}
+  <section class="wrap py-10 md:py-16" aria-labelledby="sets-title">
+    <h2 id="sets-title" class="font-board text-[clamp(34px,9.4vw,64px)] uppercase leading-none text-navy">
+      {copy.sets.title}
+    </h2>
+    <p class="mt-2 text-[16px] text-ink md:text-[18px]">{copy.sets.lead}</p>
 
-  {/* 3. The grid. */}
-  <Section id="services" eyebrow={copy.grid.eyebrow} title={copy.grid.title}>
-    <ServiceGrid copy={copy} />
-  </Section>
-
-  {/* 4. Not sure which one. */}
-  <Section
-    eyebrow={copy.chooser.eyebrow}
-    title={copy.chooser.title}
-    lead={copy.chooser.lead}
-    tint
-  >
-    <ul class="grid gap-4 md:grid-cols-3 md:gap-6">
+    <ul class="mt-6 grid gap-3 md:grid-cols-3 md:gap-4" role="list">
       {
-        copy.chooser.questions.map((entry) => (
-          <li data-reveal>
+        copy.sets.items.map((set) => (
+          <li class="flex" data-reveal>
             <a
-              href={bookingUrlFor(entry.slug)}
-              class="lift flex h-full flex-col rounded-card border border-brand-line bg-white p-6 shadow-soft"
-              data-cta="book"
-              data-service={entry.slug}
+              href={bookingUrlFor(set.slug)}
+              class="ticket press"
               rel="noopener"
+              data-cta="book"
+              data-service={`set-${set.slug}`}
             >
-              <p class="text-[18px] font-black text-navy md:text-[20px]">{entry.question}</p>
-              <p class="mt-3 grow text-[16px] leading-relaxed">{entry.answer}</p>
-              <span class="mt-5 inline-flex items-center gap-2 text-[17px] font-bold text-brand-ink">
-                {copy.grid.book}
-                <Icon name="arrow" size={19} />
+              <span class="ticket-stub" aria-hidden="true">
+                <span class="font-label text-[12px] font-semibold uppercase tracking-[0.12em]">Set</span>
+                <span class="font-board text-[44px] leading-none">{set.letter}</span>
+              </span>
+              <span class="ticket-body">
+                <span class="sr-only">Set {set.letter}. </span>
+                <span class="block font-board text-[22px] uppercase leading-[1.05] text-navy md:text-[24px]">
+                  {set.question}
+                </span>
+                <span class="mt-1.5 block text-[15px] leading-snug text-ink">{set.answer}</span>
+                <span class="mt-2.5 inline-flex items-center gap-1.5 font-label text-[15px] font-semibold uppercase tracking-[0.04em] text-brand-dark">
+                  {copy.board.book}
+                  <Icon name="arrow" size={17} />
+                </span>
               </span>
             </a>
           </li>
@@ -117,58 +89,200 @@ const bookingUrlFor = (slug: string) =>
       }
     </ul>
 
-    <div class="mt-8 text-center" data-reveal>
-      <p class="text-[16px] leading-relaxed md:text-[17px]">{copy.chooser.whatsAppLead}</p>
-      <div class="mt-5 flex justify-center">
-        <Button
-          href={whatsappLink(copy.chooser.waMessage)}
-          variant="whatsapp"
-          icon="whatsapp"
-          cta="whatsapp"
-          service={SERVICE}
-        >
-          {copy.chooser.whatsApp}
-        </Button>
-      </div>
-    </div>
-  </Section>
-
-  {/* 5. Guarantee. */}
-  <Section eyebrow={copy.guarantee.eyebrow} title={copy.guarantee.title}>
-    <div
-      class="mx-auto flex max-w-3xl flex-col items-center rounded-card border border-brand-line bg-white p-7 text-center shadow-soft md:p-10"
-      data-reveal
-    >
-      <span class="flex h-14 w-14 items-center justify-center rounded-full bg-brand-circle text-brand">
-        <Icon name="guarantee" size={28} />
-      </span>
-      <p class="mt-5 text-[17px] leading-relaxed md:text-[19px]">{copy.guarantee.text}</p>
-    </div>
-  </Section>
-
-  {/* 6. Voucher. */}
-  <section class="bg-white pb-14 md:pb-20">
-    <div class="wrap">
-      <div
-        class="mx-auto max-w-3xl rounded-card border-2 border-dashed border-brand bg-brand-tint p-7 text-center md:p-9"
-        data-reveal
+    <div class="mt-6 flex flex-col items-start gap-4 border-t-2 border-navy pt-5 md:flex-row md:items-center md:justify-between" data-reveal>
+      <p class="max-w-xl text-[16px] leading-snug text-navy md:text-[17px]">{copy.sets.whatsAppLead}</p>
+      <Button
+        href={whatsappLink(copy.sets.waMessage)}
+        variant="whatsapp"
+        icon="whatsapp"
+        cta="whatsapp"
+        service={SERVICE}
       >
-        <p class="text-[22px] font-black text-navy md:text-[28px]">{copy.voucher.headline}</p>
-        <p class="mt-4">
-          <span
-            class="inline-block rounded-xl bg-white px-5 py-3 text-[20px] font-black tracking-[0.12em] text-brand-ink md:text-[24px]"
-          >
-            {copy.voucher.code}
-          </span>
+        {copy.sets.whatsApp}
+      </Button>
+    </div>
+  </section>
+
+  {/* 3. The guarantee and the house facts, on the board's navy. */}
+  <section class="bg-navy py-12 text-white md:py-20" aria-labelledby="guarantee-title">
+    <div class="wrap lg:grid lg:grid-cols-[1.35fr_1fr] lg:items-end lg:gap-16">
+      <div>
+        <h2
+          id="guarantee-title"
+          class="max-w-4xl font-board text-[clamp(44px,13vw,112px)] uppercase leading-[0.98] text-white"
+        >
+          {copy.guarantee.title}
+        </h2>
+        <p class="mt-5 max-w-2xl text-[17px] leading-relaxed text-white/85 md:text-[19px]">
+          {copy.guarantee.text}
         </p>
-        <p class="mt-4 text-[15px]">{copy.voucher.terms}</p>
-        <div class="mt-6 flex justify-center">
-          <Button href={SITE.bookingUrl} icon="calendar" cta="book" service="voucher">
-            {copy.voucher.cta}
-          </Button>
-        </div>
       </div>
-      <ConfirmNote class="mx-auto mt-4 max-w-3xl">{copy.voucher.confirm}</ConfirmNote>
+
+      <ul class="mt-9 grid grid-cols-2 gap-x-5 gap-y-6 border-t border-white/20 pt-7 md:grid-cols-4 lg:mt-0 lg:grid-cols-1 lg:gap-0 lg:divide-y lg:divide-white/20 lg:border-t-0 lg:pt-0" role="list">
+        {
+          copy.trust.items.map((item) => (
+            <li class="flex flex-col gap-2.5 lg:flex-row lg:items-center lg:gap-4 lg:py-4">
+              <Icon name={item.icon} size={30} strokeWidth={1.8} class="text-sun" />
+              <span class="font-label text-[17px] font-medium uppercase leading-tight tracking-[0.02em] md:text-[19px]">
+                {item.text}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {/* 4. The voucher, printed as one more tile. */}
+  <section class="wrap py-10 md:py-16" aria-labelledby="voucher-title">
+    <div class="voucher" data-reveal>
+      <div class="voucher-face">
+        <h2 id="voucher-title" class="font-board text-[clamp(38px,11vw,84px)] uppercase leading-[0.98] text-white">
+          {copy.voucher.headline}
+        </h2>
+        <div class="mt-5 flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            class="press voucher-code"
+            data-copy-code={copy.voucher.code}
+            aria-describedby="voucher-copy"
+          >
+            <span data-copy-label data-default={copy.voucher.code} data-done={copy.voucher.copied}>
+              {copy.voucher.code}
+            </span>
+            <span id="voucher-copy" class="voucher-copy">{copy.voucher.copy}</span>
+          </button>
+        </div>
+        <p class="mt-4 text-[15px] text-white/90">{copy.voucher.terms}</p>
+        <a
+          href={SITE.bookingUrl}
+          class="press voucher-book"
+          rel="noopener"
+          data-cta="book"
+          data-service="voucher"
+        >
+          {copy.voucher.cta}
+          <Icon name="arrow" size={20} />
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .ticket {
+    display: flex;
+    width: 100%;
+    overflow: hidden;
+    border: 2px solid var(--color-navy);
+    border-radius: 8px;
+    background: #fff;
+    text-decoration: none;
+    transition:
+      transform 120ms var(--ease-out),
+      background-color 180ms var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .ticket:hover {
+      background: #fffbea;
+    }
+    .ticket:hover .ticket-stub {
+      background: var(--color-sun);
+      color: var(--color-navy);
+    }
+  }
+
+  .ticket-stub {
+    display: flex;
+    width: 76px;
+    flex-shrink: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    border-right: 2px dashed var(--color-navy);
+    background: var(--color-navy);
+    color: var(--color-sun);
+    transition:
+      background-color 180ms var(--ease-out),
+      color 180ms var(--ease-out);
+  }
+
+  .ticket-body {
+    display: block;
+    padding: 14px 16px 14px;
+  }
+
+  .voucher {
+    padding: 8px;
+    border-radius: 10px;
+    background: var(--color-brand-dark);
+  }
+
+  .voucher-face {
+    border: 2px solid #fff;
+    border-radius: 6px;
+    padding: 22px 18px 22px;
+  }
+
+  @media (min-width: 768px) {
+    .voucher-face {
+      padding: 40px 44px;
+    }
+  }
+
+  .voucher-code {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 10px 10px 16px;
+    border-radius: 8px;
+    background: #fff;
+    color: var(--color-navy);
+    font-family: var(--font-board);
+    font-size: 26px;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+  }
+
+  .voucher-copy {
+    padding: 7px 10px 6px;
+    border-radius: 6px;
+    background: var(--color-paper);
+    color: var(--color-brand-dark);
+    font-family: var(--font-label);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .voucher-code.is-copied {
+    background: var(--color-sun);
+  }
+
+  .voucher-book {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 22px;
+    height: 50px;
+    padding: 0 24px;
+    border-radius: 999px;
+    background: var(--color-sun);
+    color: var(--color-navy);
+    font-family: var(--font-board);
+    font-size: 21px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color 160ms var(--ease-out), transform 120ms var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .voucher-book:hover {
+      background: var(--color-sun-dark);
+    }
+  }
+</style>
